@@ -1,0 +1,20 @@
+.App {
+  width: 100%;
+  overflow: hidden;
+  /* background-image: url('https://media.istockphoto.com/id/1124507971/photo/abstract-painted-art-background.jpg?s=170667a&w=0&k=20&c=RfbqOPd2ZaqcIXtZP997UL7iSPN6A4eGabwB0LjMrXs='); */
+  /* Center and cover the entire viewport */
+  background-size: cover;
+  background-position: center;
+}
+html {
+  margin: 0;
+  padding: 0;
+}
+/* App.css */
+/* Your other CSS styles here */
+
+/* Include the Google Fonts CSS link */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+.artistic-font {
+  font-family: 'Playfair Display', serif;
+}

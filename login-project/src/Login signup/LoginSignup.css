@@ -1,0 +1,144 @@
+/* App.css */
+/* Your other CSS styles here */
+
+/* Include the Google Fonts CSS link */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+.main-section{
+    display: flex;  
+    align-items: center;
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    gap: 70px;
+    background-color: white;
+  border-style: solid;
+  border-radius: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  border-width: 2px;
+}
+.imgDescription{
+  border-radius: 20px;
+  margin-left: 40px;
+}
+.imgDescription img{
+    width: 100%;
+    border-radius: 40px;
+}
+.loginform{
+    position: relative;
+    width: 500px;
+    height: 500px;
+    border-style: groove;
+    margin-left: 2%;
+    border-radius: 10px;
+}
+.formDetail{
+    position: relative;
+
+    margin-top: 20%;
+    margin-left: 25%;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+.loginDescripton{
+    position: relative;
+    padding-left: 20px;
+}
+
+.btn-google {
+    background-color: white;
+    color: white;
+    width: 130px;
+    height: 40px;
+    border-style: solid;
+    border-width: 2PX;
+    border-color: #dedada;
+    border-radius: 7px  ;
+    padding-bottom: 40px;
+  }
+.btn-google img{
+  
+    
+    width:28%;
+}
+  .btn-twitter {
+    background-color: white;
+    color: white;
+    width: 130px;
+    height: 40px;
+    border-style: solid;
+    border-width: 2PX;
+    border-color: #dedada;
+    border-radius: 7px  ;
+    padding-bottom: 40px;
+  }
+  .btn-twitter img{
+   
+    width:42%;
+  }
+  .btn-github {
+    background-color: white;
+    color: white;
+    width: 130px;
+    height: 40px;
+    border-style: solid;
+    border-width: 2PX;
+    border-color: #dedada;
+    border-radius: 7px  ;
+    padding-bottom: 40px;
+  }
+  .btn-github img{
+  
+    width:27%;
+    
+  }
+  .social-sign-in{
+    display: flex;
+    gap: 20px;
+    align-content: center;
+    margin-left: 5%;
+  
+  }
+  .loginform p{
+    text-align: center;
+  }
+  .form-group{
+    margin-bottom: 10px;
+    margin-left: 5%;
+  }
+  .form-group label{
+    margin-bottom: 10px;
+  }
+  .loginform h5{
+    margin-left: 5%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .form-group input{
+    width: 430px;
+  }
+  .form-check{
+    margin-left: 5%;
+    padding-top: 10px;
+    display: flex;
+  }
+  .forget-pass{
+    width: 150px;
+    margin-left:180px ;
+  }
+  .forget-pass a{
+    margin-right: 5px;
+  }
+  .login-button{
+    width: 87%;
+    margin-left: 5%;
+    border-radius: 7px;
+    border-width: 1px;
+    margin-top: 20px;
+  }
+  .artistic-font {
+    font-family: 'Playfair Display', serif;
+  }
