@@ -1,0 +1,22 @@
+.duck-teacher {
+    width: 400px;
+}
+.Teacher-section{
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    text-align: center;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.teaching-button{
+    color: white;
+    background-color: rgb(40, 40, 40);
+    padding: 15px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+.teaching-button:hover{
+    opacity: 0.8;
+}
