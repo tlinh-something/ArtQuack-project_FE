@@ -1,0 +1,30 @@
+body {
+    width: 100%;
+}
+.Login-btn{
+    position: relative;
+   width: 100px;
+   height: 40px;
+   border: solid ;
+   border-color: black;
+   border-width: 1px;
+}
+
+#Login-section{
+    display: flex;
+    gap: 20px;
+    margin-left: 20px;
+}
+.Login-btn:hover{
+    background-color: rgba(229, 228, 228, 0.863);
+}
+
+#Login-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.topic{
+    font-size: 30px;
+}
