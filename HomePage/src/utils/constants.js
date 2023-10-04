@@ -1,6 +1,6 @@
-export const PYTHON = "python";     
-export const WEB_DEVELOPMENT = "web development";
-export const DATA_SCIENCE = "data science";
-export const AWS = "aws";
-export const DESIGN = "design";
-export const MARKETING = "marketing";
+export const POTTERY = "pottery";     
+export const OIL = "oil";
+export const INLAY = "inlay";
+export const ENGRAVED_COPPER = "engraved_copper";
+export const SAND = "sand";
+export const SPRAY = "spray";
