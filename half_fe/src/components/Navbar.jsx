@@ -4,22 +4,29 @@ import {MdMenu, MdShoppingCart} from "react-icons/md";
 import {Link} from 'react-router-dom';
 import { useSidebarContext } from './context/sidebar_context';
 import { useCartContext } from './context/cart_context';
+import UserDropdown from './UserPage/UserDropdown';
 // import SearchBar from './SearchBar';
 import '../components/Test.css';
 import Nav from 'react-bootstrap/Nav';
 
+import { useUser } from "./context/user_context";
 
 const Navbar = () => {
   const {total_items} = useCartContext();
   const {openSidebar} = useSidebarContext();
-  // const handleSearch = (query) => {
-  //   // Replace this with your actual search logic
-  //   alert(`Searching for: ${query}`);
-  // };
+  // const { user } = useUser();
+  // useEffect(() => {
+  //   // Kiểm tra xem đã có thông tin người dùng hay chưa
+  //   if (!user) {
+  //     // Không có thông tin người dùng, thực hiện redirect hoặc xử lý khác
+  //     // Ví dụ: Redirect đến trang đăng nhập
+  //     window.location.href = "/login";
+  //   }
+  // }, [user]);
   return (
     <NavbarWrapper className = "bg-white flex">
       <div className='container'>
-        <div className='brand-and-toggler flex flex-between w-100'>
+        <div className='brand-and-toggler flex '>
           <Link to = "/" className='navbar-brand text-uppercase ls-1 fw-8'>
             <span className="topic">A</span>rtquack 
          
@@ -32,8 +39,11 @@ const Navbar = () => {
             <Nav id="Login-section" className='lg-4'>
               <Link to="/registerIns" id="log">Teach on ArtQuack</Link>
               <Link to='/login' id='log'>Log in</Link>
-              <Link to='/register' id='log'>Sign up</Link>
+              <Link to='/register' id='log'>Sign up</Link>   
           </Nav>
+          <div className="user-cart flex">
+
+         
           <div className='navbar-btns flex'>
             <Link to = "/cart" className='cart-btn'>
               <MdShoppingCart />
@@ -42,6 +52,13 @@ const Navbar = () => {
             <button type = "button" className='sidebar-open-btn' onClick={() => openSidebar()}>
               <MdMenu />
             </button>
+          </div>
+          {/* <div className="user-info">
+           {
+           isAuthenticated?(<UserDropdown/>):(<div></div>)
+           }
+          </div>
+          */}
           </div>
         </div>
       </div>
@@ -63,7 +80,7 @@ const NavbarWrapper = styled.nav`
   .cart-btn{
     margin-right: 18px;
     font-size: 23px;
-    position: relative;
+    
     .item-count-badge{
       background-color: var(--clr-orange);
       position: absolute;
@@ -81,7 +98,11 @@ const NavbarWrapper = styled.nav`
       justify-content: center;
     }
   }
-
+  .user-cart{
+    gap: 20px;
+    position: absolute;
+  right:15%;
+  }
   .sidebar-open-btn{
     transition: all 300ms ease-in-out;
     &:hover{

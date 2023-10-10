@@ -1,20 +1,40 @@
 
 import './LoginSignup.css'
-
+import UserHomePage from "../UserPage/UserHomePage"
 import GoogleSignInButton from './Button signup/GoogleSignInButton'; 
 import TwitterSignInButton from './Button signup/TwitterSignInButton';
 import GitHubSignInButton from './Button signup/GitHubSignInButton';
-import { useState } from 'react';
-const handleLogin = () => {
-    // Add your login logic here
-  };
-    const handleForgotPasswordClick = () => {
-    // Add your logic to handle the "Forgot Password" link click.
-    // Typically, this would involve navigating the user to a password reset page.
-  };
+import { useEffect, useState } from 'react';
+import { useUser } from '../context/user_context';
+import { useNavigate } from 'react-router-dom';
     function LoginSignup() {
+      const navigateTo = useNavigate();
+      // const { setUser } = useUser();
+      const [username, setUsername] = useState('');
+      const [password, setPassword] = useState('');
+      const [loggedIn, setLoggedIn] = useState(false);
         const [rememberMe, setRememberMe] = useState(false);
+        const handleLogin = () => {
+        //  //APIs
+        //   // If login is successful, set loggedIn to true
+        //   if (username === 'user' && password === 'password') {
+        //     useEffect(()=>{
+        //       setUser(user);
+        //     },[]);
+            
+        //   } else {
+        //     // Handle login failure (e.g., show an error message)
+        //   }
+        // };
       
+        // // Redirect to the homepage if loggedIn is true
+        // if (loggedIn) {
+        //   navigateTo('/');
+        }
+            const handleForgotPasswordClick = () => {
+            // Add your logic to handle the "Forgot Password" link click.
+            // Typically, this would involve navigating the user to a password reset page.
+          };
         const handleRememberMeChange = () => {
           setRememberMe(!rememberMe);
         };
@@ -46,11 +66,21 @@ const handleLogin = () => {
            <p>Or sign in with</p>
             <div className="form-group">
                 <label htmlFor="username">Username</label>
-                <input type="text" className="form-control" id="username" placeholder="Enter your username" />
+                <input
+                type="text"
+                className="form-control" 
+                id="username" 
+                placeholder="Enter your username"
+                onChange={(e) => setUsername(e.target.value)} />
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password</label>
-                <input type="password" className="form-control" id="password" placeholder="Enter your password" />
+                <input
+                type="password"
+                className="form-control"
+                id="password" 
+                placeholder="Enter your password"
+                onChange={(e) => setPassword(e.target.value)} />
               </div>
               <div className="form-check">
                 <input

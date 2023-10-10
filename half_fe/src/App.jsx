@@ -8,17 +8,19 @@ import {Home, Courses, SingleCourse, Cart} from './components/pages/index';
 import Login from './components/Login signup/LoginSignup';
 import Register from './components/Register/Register';
 import RegisterIns from './components/Register/RegisterIns';
-
+import UserHomePage from "./components/UserPage/UserHomePage";
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
       <Sidebar />
+    
       <Routes>
         <Route path = "/" element = {<Home />} />
         <Route path = "/courses/:id" element = {<SingleCourse />} />
         <Route path = "/category/:category" element = {<Courses />} />
         <Route path = "/cart" element = {<Cart />} />
+        <Route path = "/user" element = {<UserHomePage/>}/>
         <Route path = "/login" element = {<Login />} />
         <Route path = "/register" element = {<Register />} />
         <Route path = "/registerIns" element = {<RegisterIns />} />
