@@ -3,12 +3,13 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import '../footer/Footer.css';
 import {Link} from 'react-router-dom';
+import BlogPage from '../Blog/BlogPage';
 function Footer(){
     return (
 
         <Container className='footer' fluid>
             <Row xs={2} md={4} lg={6}>
-                <Col><Link to="/login" id="log">Blog</Link></Col>
+                <Col><Link to="/BlogPage" id="log">Blog</Link></Col>
                 <Col><a href='#'>Help and support</a></Col>
             </Row>
 

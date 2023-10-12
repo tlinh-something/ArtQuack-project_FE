@@ -9,6 +9,7 @@ import Login from './components/Login signup/LoginSignup';
 import Register from './components/Register/Register';
 import RegisterIns from './components/Register/RegisterIns';
 import UserHomePage from "./components/UserPage/UserHomePage";
+import BlogPage from './components/Blog/BlogPage';
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +23,7 @@ function App() {
         <Route path = "/cart" element = {<Cart />} />
         <Route path = "/user" element = {<UserHomePage/>}/>
         <Route path = "/login" element = {<Login />} />
+        <Route path="/BlogPage" element={<BlogPage/>}/>
         <Route path = "/register" element = {<Register />} />
         <Route path = "/registerIns" element = {<RegisterIns />} />
       </Routes>

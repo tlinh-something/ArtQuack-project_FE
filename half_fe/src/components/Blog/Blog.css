@@ -1,0 +1,13 @@
+.blog-tab-body{
+    display: flex;
+    gap:30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.post-body{
+    padding: 25px;
+    width: 300px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+}
