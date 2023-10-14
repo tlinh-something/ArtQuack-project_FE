@@ -55,15 +55,15 @@ import { useNavigate } from 'react-router-dom';
                     </div>
                    
                     <form className="loginform" onSubmit={handleSubmit}>
-                        <h5 className="form-title">Sign in with</h5>
-                    <div className="social-sign-in">
+                        {/* <h5 className="form-title">Sign in with</h5> */}
+                    {/* <div className="social-sign-in">
               <div className="btn-google "><GoogleSignInButton /></div>
               <div className="btn-twitter"><TwitterSignInButton /></div>
               <div className="btn-github"><GitHubSignInButton /></div>
             </div>  
            
                 <hr></hr>
-           <p>Or sign in with</p>
+           <p>Or sign in with</p> */}
             <div className="form-group">
                 <label htmlFor="username">Username</label>
                 <input

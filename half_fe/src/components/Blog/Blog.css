@@ -1,13 +1,37 @@
 .blog-tab-body{
     display: flex;
-    gap:30px;
-    flex-wrap: wrap;
     justify-content: center;
+    gap: 40px;
 }
 .post-body{
-    padding: 25px;
+    padding: 10px;
     width: 300px;
     border-style: solid;
     border-width: 1px;
     border-color: grey;
+}
+.blogs-list-top{
+    text-align: center;
+    padding: 20px;
+    background-color: black;
+    color: white;
+
+}
+.blogs-list-top h4{
+    font-size: 40px;
+}
+
+.cate-title h2{
+    font-size: 25px;
+    font-style: italic;
+    padding: 10px;
+}
+
+.show-all{
+
+    margin-left: 90%;
+    
+}
+.blogs-list-body{
+    margin-top: 20px;
 }

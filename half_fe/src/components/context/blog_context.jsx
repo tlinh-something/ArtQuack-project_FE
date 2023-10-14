@@ -34,12 +34,12 @@ export const BlogProvider = ({children}) => {
     }, []);
 
     return (
-        <CoursesContext.Provider value = {{
+        <BlogContext.Provider value = {{
             ...state,
             fetchSingleBlog
         }}>
             {children}
-        </CoursesContext.Provider>
+        </BlogContext.Provider>
     )
 }
 
