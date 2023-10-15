@@ -1,11 +1,12 @@
 import {useState} from 'react';
 import styled from "styled-components";
 import Course from "./Course";
-import {PYTHON, WEB_DEVELOPMENT, DATA_SCIENCE, AWS, DESIGN, MARKETING} from "./utils/constants";
+import {POTTERY,OIL,INLAY,ENGRAVED_COPPER,SAND,SPRAY} from "./utils/constants";
 import courses from './utils/data';
 
+
 const Tabs = () => {
-  const [activeTab, setActiveTab] = useState(PYTHON);
+  const [activeTab, setActiveTab] = useState(POTTERY);
   const tabHandler = (category) => {
     setActiveTab(category);
   }
@@ -15,22 +16,22 @@ const Tabs = () => {
       <div className='tabs'>
         <ul className='flex flex-wrap'>
           <li className='tabs-head-item'>
-            <button type = "button" className={`tab-btn ${activeTab === PYTHON}`} onClick = {() => tabHandler(PYTHON)}>Pottery</button>
+            <button type = "button" className={`tab-btn ${activeTab === POTTERY}`} onClick = {() => tabHandler(POTTERY)}>Pottery</button>
           </li>
           <li className='tabs-head-item'>
-            <button type = "button" className={`tab-btn ${activeTab === WEB_DEVELOPMENT}`} onClick = {() => tabHandler(WEB_DEVELOPMENT)}>Oil Painting</button>
+            <button type = "button" className={`tab-btn ${activeTab === OIL}`} onClick = {() => tabHandler(OIL)}>Oil Painting</button>
           </li>
           <li className='tabs-head-item'>
-            <button type = "button" className={`tab-btn ${activeTab === DATA_SCIENCE}`} onClick = {() => tabHandler(DATA_SCIENCE)}>Inlay</button>
+            <button type = "button" className={`tab-btn ${activeTab === INLAY}`} onClick = {() => tabHandler(INLAY)}>Inlay</button>
           </li>
           <li className='tabs-head-item'>
-            <button type = "button" className={`tab-btn ${activeTab === AWS}`} onClick = {() => tabHandler(AWS)}>Engraved Copper</button>
+            <button type = "button" className={`tab-btn ${activeTab === ENGRAVED_COPPER}`} onClick = {() => tabHandler(ENGRAVED_COPPER)}>Engraved Copper</button>
           </li>
           <li className='tabs-head-item'>
-            <button type = "button" className={`tab-btn ${activeTab === DESIGN}`} onClick = {() => tabHandler(DESIGN)}>Sand</button>
+            <button type = "button" className={`tab-btn ${activeTab === SAND}`} onClick = {() => tabHandler(SAND)}>Sand</button>
           </li>
           <li className='tabs-head-item'>
-            <button type = "button" className={`tab-btn ${activeTab === MARKETING}`} onClick = {() => tabHandler(MARKETING)}>Spary</button>
+            <button type = "button" className={`tab-btn ${activeTab === SPRAY}`} onClick = {() => tabHandler(SPRAY)}>Spary</button>
           </li>
         </ul>
 

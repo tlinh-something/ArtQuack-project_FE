@@ -23,35 +23,35 @@ const blogs=[
     {
         postID: "post4",
         userRoleID: "user3",
-        cateID: "oil",
+        cateID: "pottery",
         title: "topic3",
         content: "Part three – the essential skills that mark out a real pro"
     },
     {
     postID: "post5",
     userRoleID: "user3",
-    cateID: "oil",
+    cateID: "pottery",
     title: "topic3",
     content: "Part three – the essential skills that mark out a real pro"
     },
             {
                 postID: "post6",
                 userRoleID: "user3",
-                cateID: "oil",
+                cateID: "pottery",
                 title: "topic3",
                 content: "Part three – the essential skills that mark out a real pro"
                 },
                 {
-                    postID: "post1",
+                    postID: "post12",
                     userRoleID: "user1",
-                    cateID: "cate1",
+                    cateID: "pottery",
                     title: "topic1",
                     content: "Part three – the essential skills that mark out a real pro"
                     },
                     {
-                        postID: "post2",
+                        postID: "post23",
                         userRoleID: "user2",
-                        cateID: "cate2",
+                        cateID: "pottery",
                         title: "topic2",
                         content: "Part three – the essential skills that mark out a real pro"
                     },

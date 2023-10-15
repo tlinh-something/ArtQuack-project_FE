@@ -19,7 +19,7 @@ export const BlogProvider = ({children}) => {
     }
 
     const fetchSingleBlog= (id) => {
-        const singleBlog= blogs.find(blog => blog.topicID === id);
+        const singleBlog= blogs.find(blog => blog.cateID === id);
         dispatch({type: GET_SINGLE_POST, payload: singleBlog})
     }
     const fetchCategories = () => {
