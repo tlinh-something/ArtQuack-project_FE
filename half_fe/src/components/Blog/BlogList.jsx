@@ -39,16 +39,16 @@ const BlogList = ()=> {
       
         return (
           <div className="post-carousel">
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <button onClick={handlePrev} disabled={startIndex === 0}>
+            <div style={{ display: 'flex', flexDirection: 'row' ,transition: 'margin 0.5s ease'}}>
+            <button className="scroll-post" onClick={handlePrev} disabled={startIndex === 0}>
               {'<'}
             </button>
             {currentData.map((item, index) => (
-                <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid black', margin: '15px 20px', padding: '10px' }}>
+                <div className="post-container" key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid black', margin: '15px 20px', padding: '10px' }}>
                     {item}
                 </div>
             ))}
-            <button onClick={handleNext} disabled={startIndex + 3 >= data.length}>
+            <button className="scroll-post" onClick={handleNext} disabled={startIndex + 3 >= data.length}>
               {'>'}
             </button>
             </div>

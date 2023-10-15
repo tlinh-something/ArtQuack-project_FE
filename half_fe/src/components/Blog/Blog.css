@@ -15,10 +15,11 @@
     padding: 20px;
     background-color: black;
     color: white;
-
+    margin-top: 20px;
 }
 .blogs-list-top h4{
     font-size: 40px;
+    
 }
 
 .cate-title h2{
@@ -40,4 +41,15 @@
 }
 .post-carousel{
     margin: 0 auto;
+}
+.scroll-post{
+    width: 40px;
+    height: 40px;
+    margin-top: 50px;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+}
+.post-container{
+    transition: transform 0.5s ease;
 }
