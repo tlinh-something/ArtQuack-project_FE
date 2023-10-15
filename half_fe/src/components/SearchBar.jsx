@@ -21,18 +21,19 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div>
-      <input 
-      placeholder="Search anything you want"
+    <div style={{display: 'flex'}}>
+      <input placeholder="Search anything you want"
       style={{ 
-        width: '',
-        margin: '2px',
+        width: '200%',
+        padding: '5px',
         border: '1px solid #000',
+        borderRadius: '8px'
       }}
       value={searchQuery}
       onChange={handleInputChange}
       onKeyPress={handleKeyPress}
-      />
+      /> 
+      {/* <button type='submit' style={{padding: '0 10px', border:'1px solid #000', fontSize: '14px'}}>search</button> */}
       {/* <TextField
         label="Search anything you want"
         variant="outlined"

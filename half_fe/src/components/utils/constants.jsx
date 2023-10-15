@@ -1,6 +1,6 @@
-export const POTTERY = "pottery";     
-export const OIL = "oil";
-export const INLAY = "inlay";
-export const ENGRAVED_COPPER = "engraved_copper";
-export const SAND = "sand";
-export const SPRAY = "spray";
+export const PYTHON = "Pottery";     
+export const WEB_DEVELOPMENT = "Oil";
+export const DATA_SCIENCE = "Inlay";
+export const AWS = "Engraved_copper";
+export const DESIGN = "Sand";
+export const MARKETING = "Spray";

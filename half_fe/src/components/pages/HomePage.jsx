@@ -1,4 +1,4 @@
-import React from 'react';
+//import React from 'react';
 import Hero from "../Hero";
 import CoursesList from "../CourseList";
 import CategoriesList from '../category/CategoriesList';
