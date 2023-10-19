@@ -1,0 +1,265 @@
+{
+  "user": [
+    {
+      "id": "ID2",
+      "fullname": "Emily Johnson",
+      "username": "instructor1",
+      "email": "emily.johnson@example.com",
+      "password": "password2",
+      "userRoleId": "UR2",
+      "status": true
+    },
+    {
+      "id": "ID1",
+      "fullname": "Michael Smith",
+      "username": "student1",
+      "email": "michael.smith@example.com",
+      "password": "password1",
+      "userRoleId": "UR1",
+      "status": true
+    }
+  ],
+  "level": [
+    {
+      "id": "L1",
+      "name": "Beginner"
+    },
+    {
+      "id": "L2",
+      "name": "Intermediate"
+    },
+    {
+      "id": "L3",
+      "name": "Advance"
+    },
+    {
+      "id": "L4",
+      "name": "Professional"
+    },
+    {
+      "id": "L5",
+      "name": "Expert"
+    }
+  ],
+  "role": [
+    {
+      "id": 1,
+      "name": "Admin"
+    },
+    {
+      "id": 2,
+      "name": "Student"
+    },
+    {
+      "id": 3,
+      "name": "Instructor"
+    }
+  ],
+  "userRole": [
+    {
+      "id": "UR1",
+      "roleId": 2
+    },
+    {
+      "id": "UR2",
+      "roleId": 3
+    }
+  ],
+  "instructor": [
+    {
+      "id": "I1",
+      "userRoleId": "UR2",
+      "name": "Emily Johnson",
+      "email": "emily.johnson@example.com",
+      "certificate": "Certificate of Excellence in Art",
+      "rate": 5,
+      "summarize": "Experienced in Art Selling",
+      "status": true
+    }
+  ],
+  "category": [
+    {
+      "id": "C1",
+      "name": "Paintings"
+    },
+    {
+      "id": "C2",
+      "name": "Sculptures"
+    },
+    {
+      "id": "C3",
+      "name": "Photography"
+    },
+    {
+      "id": "C4",
+      "name": "Pottery"
+    },
+    {
+      "id": "C5",
+      "name": "Jewelry"
+    },
+    {
+      "id": "C6",
+      "name": "Textile Art"
+    },
+    {
+      "id": "C7",
+      "name": "Digital Art"
+    },
+    {
+      "id": "C8",
+      "name": "Mixed Media"
+    }
+  ],
+  "enroll": [
+    {
+      "id": "E1",
+      "userName": "student1",
+      "courseId": "CRS1",
+      "status": true
+    }
+  ],
+  "enrollTopic": [
+    {
+      "id": "ET1",
+      "topicId": "T1",
+      "enrollId": "E1",
+      "date": "2023-10-09",
+      "status": true
+    }
+  ],
+  "artwork": [
+    {
+      "id": "AW1",
+      "enrollTopicId": "ET1",
+      "userId": "ID1",
+      "instructorId": "I1",
+      "status": true
+    }
+  ],
+  "review": [
+    {
+      "id": "RV1",
+      "artworkId": "AW1",
+      "userId": "ID1",
+      "instructorId": "I1",
+      "rate": 4,
+      "comment": "Great insights into art selling",
+      "date": "2023-10-10",
+      "status": true
+    }
+  ],
+  "course": [
+    {
+      "code": "ART101",
+      "instructorId": "I1",
+      "cateId": "C1",
+      "level": "L1",
+      "review": "RV1",
+      "id": "CRS1",
+      "name": "Art Selling Basics",
+      "description": "A comprehensive guide to selling art online and offline",
+      "date": "2023-10-08",
+      "viewer": 50,
+      "rate": 4,
+      "status": true
+    },
+    {
+      "code": "ART102",
+      "instructorId": "I1",
+      "cateId": "C1",
+      "level": "L2",
+      "review": "RV2",
+      "id": "CRS1",
+      "name": "Art Selling Advance",
+      "description": "A comprehensive guide to selling art online and offline",
+      "date": "2023-10-08",
+      "viewer": 50,
+      "rate": 4,
+      "status": true
+    },
+    {
+      "name": "Patterned plate",
+      "topicName": "kokoo",
+      "video": "jijiii",
+      "description": "linking",
+      "level": "Advance",
+      "category": "Paintings",
+      "artwork": "",
+      "id": "VBdjbwJ"
+    },
+    {
+      "name": "Silver Fork",
+      "topicName": "",
+      "video": "",
+      "description": "",
+      "level": "Advance",
+      "category": "Photography",
+      "artwork": "",
+      "id": "3kdWaIO"
+    },
+    {
+      "name": "Candy Bear",
+      "topicName": "",
+      "video": "",
+      "description": "linking",
+      "level": "Beginner",
+      "category": "Textile Art",
+      "artwork": "",
+      "id": "jBHDCrV"
+    }
+  ],
+  "topic": [
+    {
+      "id": "T1",
+      "name": "Introduction to Art Selling",
+      "url": "https://www.example.com/intro_art_selling",
+      "courseId": "CRS1"
+    },
+    {
+      "id": "T2",
+      "name": "Marketing Strategies for Art",
+      "url": "https://www.example.com/marketing_strategies_for_art",
+      "courseId": "CRS1"
+    },
+    {
+      "id": "T3",
+      "name": "Art Pricing Techniques",
+      "url": "https://www.example.com/art_pricing_techniques",
+      "courseId": "CRS1"
+    },
+    [
+      {
+        "courseId": "VBdjbwJ",
+        "topicName": "kokoo",
+        "videoURL": "http://picture.com"
+      },
+      {
+        "courseId": "VBdjbwJ",
+        "topicName": "hollllo",
+        "videoURL": "http://video.com"
+      }
+    ],
+    [
+      {
+        "courseId": "CRS1",
+        "topicName": "kokoo",
+        "videoURL": "http://picture.com",
+        "id": ""
+      }
+    ],
+    [
+      {
+        "courseId": "jBHDCrV",
+        "topicName": "kokoo",
+        "videoURL": "http://video.com",
+        "id": ""
+      },
+      {
+        "courseId": "jBHDCrV",
+        "topicName": "kokoo",
+        "videoURL": "http://picture.com"
+      }
+    ]
+  ]
+}

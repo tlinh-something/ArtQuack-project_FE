@@ -1,0 +1,58 @@
+#add-course{
+    border: 1px solid #d3d3d3;
+    margin-right: 1%;
+    width: 28%;
+    padding-left: 5px;
+    margin-top: 1%;
+    height: 30px;
+    border-radius: 3px;
+}
+
+.topic{
+    margin-left: 10px;
+    min-height: 100%;
+    font-size: 14px;
+}
+
+.form-control{
+    width: 86%;
+    height: 30px;
+}
+
+button{
+    border: 1px solid #d3d3d3;
+    font-size: 15px;
+    margin: 0 10px;
+    padding: 2px 4px;
+    transition: .4s ease-in-out;
+}
+
+button:hover{
+    transition: .4s ease-in-out;
+    padding: 2px 10px;
+    border-radius: 10px;
+}
+
+.top-course{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+#level{
+    width: 15%;
+    margin-left: 1%;
+    height: 30px;
+}
+
+/* *{
+    font-size: 14px;
+} */
+
+.form-add-course{
+    border: 0.1em solid #000;
+    margin-bottom: 20px;
+    padding: 2px 10px;
+}
+
+
