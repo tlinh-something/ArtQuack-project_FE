@@ -22,6 +22,7 @@ function ViewItem() {
         <div>
             <div>
                 <form>
+                    <table>
                     <thead>
                         <tr>
                             <td>ID</td>
@@ -39,7 +40,9 @@ function ViewItem() {
                         ))}
                         
                     </tbody>
+                    </table>
                 </form>
+                <Link to={'/mycourse'}>Back</Link>
             </div>
         </div>
     );

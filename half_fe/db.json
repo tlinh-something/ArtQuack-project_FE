@@ -191,6 +191,16 @@
       "category": "Sculptures",
       "date": "2023-10-24",
       "id": "mguUZhH"
+    },
+    {
+      "name": "Patterned plate",
+      "description": "mommooooo",
+      "level": "Advance",
+      "category": "Photography",
+      "date": "2023-10-24",
+      "status": true,
+      "rate": "4",
+      "id": "4xRUWGH"
     }
   ],
   "chapter": [
@@ -213,16 +223,6 @@
       "courseId": "CRS1"
     },
     {
-      "courseId": "VBdjbwJ",
-      "name": "kokoo",
-      "videoURL": "http://picture.com"
-    },
-    {
-      "courseId": "VBdjbwJ",
-      "name": "hollllo",
-      "videoURL": "http://video.com"
-    },
-    {
       "courseId": "CRS1",
       "name": "kokoo",
       "videoURL": "http://picture.com",
@@ -232,38 +232,26 @@
       "courseId": "jBHDCrV",
       "name": "kokoo",
       "videoURL": "http://video.com",
-      "id": ""
+      "id": "T5"
     },
     {
       "courseId": "jBHDCrV",
       "name": "kokoo",
-      "videoURL": "http://picture.com"
+      "videoURL": "http://picture.com",
+      "id": "T6"
     },
     {
-      "courseId": "MdUnTac",
-      "name": "hihihihaha",
-      "id": ""
+      "courseId": "CRS1",
+      "name": "Art Selling Basics",
+      "description": "linking",
+      "id": "T7"
     },
-    [
-      {
-        "courseId": "CRS1",
-        "name": "",
-        "id": "",
-        "chapterName": "hihihihaha"
-      }
-    ],
-    [
-      {
-        "courseId": "CRS1",
-        "name": "Patterned plate"
-      }
-    ],
-    [
-      {
-        "courseId": "CRS1",
-        "name": "true"
-      }
-    ]
+    {
+      "courseId": "CRS1",
+      "name": "Patterned plate",
+      "description": "A guide to selling art only offline",
+      "id": "T8"
+    }
   ],
   "item": [
     {
@@ -286,6 +274,18 @@
       "chapterId": "T1",
       "content": "Third we summary it?",
       "status": true
-    }
-  ]
+    },
+    {
+        "chapterId": "T1",
+        "name": "Silver Fork",
+        "content": "hihihii",
+        "id": "ITE4"
+      },
+      {
+        "chapterId": "T1",
+        "name": "Candy Bear",
+        "content": "hihihii",
+        "id": "ITE5"
+      }
+    ]
 }

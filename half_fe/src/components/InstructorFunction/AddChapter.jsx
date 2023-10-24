@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react"
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import './AddCourse.css'
 
 
@@ -75,7 +75,7 @@ function AddChapter() {
             </form>
                 <button onClick={add}>More chapter</button>
                 <button onClick={handleSubmit}>Save</button>
-            
+                <Link to={'/mycourse'}>Back</Link>
         </div>
     )
 }

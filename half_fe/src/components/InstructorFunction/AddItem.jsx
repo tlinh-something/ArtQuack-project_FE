@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react"
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import './AddCourse.css'
 
 
@@ -8,7 +8,7 @@ function AddItem() {
 
     const params = useParams()
     const courseId = params.id
-    const [input, setInput] = useState([{courseId: courseId, name: '', content: '', id: ''}])
+    const [input, setInput] = useState([{chapterId: courseId, name: '', content: '', id: ''}])
     
     const handleFormChange = (e, index) => {
         let data = [...input];
@@ -25,16 +25,16 @@ function AddItem() {
             console.log(response.data)
             console.log(input)
             alert("Add Topic Successfully");
-            navigate('/chapter')
+            navigate('/mycourse')
         })
         .catch(error => {
             console.log(error);
         })
     }
 
-    //add and remove fields for topic
+    //add and remove fields for item
     const add = () => {
-        let newfield = { courseId: courseId, name: '', content: ''}
+        let newfield = { chapterId: courseId, name: '', content: ''}
         setInput([...input, newfield]);
     }
 
@@ -74,7 +74,7 @@ function AddItem() {
             </form>
                 <button onClick={add}>More item</button>
                 <button onClick={handleSubmit}>Save</button>
-            
+                <Link to={'/mycourse'}>Back</Link>
         </div>
     )
 }

@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 
 function ViewCourse() {
 
-    const [chapter, setChapter] = useState([])
+    const [chapter, setChapter] = useState()
     const {id} = useParams()
     const navigate = useNavigate()
     // const params = useParams()
@@ -20,8 +20,8 @@ function ViewCourse() {
 
     return (
         <div>
-            <div>
-                <form>
+            <form>
+                <table>
                     <thead>
                         <tr>
                             <td>ID</td>
@@ -42,8 +42,9 @@ function ViewCourse() {
                         ))}
                         
                     </tbody>
-                </form>
-            </div>
+                </table>
+            </form>
+            <Link to={'/mycourse'}>Back</Link>
         </div>
     );
 
