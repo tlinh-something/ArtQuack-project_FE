@@ -2,7 +2,7 @@
 // import Blog from "./Blog";
 // import { useBlogsContext } from "../context/blog_context";
 import BlogList from "./BlogList"
-const BlogPage = () => {
+function BlogPage (){
     // const {blogs} = useBlogsContext();
     return (
         <div className="blog-page">

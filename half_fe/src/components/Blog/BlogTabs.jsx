@@ -1,5 +1,5 @@
 
-import { useBlogsContext } from "../context/blog_context";
+//import { useBlogsContext } from "../context/blog_context";
 import Blog from "./Blog";
 import blogs from "./BlogData"
 import "./Blog.css";

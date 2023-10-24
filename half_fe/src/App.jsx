@@ -15,6 +15,8 @@ import ViewCourse from './components/InstructorFunction/ViewCourse';
 import AddItem from './components/InstructorFunction/AddItem';
 import AddChapter from './components/InstructorFunction/AddChapter';
 import ViewItem from './components/InstructorFunction/ViewItem';
+import UserHomePage from './components/UserPage/UserHomePage';
+import BlogPage from './components/Blog/BlogPage';
 //import Date from './common/Date';
 //import { useState } from 'react';
 //import useToken from './services/useToke';
@@ -48,8 +50,8 @@ function App() {
         <Route path = "/" element = {<Home />} />
         <Route path = "/courses/:id" element = {<SingleCourse />} />
         <Route path = "/category/:category" element = {<Courses />} />
-        {/* <Route path = "/user" element = {<UserHomePage/>}/>
-        <Route path="/BlogPage" element={<BlogPage/>}/> */}
+        <Route path = "/user" element = {<UserHomePage />}/>
+        <Route path = "/blogPage" element={<BlogPage />}/>
         <Route path = "/login" element = {<Login />} />
         <Route path = "/register" element = {<Register />} />
         <Route path = "/registerIns" element = {<RegisterIns />} />

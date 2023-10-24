@@ -1,15 +1,15 @@
 import { useState } from "react";
 import Blog from "./Blog";
 // import BlogData from "./BlogData";
-import { Link } from "react-router-dom";
-import BlogTabs from "./BlogTabs";
-import { useBlogsContext } from "../context/blog_context";
+//import { Link } from "react-router-dom";
+//import BlogTabs from "./BlogTabs";
+//import { useBlogsContext } from "../context/blog_context";
 import blogs from "./BlogData";
-import Pottery_blog from "../Blog/blog-types/pottery_blog";
-import Oil_blog from "./blog-types/oil_blog";
+//import Pottery_blog from "../Blog/blog-types/pottery_blog";
+//import Oil_blog from "./blog-types/oil_blog";
 import "./Blog.css";
 const BlogList = ()=> { 
-    const posts = useBlogsContext();
+    //const posts = useBlogsContext();
     const PotteryPosts = [...blogs.filter(blog=>blog.cateID==='pottery').map((blog) => (
         <Blog key={blog.postID} {...blog} />
     ))]

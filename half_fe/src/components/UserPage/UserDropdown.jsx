@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './UserDropdown.css'; // Import your CSS file for styling
 
 function UserDropdown() {
