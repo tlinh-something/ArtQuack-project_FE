@@ -7,6 +7,8 @@ import styled from "styled-components";
 import SearchBar from '../SearchBar';
 //import '../components/Test.css';
 import '../Test.css';
+import { Nav, NavDropdown } from "react-bootstrap";
+//import { useCoursesContext } from "../context/course_context";
 // import Nav from 'react-bootstrap/Nav';
 //import { Stack } from "react-bootstrap";
 
@@ -18,6 +20,9 @@ const Navbar = () => {
     // Replace this with your actual search logic
     alert(`Searching for: ${query}`);
   };
+
+  //const {categories} = useCoursesContext();
+
   return (
     <div className="container w-100">
       <div className="header">
@@ -25,23 +30,30 @@ const Navbar = () => {
           <nav className="navbar navbar-expand-sm bg-light">
 
             <a className="navbar-brand fw-8 text-uppercase" href="/">
-              <span className="navbar-brand">A</span>rtQuack
+              <span>A</span>rtQuack
             </a>
-            
+            <Nav>
+              <NavDropdown title='Category'>
+                {/* { categories.map((category, index) => {
+                    <NavDropdown key={index} type='hide'></NavDropdown>
+                    <NavDropdown.Item href={`category/${category}`} value={`${category}`} >{category}</NavDropdown.Item>
+                })} */}
+              </NavDropdown>
+            </Nav>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded='false' aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
             <SearchBar className='SearchBar' onSearch={handleSearch} />
-            <div className="collapse navbar-collapse flex" >
+            <div className="collapse navbar-collapse flex">
               <ul className="navbar-nav">
                 <li className="nav-item">
-                  <a className="nav-link">Teach on ArtQuack</a>
+                  <a className="nav-link" href='/registerIns'>Teach on ArtQuack</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link">LogIn</a>
+                  <a className="nav-link" href='/login'>LogIn</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link">SignUp</a>
+                  <a className="nav-link" href='/register'>SignUp</a>
                 </li>
               </ul>
             </div>

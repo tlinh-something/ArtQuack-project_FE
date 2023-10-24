@@ -10,6 +10,12 @@ import Register from './components/Register/Register';
 import RegisterIns from './components/Register/RegisterIns';
 import Add from './components/InstructorFunction/AddCourse';
 import MyCourse from './components/InstructorFunction/MyCourse';
+import Update from './components/InstructorFunction/UpdateCourse';
+import ViewCourse from './components/InstructorFunction/ViewCourse';
+import AddItem from './components/InstructorFunction/AddItem';
+import AddChapter from './components/InstructorFunction/AddChapter';
+import ViewItem from './components/InstructorFunction/ViewItem';
+//import Date from './common/Date';
 //import { useState } from 'react';
 //import useToken from './services/useToke';
 
@@ -34,18 +40,27 @@ function App() {
   // }
   return (
     <BrowserRouter>
+   
       <Navbar />
       <Sidebar />
+
       <Routes>
         <Route path = "/" element = {<Home />} />
         <Route path = "/courses/:id" element = {<SingleCourse />} />
         <Route path = "/category/:category" element = {<Courses />} />
-        {/* <Route path = "/cart" element = {<Cart />} /> */}
+        {/* <Route path = "/user" element = {<UserHomePage/>}/>
+        <Route path="/BlogPage" element={<BlogPage/>}/> */}
         <Route path = "/login" element = {<Login />} />
         <Route path = "/register" element = {<Register />} />
         <Route path = "/registerIns" element = {<RegisterIns />} />
-        <Route path = "/createcourse" element = {<Add />} />
-        <Route path = "/mycourse" element = {<MyCourse />} />
+        <Route path = "mycourse" element = {<MyCourse />}>
+          <Route path = "add" element = {<Add />} />
+        </Route>
+        <Route path = "/addchapter/:id" element = {<AddChapter />} />
+        <Route path = "/update/:id" element = {<Update />} />
+        <Route path = "/chapter/:id" element = {<ViewCourse />} />
+        <Route path = "/item/:id" element = {<ViewItem />} />
+        <Route path = "/additem/:id" element = {<AddItem />} />
       </Routes>
       <Footer/>
     </BrowserRouter>
