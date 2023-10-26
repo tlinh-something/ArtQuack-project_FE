@@ -1,7 +1,7 @@
 import React, {useContext, useReducer, useEffect} from "react";
 import reducer from "../reducers/blog_reducer";
-import courses from "../utils/data";
-import { GET_POSTS, GET_SINGLE_POST} from "../action";
+//import courses from "../utils/data";
+import { GET_POSTS, GET_SINGLE_POST, GET_CATEGORIES} from "../action";
 
 const initialState = {
     blogs: [],
@@ -15,16 +15,17 @@ export const BlogProvider = ({children}) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const fetchBlog = () => {
-        dispatch({type: GET_POSTS, payload: blogs})
+        dispatch({type: GET_POSTS, payload: initialState.blogs})
     }
 
     const fetchSingleBlog= (id) => {
-        const singleBlog= blogs.find(blog => blog.cateID === id);
+        const singleBlog= initialState.blogs.find(blog => blog.cateID === id);
         dispatch({type: GET_SINGLE_POST, payload: singleBlog})
     }
     const fetchCategories = () => {
-        const categories = [...new Set(blogs.map(item => item.cateID))];
-        dispatch({type: GET_BLOG_CATEGORIES, payload: categories});
+        const categories = [...new Set(initialState.blogs.map(item => item.cateID))];
+        dispatch({type: GET_CATEGORIES, payload: categories});
+        // dispatch({type: GET_BLOG_CATEGORIES, payload: categories});
     }
    
 

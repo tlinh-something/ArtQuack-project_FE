@@ -47,16 +47,13 @@ const Navbar = () => {
             <div className="collapse navbar-collapse flex">
               <ul className="navbar-nav">
                 <li className="nav-item">
-                  <a className="nav-link" href='/registerIns'>Teach on ArtQuack</a>
+                  <a className="nav-link" href='/register'>Teach on ArtQuack</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href='/login'>LogIn</a>
+                  <a className="nav-link" href='/login'>Login</a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href='/register'>SignUp</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href='/mycourse'>View Course</a>
                 </li>
               </ul>
             </div>
@@ -77,7 +74,6 @@ const Navbar = () => {
 const NavbarWrapper = styled.nav`
   width: 100%;
   height: 80px;
-  box-shadow: rgba(50, 50, 93, 0.15) 0px 16px 12px -2px, rgba(0, 0, 0, 0.2) 0px 3px 7px -3px;
 
   .navbar-brand{
     font-size: 30px;

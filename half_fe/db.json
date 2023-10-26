@@ -68,12 +68,21 @@
   "instructor": [
     {
       "id": "I1",
-      "userRoleId": "UR2",
       "name": "Emily Johnson",
       "email": "emily.johnson@example.com",
       "certificate": "Certificate of Excellence in Art",
       "rate": 5,
       "summarize": "Experienced in Art Selling",
+      "status": true
+    }
+  ],
+  "student": [
+    {
+      "id": "S1",
+      "username": "mark00",
+      "password": "Mark00",
+      "name": "Mark Johnson",
+      "email": "mark.johnson@example.com",
       "status": true
     }
   ],
@@ -251,7 +260,19 @@
       "name": "Patterned plate",
       "description": "A guide to selling art only offline",
       "id": "T8"
-    }
+    },
+  {
+        "courseId": "CRS1",
+        "name": "Patterned plate",
+        "description": "A comprehensive guide to selling art only online"
+      }
+    ,
+    {
+        "courseId": "CRS1",
+        "name": "Candy Bear",
+        "description": "mommooooo"
+      }
+    
   ],
   "item": [
     {
@@ -276,16 +297,16 @@
       "status": true
     },
     {
-        "chapterId": "T1",
-        "name": "Silver Fork",
-        "content": "hihihii",
-        "id": "ITE4"
-      },
-      {
-        "chapterId": "T1",
-        "name": "Candy Bear",
-        "content": "hihihii",
-        "id": "ITE5"
-      }
-    ]
+      "chapterId": "T1",
+      "name": "Silver Fork",
+      "content": "hihihii",
+      "id": "ITE4"
+    },
+    {
+      "chapterId": "T1",
+      "name": "Candy Bear",
+      "content": "hihihii",
+      "id": "ITE5"
+    }
+  ]
 }

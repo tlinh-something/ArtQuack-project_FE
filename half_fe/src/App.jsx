@@ -5,9 +5,8 @@ import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/Sidebar";
 import Footer from './components/footer/Footer';
 import {Home, Courses, SingleCourse} from './components/pages/index';
-import Login from './components/Login signup/LoginSignup';
 import Register from './components/Register/Register';
-import RegisterIns from './components/Register/RegisterIns';
+// import RegisterIns from './components/Register/RegisterIns';
 import Add from './components/InstructorFunction/AddCourse';
 import MyCourse from './components/InstructorFunction/MyCourse';
 import Update from './components/InstructorFunction/UpdateCourse';
@@ -15,8 +14,10 @@ import ViewCourse from './components/InstructorFunction/ViewCourse';
 import AddItem from './components/InstructorFunction/AddItem';
 import AddChapter from './components/InstructorFunction/AddChapter';
 import ViewItem from './components/InstructorFunction/ViewItem';
-import UserHomePage from './components/UserPage/UserHomePage';
 import BlogPage from './components/Blog/BlogPage';
+import UserHomePage from './components/UserPage/UserHomePage';
+import LoginSignup from './components/Login signup/LoginSignup';
+import Login from './components/Login signup/Login';
 //import Date from './common/Date';
 //import { useState } from 'react';
 //import useToken from './services/useToke';
@@ -51,10 +52,11 @@ function App() {
         <Route path = "/courses/:id" element = {<SingleCourse />} />
         <Route path = "/category/:category" element = {<Courses />} />
         <Route path = "/user" element = {<UserHomePage />}/>
-        <Route path = "/blogPage" element={<BlogPage />}/>
-        <Route path = "/login" element = {<Login />} />
+        <Route path="/blog" element={<BlogPage />}/>
+        <Route path = "/login" element = {<LoginSignup />} />
+        <Route path = "/login/v2" element = {<Login />} />
         <Route path = "/register" element = {<Register />} />
-        <Route path = "/registerIns" element = {<RegisterIns />} />
+        {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
         <Route path = "mycourse" element = {<MyCourse />}>
           <Route path = "add" element = {<Add />} />
         </Route>

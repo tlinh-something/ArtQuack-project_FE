@@ -9,6 +9,7 @@ function MyCourse() {
     
     useEffect(() => {
         axios.get("http://localhost:3000/course/")
+        //axios.get("http://localhost:8080/api/courses")
         .then (response => {
             setCourse(response.data)
         })

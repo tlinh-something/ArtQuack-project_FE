@@ -7,7 +7,7 @@ import Footer from '../footer/Footer';
 //import {Home, Courses, SingleCourse, Cart} from './index';
 
 
-const UserHomePage = () => {
+function UserHomePage () {
   return (
     
       <Footer/>

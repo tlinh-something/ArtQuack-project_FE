@@ -8,7 +8,7 @@ function Footer(){
 
         <Container className='footer' fluid>
             <Row xs={2} md={4} lg={6}>
-                <Col><a href='/blogPage'>Blog</a></Col>
+                <Col><a href='/blog'>Blog</a></Col>
                 <Col><a href='#'>Help and support</a></Col>
             </Row>
 
