@@ -2,13 +2,14 @@ import axios from "axios";
 import { useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom";
 import './AddCourse.css'
+import { Form } from "react-bootstrap";
 
 
 function AddChapter() {
 
     const params = useParams()
     const courseId = params.id
-    const [input, setInput] = useState([{courseId: courseId, name: '', description: ''}])
+    const [input, setInput] = useState([{courseId: courseId, name: '', description: '', status: true}])
 
     const handleFormChange = (e, index) => {
         let data = [...input];
@@ -20,10 +21,9 @@ function AddChapter() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3000/chapter", input)
+        axios.post("http://localhost:3000/chapter", ...input)
         .then(response => {
             console.log(response.data)
-            console.log(input)
             alert("Add Chapter Successfully");
             navigate('/mycourse')
         })
@@ -32,7 +32,7 @@ function AddChapter() {
         })
     }
 
-    //add and remove fields for chapter
+    // add and remove fields for chapter
     const add = () => {
         let newfield = { courseId: courseId, name: '', description: ''}
         setInput([...input, newfield]);
@@ -47,7 +47,7 @@ function AddChapter() {
 
     return(
         
-        <div>
+        <Form.Group>
             <h2>Add Chapter</h2>
             <form onSubmit={handleSubmit}>
                 {input.map((value, index) => {
@@ -72,11 +72,12 @@ function AddChapter() {
                         </div>
                     )
                 })}
+                {/* <button>Save</button> */}
             </form>
                 <button onClick={add}>More chapter</button>
                 <button onClick={handleSubmit}>Save</button>
-                <Link to={'/mycourse'}>Back</Link>
-        </div>
+                <Link to={'/instructor/mycourse'}>Back</Link>
+        </Form.Group>
     )
 }
 

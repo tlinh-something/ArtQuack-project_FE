@@ -18,6 +18,9 @@ import BlogPage from './components/Blog/BlogPage';
 import UserHomePage from './components/UserPage/UserHomePage';
 import LoginSignup from './components/Login signup/LoginSignup';
 import Login from './components/Login signup/Login';
+import LearningPage from './components/studentFunction/learningPage';
+import EnrollCourse from './components/studentFunction/enrollCourse';
+import SidebarCourse from './components/studentFunction/test';
 //import Date from './common/Date';
 //import { useState } from 'react';
 //import useToken from './services/useToke';
@@ -57,14 +60,17 @@ function App() {
         <Route path = "/login/v2" element = {<Login />} />
         <Route path = "/register" element = {<Register />} />
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
-        <Route path = "mycourse" element = {<MyCourse />}>
+        <Route path = "/instructor/mycourse" element = {<MyCourse />}>
           <Route path = "add" element = {<Add />} />
         </Route>
-        <Route path = "/addchapter/:id" element = {<AddChapter />} />
-        <Route path = "/update/:id" element = {<Update />} />
-        <Route path = "/chapter/:id" element = {<ViewCourse />} />
-        <Route path = "/item/:id" element = {<ViewItem />} />
-        <Route path = "/additem/:id" element = {<AddItem />} />
+        <Route path = "/instructor/addchapter/:id" element = {<AddChapter />} />
+        <Route path = "/instructor/update/:id" element = {<Update />} />
+        <Route path = "/instructor/chapter/:id" element = {<ViewCourse />} />
+        <Route path = "/instructor/item/:id" element = {<ViewItem />} />
+        <Route path = "/instructor/additem/:id" element = {<AddItem />} />
+        <Route path = "/learning" element = {<LearningPage />} />
+        <Route path = "/enroll" element = {<EnrollCourse />} />
+        <Route path = "/trial" element = {<SidebarCourse />} />
       </Routes>
       <Footer/>
     </BrowserRouter>

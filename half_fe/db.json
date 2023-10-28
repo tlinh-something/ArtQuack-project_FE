@@ -73,6 +73,7 @@
       "certificate": "Certificate of Excellence in Art",
       "rate": 5,
       "summarize": "Experienced in Art Selling",
+      "role": "instructor",
       "status": true
     }
   ],
@@ -83,6 +84,7 @@
       "password": "Mark00",
       "name": "Mark Johnson",
       "email": "mark.johnson@example.com",
+      "role": "student",
       "status": true
     }
   ],
@@ -126,15 +128,14 @@
       "userName": "student1",
       "courseId": "CRS1",
       "status": true
-    }
-  ],
-  "enrollTopic": [
+    },
     {
-      "id": "ET1",
-      "topicId": "T1",
-      "enrollId": "E1",
-      "date": "2023-10-09",
-      "status": true
+      "enroll_date": "2023-10-28",
+      "id": "f68wbps"
+    },
+    {
+      "enroll_date": "2023-10-28",
+      "id": "ZPD21xX"
     }
   ],
   "artwork": [
@@ -261,18 +262,39 @@
       "description": "A guide to selling art only offline",
       "id": "T8"
     },
-  {
-        "courseId": "CRS1",
-        "name": "Patterned plate",
-        "description": "A comprehensive guide to selling art only online"
-      }
-    ,
     {
-        "courseId": "CRS1",
-        "name": "Candy Bear",
-        "description": "mommooooo"
-      }
-    
+      "courseId": "CRS1",
+      "name": "Patterned plate",
+      "description": "A comprehensive guide to selling art only online",
+      "id": "T9"
+    },
+    {
+      "courseId": "CRS1",
+      "name": "Drawing Boat Basics",
+      "description": "Tiny, pretty and useful",
+      "status": true,
+      "id": "I6xQVuF"
+    },
+    {
+      "courseId": "CRS1",
+      "name": "Patterned paper",
+      "description": "Apply to dress",
+      "status": true,
+      "id": "VkfiKnv"
+    },
+    {
+      "courseId": "CRS1",
+      "name": "Candy Bear",
+      "description": "Design candy",
+      "status": true,
+      "id": "qMphqkN"
+    },
+    {
+      "courseId": "CRS1",
+      "name": "Homework",
+      "description": "Design everything you want",
+      "status": true
+    }
   ],
   "item": [
     {
@@ -300,13 +322,50 @@
       "chapterId": "T1",
       "name": "Silver Fork",
       "content": "hihihii",
-      "id": "ITE4"
+      "id": "ITE4",
+      "status": true
     },
     {
       "chapterId": "T1",
-      "name": "Candy Bear",
+      "name": "Animation with words",
+      "content": "https://www.youtube.com/watch?v=iP0Ni_FAeyw",
+      "id": "ITE5",
+      "status": true
+    },
+    {
+      "chapterId": "T1",
+      "name": "How we can draw",
+      "content": "https://www.youtube.com/watch?v=CgMD6VykQXQ",
+      "id": "ITE6",
+      "status": true
+    },
+    {
+      "chapterId": "T1",
+      "name": "That why we need to learning",
+      "content": "https://www.youtube.com/watch?v=xvBUgdKUz5g",
+      "id": "ITE7",
+      "status": true
+    },
+    {
+      "chapterId": "T2",
+      "name": "What we need to learning",
+      "content": "https://www.youtube.com/watch?v=TIu_KrdWO1M",
+      "id": "ITE8",
+      "status": true
+    },
+    {
+      "chapterId": "T3",
+      "name": "How we can to learning",
+      "content": "https://www.youtube.com/watch?v=xvBUgdKUz5g",
+      "id": "ITE9",
+      "status": true
+    },
+    {
+      "chapterId": "T3",
+      "name": "Silver Fork",
       "content": "hihihii",
-      "id": "ITE5"
+      "id": "ITE10",
+      "status": true
     }
   ]
 }

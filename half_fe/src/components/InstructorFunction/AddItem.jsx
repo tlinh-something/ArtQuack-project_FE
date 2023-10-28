@@ -8,7 +8,7 @@ function AddItem() {
 
     const params = useParams()
     const courseId = params.id
-    const [input, setInput] = useState([{chapterId: courseId, name: '', content: '', id: ''}])
+    const [input, setInput] = useState([{chapterId: courseId, name: '', content: ''}])
     
     const handleFormChange = (e, index) => {
         let data = [...input];
@@ -24,7 +24,7 @@ function AddItem() {
         .then(response => {
             console.log(response.data)
             console.log(input)
-            alert("Add Topic Successfully");
+            alert("Add Item Successfully");
             navigate('/mycourse')
         })
         .catch(error => {
@@ -33,18 +33,16 @@ function AddItem() {
     }
 
     //add and remove fields for item
-    const add = () => {
-        let newfield = { chapterId: courseId, name: '', content: ''}
-        setInput([...input, newfield]);
-    }
+    // const add = () => {
+    //     let newfield = { chapterId: courseId, name: '', content: ''}
+    //     setInput([...input, newfield]);
+    // }
 
-    const remove = (index) => {
-        let data = [...input];
-        data.splice(index, 1)
-        setInput(data)
-    }
-
-    
+    // const remove = (index) => {
+    //     let data = [...input];
+    //     data.splice(index, 1)
+    //     setInput(data)
+    // }
 
     return(
         
@@ -67,14 +65,14 @@ function AddItem() {
                                 value={value.content}
                                 onChange={(e) => handleFormChange(e, index)} />
 
-                            <button onClick={() => remove(index)}>Remove</button>
+                            {/* <button onClick={() => remove(index)}>Remove</button> */}
                         </div>
                     )
                 })}
             </form>
-                <button onClick={add}>More item</button>
+                {/* <button onClick={add}>More item</button> */}
                 <button onClick={handleSubmit}>Save</button>
-                <Link to={'/mycourse'}>Back</Link>
+                <Link to={'/instructor/mycourse'}>Back</Link>
         </div>
     )
 }

@@ -1,19 +1,19 @@
 //import React from 'react';
 import styled from "styled-components";
-import {MdMenu} from "react-icons/md";
+// import {MdMenu} from "react-icons/md";
+// import { useSidebarContext } from '../context/sidebar_context';
 import {Link} from 'react-router-dom';
-import { useSidebarContext } from '../context/sidebar_context';
 //import { useCartContext } from './context/cart_context';
 //import SearchBar from '../SearchBar';
 //import '../components/Test.css';
 import '../Test.css';
-import Nav from 'react-bootstrap/Nav';
+// import Nav from 'react-bootstrap/Nav';
 //import { Stack } from "react-bootstrap";
 
 
 const Navbar = () => {
   //const {total_items} = useCartContext();
-  const {openSidebar} = useSidebarContext();
+  //const {openSidebar} = useSidebarContext();
 //   const handleSearch = (query) => {
 //     // Replace this with your actual search logic
 //     alert(`Searching for: ${query}`);
@@ -26,37 +26,55 @@ const Navbar = () => {
       <div className='container'>
         <div className='brand-and-toggler flex flex-between w-100'>
           <div className="p-2">
+            <ul>
             <Link to = "/" className='navbar-brand text-uppercase ls-1 fw-8'>
               <span className="topic">A</span>rtquack 
             </Link>
+
+            {localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'instructor' ? (
+                <>
+                  <li>
+                    <Link to='/instructor/mycourse'>My Course</Link>
+                  </li>
+                  <li>
+                    <Link to='/instructor/submission'>Submission</Link>
+                  </li>
+                  <li>
+                    <Link to='/instructor/account'>Account</Link>
+                  </li>
+                  <li>
+                    <Link to='/logout'>Logout</Link>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link to='/login/v2'>Login</Link>
+                </li>
+              )}
+              </ul>
           </div>
           <div className="p-2">
           {/* <SearchBar className='SearchBar' onSearch={handleSearch} /> */}
           </div>
 
-          <div id='navbar-btns flex' className="p-2 md-auto">
-            {/* <Link to = "/cart" className='cart-btn'>
+          {/* <div id='navbar-btns flex' className="p-2 md-auto">
+            <Link to = "/cart" className='cart-btn'>
               <MdShoppingCart />
               <span className='item-count-badge'>{total_items}</span>
             </Link> */}
-            <button type = "button" className='sidebar-open-btn' onClick={() => openSidebar()}>
+            {/* <button type = "button" className='sidebar-open-btn' onClick={() => openSidebar()}>
               <MdMenu />
-            </button>
-          </div>
+            </button> */}
+          {/* </div> */}
 
-          
-            {/* <div className='Login-section'>
-            <button type="button" className='Login-btn'>Login</button> 
-            <button type="button" className='Login-btn'>Sign-up</button> 
-            </div> */}
-            <div className="p-2">
+          {/* <div className="p-2">
             <Nav id="Login-section" className='lg-6'>
               <Link to="/registerIns" id="log">Teach on ArtQuack</Link>
               <Link to='/login' id='log'>Log in</Link>
               <Link to='/register' id='log'>Sign up</Link>
-          </Nav>
-            </div>
-            
+            </Nav>
+          </div> */}
+          
           
         </div>
       </div>

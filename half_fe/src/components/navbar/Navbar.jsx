@@ -8,6 +8,8 @@ import SearchBar from '../SearchBar';
 //import '../components/Test.css';
 import '../Test.css';
 import { Nav, NavDropdown } from "react-bootstrap";
+import axios from "axios";
+import { useEffect, useState } from "react";
 //import { useCoursesContext } from "../context/course_context";
 // import Nav from 'react-bootstrap/Nav';
 //import { Stack } from "react-bootstrap";
@@ -21,6 +23,17 @@ const Navbar = () => {
     alert(`Searching for: ${query}`);
   };
 
+  const [category, setCategory] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/category')
+    .then(response => {
+      setCategory(response.data)
+      console.log(response.data)
+    })
+    
+  }, [])
+
   //const {categories} = useCoursesContext();
 
   return (
@@ -33,12 +46,18 @@ const Navbar = () => {
               <span>A</span>rtQuack
             </a>
             <Nav>
-              <NavDropdown title='Category'>
+              {/* <NavDropdown > */}
+                {category.map((data, i) => {
+                  <NavDropdown key={i} title='Category'>
+                    <NavDropdown.Item>{data.name}</NavDropdown.Item>
+                  </NavDropdown>
+                  
+                })}
                 {/* { categories.map((category, index) => {
                     <NavDropdown key={index} type='hide'></NavDropdown>
                     <NavDropdown.Item href={`category/${category}`} value={`${category}`} >{category}</NavDropdown.Item>
                 })} */}
-              </NavDropdown>
+              {/* </NavDropdown> */}
             </Nav>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded='false' aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
@@ -50,10 +69,16 @@ const Navbar = () => {
                   <a className="nav-link" href='/register'>Teach on ArtQuack</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href='/login'>Login</a>
+                  <a className="nav-link" href='/login/v2'>Login</a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href='/register'>SignUp</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href='/learning'>Learn</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href='/trial'>Test</a>
                 </li>
               </ul>
             </div>

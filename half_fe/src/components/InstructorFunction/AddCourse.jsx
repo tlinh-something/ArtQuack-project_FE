@@ -31,7 +31,7 @@ function Add(){
         axios.post("http://localhost:3000/course", ...inputForm)
         .then(response => {
             console.log(response.data)
-            alert("Data Added Successfully");
+            alert("Course Added Successfully");
             navigate('/mycourse')
         })
         .catch(error => {

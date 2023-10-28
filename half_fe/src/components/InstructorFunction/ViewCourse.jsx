@@ -34,9 +34,9 @@ function ViewCourse() {
                             <tr key={i}>
                                 <td>{data.id}</td>
                                 <td>
-                                    <a href={`/item/${data.id}`}>{data.name}</a>
+                                    <a href={`/instructor/item/${data.id}`}>{data.name}</a>
                                 </td>
-                                <td><Link to={`/additem/${data.id}`}>Add item</Link></td>
+                                <td><Link to={`/instructor/additem/${data.id}`}>Add item</Link></td>
                                 <td><Link onClick={() => handleDelete(data.id)}>Delete</Link></td>
                             </tr>
                         ))}
@@ -44,7 +44,7 @@ function ViewCourse() {
                     </tbody>
                 </table>
             </form>
-            <Link to={'/mycourse'}>Back</Link>
+            <Link to={'/instructor/mycourse'}>Back</Link>
         </div>
     );
 
@@ -55,7 +55,7 @@ function ViewCourse() {
             // eslint-disable-next-line no-unused-vars
             .then(res => {
                 alert('Chapter has deleted');
-                navigate('/mycourse');
+                navigate('/instructor/mycourse');
             })
             .catch(error => console.log(error))
         }

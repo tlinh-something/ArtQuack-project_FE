@@ -5,7 +5,7 @@ import { useCoursesContext } from '../context/course_context';
 import StarRating from '../StarRating';
 import {MdInfo} from "react-icons/md";
 import {TbWorld} from "react-icons/tb";
-import {FaShoppingCart} from "react-icons/fa";
+//import {FaShoppingCart} from "react-icons/fa";
 import {RiClosedCaptioningFill} from "react-icons/ri";
 import {BiCheck} from "react-icons/bi";
 import {Link} from "react-router-dom";
@@ -69,9 +69,11 @@ const SingleCoursePage = () => {
           </div>
 
           <div className='course-btn'>
-            <Link to = "/cart" className='add-to-cart-btn d-inline-block fw-7 bg-purple' onClick={() => addToCart(courseID, image, course_name, creator, discounted_price, category)}>
+            {/* <Link to = "/cart" className='add-to-cart-btn d-inline-block fw-7 bg-purple' onClick={() => addToCart(courseID, image, course_name, creator, discounted_price, category)}>
               <FaShoppingCart /> Add to cart
-            </Link>
+            </Link> */}
+            <Link to="/enroll" className='add-to-cart-btn d-inline-block fw-7 bg-orange'
+            onClick={() => addToCart(courseID, image, course_name, creator, discounted_price, category)}>Enroll</Link>
           </div>
         </div>
       </div>

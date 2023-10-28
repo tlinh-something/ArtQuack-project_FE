@@ -77,20 +77,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form } from "react-bootstrap";
 import './Register.css';
 import HomePage from "../pages/HomePage";
-//import axios from "axios";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const USER_REGEX = /^[a-z A-Z 0-9]{4,24}$/;
+
+const EMAIL_REGEX = /^[\w-]+@[\w-]+\.[a-z]{2,3}/;
 const PWD_REGEX = /^(?=(.*[0-9]))(?=(.*[A-Z]))(?=(.*[a-z])).{8,24}$/;
-//const REGISTER_URL = 'http://localhost:8080/api/register/save';
 
 function Register () {
     const userRef = useRef();
     const errRef = useRef();
 
     const [fullname, setFullName] = useState('');
-    const [userName, setUserName] = useState('');
-    const [validUserName, setValidUserName] = useState(false);
-    const [userNameFocus, setUserNameFocus] = useState(false);
+    const [email, setEmail] = useState('');
+    const [validEmail, setValidEmail] = useState(false);
+    const [emailFocus, setEmailFocus] = useState(false);
 
     const [pwd, setPwd] = useState('');
     const [validPwd, setValidPwd] = useState(false);
@@ -100,17 +101,19 @@ function Register () {
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
 
-    const [role, setRole] = useState();
+    const [role, setRole] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         userRef.current.focus();
     }, [])
 
     useEffect(() => {
-        setValidUserName(USER_REGEX.test(userName));
-    }, [userName])
+        setValidEmail(EMAIL_REGEX.test(email));
+    }, [email])
 
     useEffect(() => {
         setValidPwd(PWD_REGEX.test(pwd));
@@ -119,52 +122,30 @@ function Register () {
 
     useEffect(() => {
         setErrMsg('');
-    }, [userName, pwd, matchPwd, role])
+    }, [email, pwd, matchPwd, role])
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // if button enabled with JS hack
-        // const v1 = USER_REGEX.test(userName);
-        // const v2 = PWD_REGEX.test(pwd);
-        // if (!v1 || !v2) {
-        //     setErrMsg("Invalid Entry");
-        //     return;
-        // }
-        // try {
-        //         axios.post(REGISTER_URL, {
-        //             fullname: fullname,
-        //             username: userName,
-        //             password: pwd,
-        //             role: role
-        //         })
-        //         .then(res => {
-        //             console.log(res.data)
-        //             alert('Registration Successfully')
-        //         })
-                console.log(fullname, userName, pwd, role)
-                alert('Registration Successfully')
-            // } catch (err) {
-            //     alert(err);
-            // }
-            
-            // console.log(response?.data);
-            // console.log(response?.accessToken);
-            // console.log(JSON.stringify(response))
-            setSuccess(true);
-            
-            // setUserName('');
-            // setPwd('');
-            // setMatchPwd('');
-        // } catch (err) {
-        //     if (!err?.response) {
-        //         setErrMsg('No Server Response');
-        //     } else if (err.response?.status === 409) {
-        //         setErrMsg('Username Taken');
-        //     } else {
-        //         setErrMsg('Registration Failed')
-        //     }
-        //     errRef.current.focus();
-        // }
+        axios.post(`http://localhost:8080/api/register/role/${role}`, {
+            name: fullname,
+            email: email,
+            password: pwd,
+            role: role,
+            status: true
+        })
+        .then((response) => {
+            const user = response.data;
+            localStorage.setItem("accessToken", JSON.stringify(user))
+            if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'student') {
+                navigate('/login/v2')
+            } else if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'instructor') {
+                navigate('/login')
+            }
+            console.log(fullname, email, pwd, role)
+            alert('Registration Successfully')
+        })
+        .catch(error => console.log(error))
+        setSuccess(true);
     }
   
     return (
@@ -176,7 +157,10 @@ function Register () {
             ) : (
                 <div id='app' className='container'>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                    <h1 className="title-signup-form">Register</h1>
+                    {/* <h1 className="title-signup-form">Register</h1> */}
+                    <div className="animation-title-regis">
+                        <span></span>
+                    </div>
                     <form onSubmit={handleSubmit} className="register-form">
                         <div id="data" className="mt-3 mb-3 w-100">
                             <label htmlFor="Your Fullname" className="lable-form ms-3">
@@ -188,37 +172,37 @@ function Register () {
                                 onChange={(e) => setFullName(e.target.value)}
                                 value={fullname}
                                 required
-                                onFocus={() => setUserNameFocus(true)}
-                                onBlur={() => setUserNameFocus(false)}
-                                style={{border:'1px solid #000', marginLeft: 'auto', marginRight: '5px', paddingLeft: '5px',height: '25px', width: '65%'}}
+                                // onFocus={() => setUserNameFocus(true)}
+                                // onBlur={() => setUserNameFocus(false)}
+                                style={{border:'1px solid #000', marginLeft: 'auto', marginRight: '5px', paddingLeft: '5px',height: '25px', width: '60%'}}
                             />
                             <FontAwesomeIcon icon={faCheck} className={fullname ? "valid" : "hide"} />
                         </div>
 
                         <div id="data" className="mt-3 mb-3 w-100">
-                            <label htmlFor="username" className="lable-form ms-3">
-                                Username:
+                            <label htmlFor="email" className="lable-form ms-3">
+                                Email:
                             </label>
                             <input
-                                type="text"
-                                id="username"
+                                type="email"
+                                id="email"
                                 ref={userRef}
                                 autoComplete="off"
-                                onChange={(e) => setUserName(e.target.value)}
-                                value={userName}
+                                onChange={(e) => setEmail(e.target.value)}
+                                value={email}
                                 required
-                                aria-invalid={validUserName ? "false" : "true"}
+                                aria-invalid={validEmail ? "false" : "true"}
                                 aria-describedby="usernote"
-                                onFocus={() => setUserNameFocus(true)}
-                                onBlur={() => setUserNameFocus(true)}
-                                style={{border:'1px solid #000', marginLeft: 'auto', paddingLeft: '5px', height: '25px', width: '65%'}}
+                                onFocus={() => setEmailFocus(true)}
+                                onBlur={() => setEmailFocus(true)}
+                                style={{border:'1px solid #000', marginLeft: 'auto', paddingLeft: '5px', height: '25px', width: '60%'}}
                             />
-                            <FontAwesomeIcon icon={faCheck} className={validUserName ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validUserName || !userName ? "hide" : "invalid"} />
+                            <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
 
-                            <p id="usernote" className={userNameFocus && userName && !validUserName ? "instructions" : "offscreen"}>
+                            <p id="usernote" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
                                 <FontAwesomeIcon icon={faInfoCircle} />
-                                4 to 24 characters.<br />
+                                Email must include @.<br />
                                 Letters, numbers, special characters allowed.
                             </p>
                         </div>
@@ -236,8 +220,8 @@ function Register () {
                                 aria-invalid={validPwd ? "false" : "true"}
                                 aria-describedby="pwdnote"
                                 onFocus={() => setPwdFocus(true)}
-                                onBlur={() => setPwdFocus(true)}
-                                style={{border:'1px solid #000', marginLeft: 'auto', paddingLeft: '5px', height: '25px', width: '65%'}}
+                                onBlur={() => setPwdFocus(false)}
+                                style={{border:'1px solid #000', marginLeft: 'auto', paddingLeft: '5px', height: '25px', width: '60%'}}
                             />
                             <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
@@ -263,7 +247,7 @@ function Register () {
                                 aria-describedby="confirmnote"
                                 onFocus={() => setMatchFocus(true)}
                                 onBlur={() => setMatchFocus(false)}
-                                style={{border:'1px solid #000', marginLeft: 'auto', paddingLeft: '5px', height: '25px', width: '65%'}}
+                                style={{border:'1px solid #000', marginLeft: 'auto', paddingLeft: '5px', height: '25px', width: '60%'}}
                             />
                             <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
@@ -277,18 +261,18 @@ function Register () {
                         <ul className="flex">
                             <li>Role:</li>
                             <li className="chooserole">
-                                <input type="radio" value="student" id='roleS' name="rolebtn" className="ms-5" defaultChecked
-                                onChange={(e) => setRole(e.target.value)}/>
-                                <lable htmlFor='roleS'>Student</lable>
+                                <input type="radio" value="leaner" id='roleL' name="rolebtn" className="ms-5"
+                                    onChange={(e) => setRole(e.target.value)}/>
+                                <lable htmlFor='roleL'>Leaner</lable>
                             </li>
                             <li className="chooserole">
                                 <input type="radio" value="instructor" id='roleI' name="rolebtn" className="ms-5"
-                                onChange={(e) => setRole(e.target.value)}/>
+                                    onChange={(e) => setRole(e.target.value)}/>
                                 <lable htmlFor='roleI'>Instructor</lable>
                             </li>
                         </ul>
                     
-                        <button type='submit' onClick={handleSubmit} className='btn-signup mb-3' disabled={!validUserName || !validPwd || !validMatch ? true : false}>Register</button>
+                        <button type='submit' onClick={handleSubmit} className='btn-signup mb-3' disabled={!validEmail || !validPwd || !validMatch || !role ? true : false}>Register</button>
                     </form>
 
                     <Form.Group className="mb-3">
@@ -301,7 +285,7 @@ function Register () {
 
                     <div className='link'>
                         <p>
-                        Already have account? <a href='/login' className="link-signup">LogIn</a>
+                        Already have account? <a href='/login/v2' className="link-signup">LogIn</a>
                         </p>
                     </div>
                     
