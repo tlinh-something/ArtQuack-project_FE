@@ -22,8 +22,8 @@ function Login() {
                 console.log(res);
                 const user = res.data;
                 localStorage.setItem("accessToken", JSON.stringify(user));
-                if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'student') {
-                    navigate("/student");
+                if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'learner') {
+                    navigate("/learner");
                 } else if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'instructor') {
                     navigate("/instructor");
                 } else if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'admin') {

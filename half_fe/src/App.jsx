@@ -1,12 +1,13 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import Sidebar from "./components/Sidebar";
-import Footer from './components/footer/Footer';
-import {Home, Courses, SingleCourse} from './components/pages/index';
-import Register from './components/Register/Register';
+import Footer from "./components/footer/Footer";
+import { Home, Courses, SingleCourse } from "./components/pages/index";
+import Register from "./components/Register/Register";
 // import RegisterIns from './components/Register/RegisterIns';
+
 import Add from './components/InstructorFunction/AddCourse';
 import MyCourse from './components/InstructorFunction/MyCourse';
 import Update from './components/InstructorFunction/UpdateCourse';
@@ -24,10 +25,10 @@ import EnrollCourse from './components/studentFunction/enrollCourse';
 // import NavbarIns from './components/navbar/NarbarIns';
 import InstructorPage from './components/InstructorFunction/InstructorPage';
 import ViewReview from './components/InstructorFunction/ViewReview';
+
 //import Date from './common/Date';
 //import { useState } from 'react';
 //import useToken from './services/useToke';
-
 
 // function setToken(userToken){
 //   sessionStorage.setItem('token', JSON.stringify(userToken));
@@ -49,20 +50,20 @@ function App() {
   // }
   return (
     <BrowserRouter>
-   
       <Navbar />
       <Sidebar />
 
       <Routes>
-        <Route path = "/" element = {<Home />} />
-        <Route path = "/courses/:id" element = {<SingleCourse />} />
-        <Route path = "/category/:category" element = {<Courses />} />
-        <Route path = "/user" element = {<UserHomePage />}/>
-        <Route path="/blog" element={<BlogPage />}/>
-        <Route path = "/login" element = {<LoginSignup />} />
-        <Route path = "/login/v2" element = {<Login />} />
-        <Route path = "/register" element = {<Register />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/courses/:id" element={<SingleCourse />} />
+        <Route path="/category/:category" element={<Courses />} />
+        <Route path="/user" element={<UserHomePage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/login" element={<LoginSignup />} />
+        <Route path="/login/v2" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
+
         <Route path = "/instructor/mycourse" element = {<MyCourse />}>
           <Route path = "add" element = {<Add />} />
         </Route>
@@ -76,7 +77,7 @@ function App() {
         <Route path = "/instructor" element = {<InstructorPage />} />
         <Route path = "/instructor/review" element = {<ViewReview />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </BrowserRouter>
   );
 }
