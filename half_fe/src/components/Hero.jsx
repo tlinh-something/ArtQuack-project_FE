@@ -5,7 +5,7 @@ import { other_images } from './utils/images';
 const Hero = () => {
     return (
         <HeroWrapper className = "bg-black">
-            <div className='container h-100 flex'>
+            <div className='container h-100 flex flex-start'>
                 <div className='hero-content'>
                     <h1>Online Art Course</h1>
                     <p>Find what you feel interseted on the ArtQuack website</p>

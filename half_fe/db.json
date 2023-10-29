@@ -150,11 +150,19 @@
   "review": [
     {
       "id": "RV1",
-      "artworkId": "AW1",
-      "userId": "ID1",
-      "instructorId": "I1",
+      "studentId": "S1",
+      "courseId": "CRS1",
       "rate": 4,
       "comment": "Great insights into art selling",
+      "date": "2023-10-10",
+      "status": true
+    },
+    {
+      "id": "RV2",
+      "studentId": "S1",
+      "courseId": "CRS1",
+      "rate": 4,
+      "comment": "Great outside into art selling",
       "date": "2023-10-10",
       "status": true
     }
@@ -293,7 +301,8 @@
       "courseId": "CRS1",
       "name": "Homework",
       "description": "Design everything you want",
-      "status": true
+      "status": true,
+      "id": "mumuuo"
     }
   ],
   "item": [
@@ -366,6 +375,14 @@
       "content": "hihihii",
       "id": "ITE10",
       "status": true
+    },
+    {
+      "chapterId": "mumuuo",
+      "name": "Peer graded",
+      "content": "Home work: Design pattern for bowl",
+      "id": "ITE12",
+      "status": true
     }
+
   ]
 }

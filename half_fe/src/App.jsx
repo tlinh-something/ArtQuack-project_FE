@@ -20,7 +20,10 @@ import LoginSignup from './components/Login signup/LoginSignup';
 import Login from './components/Login signup/Login';
 import LearningPage from './components/studentFunction/learningPage';
 import EnrollCourse from './components/studentFunction/enrollCourse';
-import SidebarCourse from './components/studentFunction/test';
+// import InstructorProtectedRoute from './common/InstructorProtectRoute';
+// import NavbarIns from './components/navbar/NarbarIns';
+import InstructorPage from './components/InstructorFunction/InstructorPage';
+import ViewReview from './components/InstructorFunction/ViewReview';
 //import Date from './common/Date';
 //import { useState } from 'react';
 //import useToken from './services/useToke';
@@ -70,7 +73,8 @@ function App() {
         <Route path = "/instructor/additem/:id" element = {<AddItem />} />
         <Route path = "/learning" element = {<LearningPage />} />
         <Route path = "/enroll" element = {<EnrollCourse />} />
-        <Route path = "/trial" element = {<SidebarCourse />} />
+        <Route path = "/instructor" element = {<InstructorPage />} />
+        <Route path = "/instructor/review" element = {<ViewReview />} />
       </Routes>
       <Footer/>
     </BrowserRouter>

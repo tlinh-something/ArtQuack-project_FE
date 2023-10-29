@@ -1,7 +1,8 @@
-
+import { signInWithEmailAndPassword } from "firebase/auth"
 import axios from "axios";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../common/firebase";
 
 function Login() {
     const [email, setEmail] = useState()
@@ -11,14 +12,18 @@ function Login() {
 
     const login = (event) => {
         event.preventDefault();
-        console.log(email, password, role)
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            console.log(userCredential)
+        })
+        
         axios.get(`http://localhost:8080/api/login/email/${email}/password/${password}/role/${role}`)
             .then(res => {
                 console.log(res);
                 const user = res.data;
                 localStorage.setItem("accessToken", JSON.stringify(user));
                 if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'student') {
-                    navigate("/");
+                    navigate("/student");
                 } else if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'instructor') {
                     navigate("/instructor");
                 } else if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'admin') {

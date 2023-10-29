@@ -2,7 +2,6 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
-
 function ViewCourse() {
 
     const [chapter, setChapter] = useState()
@@ -21,18 +20,18 @@ function ViewCourse() {
     return (
         <div>
             <form>
-                <table>
+                <table className='table table-striped'>
                     <thead>
                         <tr>
-                            <td>ID</td>
-                            <td>Chapter Name</td>
+                            <td scope="col">ID</td>
+                            <td scope="col">Chapter Name</td>
                             <td></td>
                         </tr>
                     </thead>
                     <tbody>
                         { chapter?.map((data, i) => (
                             <tr key={i}>
-                                <td>{data.id}</td>
+                                <td scope="row">{data.id}</td>
                                 <td>
                                     <a href={`/instructor/item/${data.id}`}>{data.name}</a>
                                 </td>

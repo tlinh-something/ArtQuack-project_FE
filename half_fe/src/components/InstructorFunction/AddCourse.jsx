@@ -58,19 +58,19 @@ function Add(){
         {/* <InstructorNav /> */}
 
         <Form.Group className="topic h-100" >
-            <form onSubmit={handleSubmit}>
+            <form className='form-add-course mt-5 mx-auto' onSubmit={handleSubmit}>
                 {inputForm.map((input, index) => {
                     return (
-                        <div key={index} className="form-add-course mt-5">
+                        <div key={index} className="mt-3">
                             
-                            <Form.Label>Course Name</Form.Label>
+                            <Form.Label style={{fontSize: '15px'}}>Course Name</Form.Label>
                             <input type="text" name="name" id="add-course"
                                 style={{fontSize: '14px', marginLeft: '10px'}}
                                 value={input.name}
                                 onChange={(e) => handleFormChange(e, index)} />
 
-                            <div className="flex mt-3">
-                                <Form.Select id="level" style={{fontSize: '14px'}} name="category" onChange={(e) => handleFormChange(e, index)}>
+                            <div className="flex flex-center mt-3">
+                                <Form.Select id="level" style={{fontSize: '15px'}} name="category" onChange={(e) => handleFormChange(e, index)}>
                                     <option>Select category</option>
                                     { category.map((category, i) => {
                                         return (
@@ -80,7 +80,7 @@ function Add(){
                                 </Form.Select>
 
 
-                                <Form.Select id="level" style={{fontSize: '14px'}} name="level" onChange={(e) => handleFormChange(e, index)}>
+                                <Form.Select id="level" style={{fontSize: '15px'}} name="level" onChange={(e) => handleFormChange(e, index)}>
                                     <option>Select level</option>
                                     { level.map((level, i) => {
                                         return (
@@ -89,16 +89,17 @@ function Add(){
                                     })}
                                 </Form.Select>
                             </div>
-
-                            <input id="add-course" className="mb-3 w-100"
+                            
+                            <Form.Label style={{fontSize: '15px'}}>Description</Form.Label>
+                            <input id="add-course" className="mt-4"
+                                style={{fontSize: '15px', width: '50%', marginLeft: '10px'}}
                                 name="description"
-                                placeholder="description"
                                 value={input.description}
                                 onChange={(e) => handleFormChange(e, index)} />
                         </div>
                     )
                 })}
-                <button >Submit</button>
+                <button className='confirm-add mb-4'>Submit</button>
             </form>
                             
         </Form.Group>

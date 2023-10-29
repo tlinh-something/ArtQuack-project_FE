@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <div className="container w-100">
       <div className="header">
-        <NavbarWrapper className="flex w-100" gap={4}>
+        <NavbarWrapper className="flex flex-start w-100" gap={4}>
           <nav className="navbar navbar-expand-sm bg-light">
 
             <a className="navbar-brand fw-8 text-uppercase" href="/">

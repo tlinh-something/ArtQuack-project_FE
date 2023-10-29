@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Card, Col, Row } from 'antd';
+// import Navbar from '../navbar/NarbarIns';
 
 function MyCourse() {
 
     const [course, setCourse] = useState([]);
     const navigate = useNavigate();
-    
+    const [displayForm, setDisplayForm] = useState(false)
+
+    const handleLink = () => {
+        setDisplayForm(!displayForm)
+    }
+
     useEffect(() => {
         axios.get("http://localhost:3000/course/")
         //axios.get("http://localhost:8080/api/instructor/{instructorID}/coursesOfInstructor")
@@ -16,38 +23,50 @@ function MyCourse() {
     })
 
         return (
-            <div>
-                <nav>
-                    <Link to='add' >Add Course</Link>
-                </nav>
-                <table>
+            
+            <div className='display-form-add'>
+                {/* <Navbar /> */}
+                <Card className='w-50 add-form'>
+                    <Row>
+                        <Col span={12} style={{fontSize: '16px'}}>Create more course?</Col>
+                        <Col span={12}>
+                            <Link to='add' className='flex flex-end' 
+                            onClick={handleLink} 
+                            style={{ fontWeight:'600', fontSize: '16px',color: displayForm ? '#fc4a1a' : '#000'}}>Add Course</Link>
+                        </Col>
+                    </Row>
+                </Card>
+
+                {displayForm && <Outlet />}
+                
+                <div className="table-responsive mx-auto" style={{width: "80%"}}>
+                <table className='display-page-course table table-hover'>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Course Name</th>
-                            {/* <th>Description</th>
-                            <th>Action</th> */}
+                            <th scope="col" >ID</th>
+                            <th scope="col" >Course Name</th>
+                            <th scope="col" >Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         { course.map((data, i) => (
                             <tr key={i}>
-                                <td>{data.id}</td>
+                                <td scope="row">{data.id}</td>
                                 <td>
                                     <a href={`/instructor/chapter/${data.id}`}>{data.name}</a>
                                 </td>
                                 {/* <td>{data.description}</td> */}
                                 <td>
-                                    <Link to={`/instructor/addchapter/${data.id}`} className='btn btn-primary'>Add chapter</Link>
-                                    <Link to={`/instructor/update/${data.id}`} className='btn btn-success ms-1'>Update</Link>
+                                    <Link to={`/instructor/addchapter/${data.id}`} className='btn-confirm'>Add chapter</Link>
+                                    <Link to={`/instructor/update/${data.id}`} className='btn-confirm ms-1'>Update</Link>
                                     {/* <Link to={`/delete/${data.id}`} className='btn btn-danger ms-1'>Delete</Link> */}
-                                    <Link onClick={() => handleDelete(data.id)} className='btn btn-danger ms-1'>Delete</Link>
+                                    <Link onClick={() => handleDelete(data.id)} className='btn-confirm ms-1'>Delete</Link>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                <Outlet />
+                </div> 
             </div>
         );
 

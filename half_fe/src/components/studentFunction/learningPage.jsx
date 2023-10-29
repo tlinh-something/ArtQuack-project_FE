@@ -1,71 +1,140 @@
-import { Typography, Card, Layout, Menu, Button } from "antd";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
+import { useEffect, useState } from 'react';
+import { Typography, Card, Layout, Menu, Button, Form, Upload, message } from 'antd';
+import axios from 'axios';
+import ReactPlayer from 'react-player';
+import { useNavigate } from 'react-router-dom';
 
 const { Sider, Content } = Layout;
 
 function LearningPage() {
-  const [content, setContent] = useState([]);
-  const [selectedContent, setSelectedContent] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [chapters, setChapters] = useState([]);
+  const [items, setItems] = useState([]);
+  const [selectedChapterId, setSelectedChapterId] = useState(null);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [file, setFile] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/item")
+      .get('http://localhost:3000/chapter')
       .then((response) => {
-        setContent(response.data);
-        setSelectedContent(response.data[0])
+        setChapters(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios
+      .get('http://localhost:3000/item')
+      .then((response) => {
+        setItems(response.data);
+        setSelectedItemId(response.data[0]?.id);
+        setSelectedChapterId(response.data[0]?.chapterId);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  const handleSidebarClick = (content) => {
-    setSelectedContent(content);
+  const handleChapterClick = (chapterId) => {
+    setSelectedChapterId(chapterId);
+    setSelectedItemId(null);
   };
 
-  const handleNextButtonClick = () => {
-    const nextIndex = currentIndex + 1;
-    if (nextIndex < content.length) {
-      setSelectedContent(content[nextIndex]);
-      setCurrentIndex(nextIndex);
+  const handleItemSelect = (itemId) => {
+    setSelectedItemId(itemId);
+  };
+
+  const handleFileUpload = (file) => {
+    setFile(file);
+  };
+
+  const handleSubmit = () => {
+    if (file) {
+      // Perform file upload logic
+      message.success('File submitted successfully!');
+    } else {
+      message.error('Please select a file to submit.');
     }
   };
 
-  const VideoSidebar = ({ id, name, content }) => {
+  const VideoSidebar = () => {
     return (
-      <Menu.Item key={id} onClick={() => handleSidebarClick({ name, content })}>
-        <Typography.Text>{name}</Typography.Text>
-      </Menu.Item>
+      <Menu mode="inline" selectedKeys={[selectedItemId?.toString()]} defaultOpenKeys={[selectedChapterId?.toString()]}>
+        {chapters.map((chapter) => {
+          const chapterItems = items.filter((item) => item.chapterId === chapter.id);
+          return (
+            <Menu.SubMenu
+              key={chapter.id}
+              title={chapter.name}
+              onTitleClick={() => handleChapterClick(chapter.id)}
+              popupOffset={[0, -10]}
+              popupClassName="submenu-popup"
+            >
+              {chapterItems.map((item) => (
+                <Menu.Item key={item.id} onClick={() => handleItemSelect(item.id)}>
+                  <Typography.Text>{item.name}</Typography.Text>
+                </Menu.Item>
+              ))}
+            </Menu.SubMenu>
+          );
+        })}
+      </Menu>
     );
   };
 
+  const selectedItem = items.find((item) => item.id === selectedItemId);
+
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: '100vh' }}>
       <Sider theme="light" width={200}>
-        <Menu mode="vertical">
-          {content.map((data) => (
-            <VideoSidebar key={data.id} id={data.id} name={data.name} content={data.content} />
-          ))}
-        </Menu>
+        <VideoSidebar />
       </Sider>
       <Layout>
-        <Content style={{ padding: "16px" }}>
-          {selectedContent ? (
-            <Card style={{ marginBottom: 16, borderRadius: 8, boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)" }}>
-              <Typography.Title level={4}>{selectedContent && selectedContent.name}</Typography.Title>
-              {selectedContent && selectedContent.content && selectedContent.content.startsWith("https") ? (
-                <ReactPlayer url={selectedContent.content} controls={true} width="100%" />
+        <Content style={{ padding: 16 }}>
+          {selectedItem ? (
+            <Card
+              style={{
+                marginBottom: 16,
+                borderRadius: 8,
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <Typography.Title level={4}>{selectedItem.name}</Typography.Title>
+              {selectedItem.content && selectedItem.content.startsWith('https') ? (
+                <ReactPlayer url={selectedItem.content} controls={true} width="100%" />
               ) : (
-                <Typography.Text>{selectedContent && selectedContent.content}</Typography.Text>
+                <Typography.Text>{selectedItem.content}</Typography.Text>
+              )}
+              {selectedItem.name.toLowerCase().startsWith('peer') && (
+                <Card style={{ marginTop: 16 }}>
+                  <Form layout="vertical">
+                    <Form.Item label="Upload File">
+                      <Upload.Dragger
+                        name="file"
+                        accept=".pdf,.doc,.docx"
+                        beforeUpload={false}
+                        onChange={(info) => handleFileUpload(info.file)}
+                      >
+                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                      </Upload.Dragger>
+                    </Form.Item>
+                    <Form.Item>
+                      <Button type="primary" onClick={handleSubmit}>
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </Card>
               )}
             </Card>
           ) : (
-            <Typography.Text>Please select a sidebar item to display the content.</Typography.Text>
+            <Typography.Text>This chapter has no content yet.</Typography.Text>
           )}
-          <Button type="primary" onClick={handleNextButtonClick} disabled={currentIndex === content.length - 1}>Next</Button>
+
+          <Button type="primary" onClick={() => navigate('/')}>
+            Back to Home
+          </Button>
         </Content>
       </Layout>
     </Layout>
