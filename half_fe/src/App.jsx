@@ -23,6 +23,10 @@ import EnrollCourse from "./components/studentFunction/enrollCourse";
 import SidebarCourse from "./components/studentFunction/test";
 import InstructorProtectedRoute from "./components/InstructorProtectedRoute";
 import InstructorHomePage from "./components/pages/InstructorHomePage";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./components/context/user_context";
+import SingleBlogPage from "./components/Blog/SingleBlogPage";
+import BlogDetails from "./components/Blog/BlogDetails";
 //import Date from './common/Date';
 //import { useState } from 'react';
 //import useToken from './services/useToke';
@@ -35,8 +39,7 @@ import InstructorHomePage from "./components/pages/InstructorHomePage";
 //   const tokenString = sessionStorage.getItem('token');
 //   const userToken = JSON.parse(tokenString);
 //   return userToken?.token
-// }
-
+// }s
 function App() {
   //const token = getToken();
   // const { token, setToken } = useToken();
@@ -45,9 +48,15 @@ function App() {
   // if(!token) {
   //   return <Login setToken={setToken} />
   // }
+  const {user} = useContext(UserContext);
+  console.log(">>>user:",user);
+  useEffect(()=>{
+    if(localStorage.getItem("token")){
+      loginContext(localStorage.getItem())
+    }
+  })
   return (
     <BrowserRouter>
-      
       <Sidebar />
 
       <Routes>
@@ -56,18 +65,16 @@ function App() {
         <Route path="/category/:category" element={<Courses />} />
         <Route path="/user" element={<UserHomePage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/:postID" element={<BlogDetails/>} />
         <Route path="/login" element={<LoginSignup />} />
         <Route path="/login/v2" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
-        <Route
-          path="/instructor"
-          element={<InstructorProtectedRoute >
-                      {<InstructorHomePage/>}
-                  </InstructorProtectedRoute>}
-        />
+        <Route path = "/instructor/mycourse" element = {<MyCourse />}>
+          <Route path = "add" element = {<Add />} />
+        </Route>
         <Route path="/instructor/addchapter/:id" element={<AddChapter />} />
-        <Route path="/instructor/update/:id" element={<Update />} />
+        <Route path="/instructor/update/:courseID" element={<Update />} />
         <Route path="/instructor/chapter/:id" element={<ViewCourse />} />
         <Route path="/instructor/item/:id" element={<ViewItem />} />
         <Route path="/instructor/additem/:id" element={<AddItem />} />

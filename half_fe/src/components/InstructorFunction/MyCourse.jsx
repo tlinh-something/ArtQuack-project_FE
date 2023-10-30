@@ -8,12 +8,13 @@ function MyCourse() {
     const navigate = useNavigate();
     
     useEffect(() => {
-        axios.get("http://localhost:3000/course/")
+        axios.get("http://167.172.92.40:8080/api/courses")
         //axios.get("http://localhost:8080/api/instructor/{instructorID}/coursesOfInstructor")
         .then (response => {
             setCourse(response.data)
+            console.log(response.data);
         })
-    })
+    },[])
 
         return (
             <div>
@@ -37,11 +38,17 @@ function MyCourse() {
                                     <a href={`/instructor/chapter/${data.id}`}>{data.name}</a>
                                 </td>
                                 {/* <td>{data.description}</td> */}
+                                
                                 <td>
-                                    <Link to={`/instructor/addchapter/${data.id}`} className='btn btn-primary'>Add chapter</Link>
-                                    <Link to={`/instructor/update/${data.id}`} className='btn btn-success ms-1'>Update</Link>
+
+                                    <Link to={`/instructor/addchapter/${data.courseID}`} className='btn btn-primary'>Add chapter</Link>
+                                    <Link to={`/instructor/update/${data.courseID}`} className='btn btn-success ms-1'>Update</Link>
                                     {/* <Link to={`/delete/${data.id}`} className='btn btn-danger ms-1'>Delete</Link> */}
-                                    <Link onClick={() => handleDelete(data.id)} className='btn btn-danger ms-1'>Delete</Link>
+                                    <button onClick={async () => {
+                                        console.log(data);
+                                        const response = await axios.delete(`http://167.172.92.40:8080/api/deletecourse/${data.courseID}`)
+                                        console.log(response);
+                                    }} className='btn btn-danger ms-1'>Delete</button>
                                 </td>
                             </tr>
                         ))}
