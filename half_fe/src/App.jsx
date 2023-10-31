@@ -21,7 +21,7 @@ import LoginSignup from "./components/Login signup/LoginSignup";
 import Login from "./components/Login signup/Login";
 import LearningPage from "./components/studentFunction/learningPage";
 import EnrollCourse from "./components/studentFunction/enrollCourse";
-import SidebarCourse from "./components/studentFunction/test";
+// import SidebarCourse from "./components/studentFunction/test";
 import InstructorProtectedRoute from "./components/InstructorProtectedRoute";
 import InstructorHomePage from "./components/pages/InstructorHomePage";
 import { useContext, useEffect } from "react";
@@ -88,7 +88,7 @@ function App() {
         <Route path="/instructor/additem/:id" element={<AddItem />} />
         <Route path="/learning" element={<LearningPage />} />
         <Route path="/enroll" element={<EnrollCourse />} />
-        <Route path="/trial" element={<SidebarCourse />} />
+{/*         <Route path="/trial" element={<SidebarCourse />} /> */}
 
 
 //         <Route path = "/instructor/mycourse" element = {<MyCourse />}>
