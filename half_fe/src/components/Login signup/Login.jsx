@@ -1,27 +1,33 @@
-// import { signInWithEmailAndPassword } from "firebase/auth";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { UserContext } from "../context/user_context";
+import axios from "axios";
+import { auth } from "../../common/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [role, setRole] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
-  //   const { loginContext } = useContext(UserContext);
-  const login = (event) => {
+
+  const handleLogin = (event) => {
     event.preventDefault();
+
     console.log(email, password, role);
-    axios
-      .get(
+
+    Promise.all([
+      axios.get(
         `http://167.172.92.40:8080/api/login/email/${email}/password/${password}/role/${role}`
-      )
-      .then((res) => {
+      ),
+      signInWithEmailAndPassword(auth, email, password),
+    ])
+      .then(([res, userCredential]) => {
         console.log(res);
+        console.log(userCredential);
+
         const user = res.data;
         localStorage.setItem("accessToken", JSON.stringify(user));
-        console.log(user);
+
         if (
           localStorage.getItem("accessToken") &&
           JSON.parse(localStorage.getItem("accessToken")).role === "learner"
@@ -51,11 +57,10 @@ function Login() {
 
   return (
     <div>
-      <form className="text-center login-form" onSubmit={login}>
+      <form className="text-center login-form" onSubmit={handleLogin}>
         <div className="animation-title">
           <span></span>
         </div>
-        {/* <h2 className="title-login-form">Welcome back</h2> */}
         <div className="out-layout">
           <div>
             <label>Email</label>
@@ -76,7 +81,7 @@ function Login() {
             />
           </div>
           <div>
-            <ul className=" role-select flex mt-3">
+            <ul className="role-select flex mt-3">
               <li>Role</li>
               <li className="chooserole">
                 <input
@@ -87,7 +92,7 @@ function Login() {
                   className="ms-5"
                   onChange={(e) => setRole(e.target.value)}
                 />
-                <lable htmlFor="roleL">Leaner</lable>
+                <label htmlFor="roleL">Learner</label>
               </li>
               <li className="chooserole">
                 <input
@@ -98,23 +103,23 @@ function Login() {
                   className="ms-5"
                   onChange={(e) => setRole(e.target.value)}
                 />
-                <lable htmlFor="roleI">Instructor</lable>
+                <label htmlFor="roleI">Instructor</label>
               </li>
             </ul>
           </div>
-          <button type="submit" onClick={login} className="loginbtn">
+          <button type="submit" className="loginbtn">
             Login
           </button>
           <p className="mt-5">
-            Do not have account?{" "}
+            Do not have an account?{" "}
             <a href="/register" className="link-signup">
               SignUp
             </a>
           </p>
         </div>
       </form>
-      {/* <Link to="/" className="link-signup">Back to Home</Link> */}
     </div>
   );
 }
+
 export default Login;

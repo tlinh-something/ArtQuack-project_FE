@@ -20,13 +20,12 @@ import LoginSignup from "./components/Login signup/LoginSignup";
 import Login from "./components/Login signup/Login";
 import LearningPage from "./components/studentFunction/learningPage";
 import EnrollCourse from "./components/studentFunction/enrollCourse";
-import SidebarCourse from "./components/studentFunction/test";
-// import InstructorProtectedRoute from "./components/InstructorProtectedRoute";
-// import InstructorHomePage from "./components/pages/InstructorHomePage";
+// import SidebarCourse from "./components/studentFunction/test";
 import { useContext } from "react";
 import { UserContext } from "./components/context/user_context";
 // import SingleBlogPage from "./components/Blog/SingleBlogPage";
 import BlogDetails from "./components/Blog/BlogDetails";
+
 //import Date from './common/Date';
 //import { useState } from 'react';
 //import useToken from './services/useToke';
@@ -58,7 +57,6 @@ function App() {
   return (
     <BrowserRouter>
       <Sidebar />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/courses/:id" element={<SingleCourse />} />
@@ -70,6 +68,7 @@ function App() {
         <Route path="/login/v2" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
+
         <Route path="/instructor/mycourse" element={<MyCourse />}>
           <Route path="add" element={<Add />} />
         </Route>
@@ -80,7 +79,6 @@ function App() {
         <Route path="/instructor/additem/:id" element={<AddItem />} />
         <Route path="/learning" element={<LearningPage />} />
         <Route path="/enroll" element={<EnrollCourse />} />
-        <Route path="/trial" element={<SidebarCourse />} />
       </Routes>
       <Footer />
     </BrowserRouter>
