@@ -1,11 +1,18 @@
-import { Link, Route } from "react-router-dom";
-import React from "react"
+import { Link, Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function InstructorProtectedRoute(props) {
-    if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role == 'instructor') {
-        return <Route {...props} />
+  const navigate = useNavigate();
+
+  if (localStorage.getItem('role')) {
+    const accessToken = JSON.parse(localStorage.getItem('role'));
+    if (accessToken === 'instructor') {
+      return <Route {...props} />;
     }
-    return <Link to="/" />;
-};
+  }
+
+  navigate('/'); // Redirect to home page if user is not logged in or doesn't have the learner role
+  return null; // Or you can render a specific component for unauthorized access
+}
 
 export default InstructorProtectedRoute;

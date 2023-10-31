@@ -1,7 +1,10 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
 import axios from "axios";
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom";
+
+import { UserContext } from "../context/user_context";
+
 import { auth } from "../../common/firebase";
 
 function Login() {
@@ -9,24 +12,38 @@ function Login() {
     const [password, setPassword] = useState()
     const [role, setRole] = useState()
     const navigate = useNavigate()
-
+    const {loginContext} = useContext(UserContext);
     const login = (event) => {
         event.preventDefault();
+
+        console.log(email, password, role)
+        axios.get(`http://167.172.92.40:8080/api/login/email/${email}/password/${password}/role/${role}`)
+
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             console.log(userCredential)
         })
         
-        axios.get(`http://localhost:8080/api/login/email/${email}/password/${password}/role/${role}`)
+//         axios.get(`http://localhost:8080/api/login/email/${email}/password/${password}/role/${role}`)
+
             .then(res => {
                 console.log(res);
                 const user = res.data;
                 localStorage.setItem("accessToken", JSON.stringify(user));
+                console.log(user);
                 if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'learner') {
-                    navigate("/learner");
+                    localStorage.setItem("role",user.role);
+                    localStorage.setItem("ID",user.studentID);
+                    localStorage.setItem("name",user.name);
+                    
+                    
+                    navigate("/");
                 } else if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'instructor') {
-                    navigate("/instructor");
+                    localStorage.setItem("role",user.role);
+                    localStorage.setItem("ID",user.instructorID);
+                    navigate("/user");
                 } else if (localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'admin') {
+                    localStorage.setItem("role",user.role);
                     navigate("/admin");
                 }
             })
@@ -57,7 +74,7 @@ function Login() {
                     <ul className=" role-select flex mt-3">
                         <li>Role</li>
                         <li className="chooserole">
-                            <input type="radio" value="leaner" id='roleL' name="rolebtn" className="ms-5"
+                            <input type="radio" value="learner" id='roleL' name="rolebtn" className="ms-5"
                                 onChange={(e) => setRole(e.target.value)}/>
                             <lable htmlFor='roleL'>Leaner</lable>
                         </li>

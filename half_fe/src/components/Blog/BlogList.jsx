@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Blog from "./Blog";
+import {Link} from "react-router-dom";
 // import BlogData from "./BlogData";
 //import { Link } from "react-router-dom";
 //import BlogTabs from "./BlogTabs";
 //import { useBlogsContext } from "../context/blog_context";
-import blogs from "./BlogData";
+
 //import Pottery_blog from "../Blog/blog-types/pottery_blog";
 //import Oil_blog from "./blog-types/oil_blog";
 import "./Blog.css";
+import axios from "axios";
 const BlogList = ()=> { 
+  const [blogs,setBlogs]=useState([]);
     //const posts = useBlogsContext();
+    useEffect(()=>{
+    axios.get('http://localhost:3000/blogs').then(res => {setBlogs(res.data)})
+    .catch(err => console.log(err))
+    },[])
     const PotteryPosts = [...blogs.filter(blog=>blog.cateID==='pottery').map((blog) => (
         <Blog key={blog.postID} {...blog} />
     ))]
@@ -66,7 +73,9 @@ const BlogList = ()=> {
                 <div className="cate-title">
                 <h2>POTTERY</h2>
                 
-                <span className="show-all">See all from Pottery</span>
+                <span className="show-all">
+                  See all from Pottery
+                  </span>
                 <div className="dataComponent">
                 <DataComponent data={PotteryPosts} />
                 </div>

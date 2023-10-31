@@ -1,111 +1,116 @@
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Form } from "react-bootstrap"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom";
 
-function Update(){
+const UpdateCourse = () => {
+  const { courseID } = useParams();
+  const navigate = useNavigate();
+  const [courseEdit, setCourseEdit] = useState({
+    name: "",
+    description: "",
+    upload_date: "",
+    viewer: "",
+    rate: "",
+  });
 
-    const { id } = useParams();
-    const [data, setData] = useState([]);
-    const [category, setCategory] = useState([]);
-    const [level, setLevel] = useState([]);
-    const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     axios.get('http://localhost:3000/course/' + id)
-    //     .then(res => setData(res.data))
-    //     .catch(error => console.log(error))
-    // }, [id])
-    //const params = useParams();
-    //const courseId = params.id;
-
-    useEffect(() => {
-        const getCate = axios.get("http://localhost:3000/category");
-        const getLevel = axios.get("http://localhost:3000/level");
-        //const getTopic = axios.get("http://localhost:3000/topic/" + courseId);
-        const getCourse = axios.get('http://localhost:3000/course/' + id);
-        Promise.all([getCate, getLevel, getCourse])
-        .then(crs => {
-            return Promise.all(crs.map(response => response.data))
+  useEffect(() => {
+    // Fetch course data using the courseId
+    const updateCourse = async () => {
+      await axios
+        .get(`http://167.172.92.40:8080/api/course/${courseID}`)
+        .then((response) => {
+          setCourseEdit(response.data);
         })
-        .then(([cate, lv, data]) => {
-            setCategory(cate)
-            setLevel(lv)
-            setData(data)
-            console.log(data)
-        })
-        .catch(error => console.log(error))
-    }, [id]) 
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    updateCourse();
+  }, []);
+  const handleEdit = (e) => {
+    setCourseEdit({ ...courseEdit, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    // const handleFormChange = (e, index) => {
-    //     let data = [...inputForm];
-    //     data[index][e.target.name] = e.target.value;
-    //     setInputForm(data);
-    // }
+    try {
+      // Update course data
+      const updatedCourse = 
+      await axios.put(
+        `http://167.172.92.40:8080/api/course/${courseID}/updatecourse`,
+        courseEdit
+      );
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // axios.put('http://localhost:3000/course/' + id, data)
-        // .then(response => {
-        //     console.log(response.data);
-        //     alert("Update successfully");
-        //     navigate('/mycourse');
-        // })
-        // .catch(error => console.log(error))
-        const updateCourse = axios.put('http://localhost:3000/course/' + id, data)
-        //const updateTopic = axios.put('http://localhost:3000/topic/' + courseId, data)
-        //Promise.all([ updateCourse, updateTopic ])
-        Promise.all([ updateCourse ])
-        .then((res) => {
-            Promise.all(res.map(response => response.data))
-            alert("Update successfully");
-            navigate('/mycourse');
-        })
-        .catch((error) => console.log(error))
+      // Handle successful update
+      
+      navigate("/instructor/mycourse");
+      window.alert("Update successful!");
+    } catch (error) {
+      // Handle error
+      console.log(error);
     }
+  };
 
-    return(
-        <div className="form-add-course mt-5">
-            <h2>Update Course</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                <Form.Label>Course Name</Form.Label>
-                    <input type="text" name="name" id="add-course"
-                        style={{fontSize: '14px', marginLeft: '10px'}}
-                        value={data.name} 
-                        onChange={(e) => setData({ ...data, name: e.target.value })}/>
-                </div>
-                
-                <div className="flex mt-3">
-                    <Form.Select id="level" style={{fontSize: '14px'}} name="category" onChange={(e) => setData({...data, category: e.target.value })}>
-                        <option>Select category</option>
-                        { category.map((category, i) => {
-                            return (
-                                <option className='sidebar-link-item fw-5' key = {i}>{category.name}</option>
-                            )})
-                        }
-                    </Form.Select>
-
-
-                    <Form.Select id="level" style={{fontSize: '14px'}} name="level" onChange={(e) => ({...data, level: e.target.value })}>
-                        <option>Select level</option>
-                        { level.map((level, i) => {
-                            return (
-                                <option className='sidebar-link-item fw-5' key={i}>{level.name}</option>
-                            )
-                        })}
-                    </Form.Select>
-                </div>
-
-                <input id="add-course" className="mb-3 w-100"
-                    name="description"
-                    placeholder="des"
-                    value={data.description} 
-                    onChange={(e) => setData({ ...data, description: e.target.value })} />
-
-                <button className="mb-3">Submit</button>
-            </form>
+  return (
+    <React.Fragment>
+    <div>
+      <h2>Update Course</h2>
+      <form onSubmit={handleSubmit}>  
+        <div>
+          <label htmlFor="name">Course Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={courseEdit.name}
+            onChange={(e) => handleEdit(e)}
+          />
         </div>
-    )
-}
-export default Update
+        <div>
+          <label htmlFor="description">Course Description:</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            value={courseEdit.description}
+            onChange={(e) => handleEdit(e)}
+          />
+        </div>
+        <div>
+          <label htmlFor="upload_date">Course Upload_date:</label>
+          <input
+            type="text"
+            id="upload_date"
+            name="upload_date"
+            value={courseEdit.upload_date}
+            onChange={(e) => handleEdit(e)}
+          />
+        </div>
+        <div>
+          <label htmlFor="viewer">Course Viewer:</label>
+          <input
+            type="text"
+            id="viewer"
+            name="viewer"
+            value={courseEdit.viewer}
+            onChange={(e) => handleEdit(e)}
+          />
+        </div>
+        <div>
+          <label htmlFor="rate">Course Rate:</label>
+          <input
+            type="text"
+            id="rate"
+            name="rate"
+            value={courseEdit.rate}
+            onChange={(e) => handleEdit(e)}
+          />
+        </div>
+        <button type="submit">Update</button>
+      </form>
+    </div>
+    </React.Fragment>
+  );
+};
+
+export default UpdateCourse;
