@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
   useEffect(()=>{
     console.log(user);
   }, [user])
-
+  
   const setUserFunction = (user) =>{
 
   }

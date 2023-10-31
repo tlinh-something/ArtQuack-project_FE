@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 function InstructorProtectedRoute(props) {
   const navigate = useNavigate();
 
-  if (localStorage.getItem('accessToken')) {
-    const accessToken = JSON.parse(localStorage.getItem('accessToken'));
-    if (accessToken.role === 'instructor') {
+  if (localStorage.getItem('role')) {
+    const accessToken = JSON.parse(localStorage.getItem('role'));
+    if (accessToken === 'instructor') {
       return <Route {...props} />;
     }
   }

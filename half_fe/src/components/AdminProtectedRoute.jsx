@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 function AdminProtectedRoute(props) {
   const navigate = useNavigate();
 
-  if (localStorage.getItem('accessToken')) {
-    const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+  if (localStorage.getItem('role')) {
+    const accessToken = JSON.parse(localStorage.getItem('role'));
     if (accessToken.role === 'admin') {
       return <Route {...props} />;
     }

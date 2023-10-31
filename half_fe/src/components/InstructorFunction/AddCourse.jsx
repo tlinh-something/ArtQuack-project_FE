@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Add(){
+    const user = localStorage.getItem("role");
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -15,7 +16,7 @@ function Add(){
     const [inputForm, setInputForm] = useState([{name: '', description: '', level: '', category: '', date: formattedDate, status: true, rate: '4'}]);
     const [category, setCategory] = useState([]);
     const [level, setLevel] = useState([]);
-
+    const [instructor,setInstructor]=useState([]);
     
 
     const handleFormChange = (e, index) => {
@@ -28,7 +29,7 @@ function Add(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3000/course", ...inputForm)
+        axios.post(`http://http://167.172.92.40:8080/instructor/${inputForm.category}`, ...inputForm)
         .then(response => {
             console.log(response.data)
             alert("Course Added Successfully");
@@ -40,23 +41,25 @@ function Add(){
     }
 
     useEffect(() => {
-        const getCate = axios.get("http://localhost:3000/category");
-        const getLevel = axios.get("http://localhost:3000/level");
-        Promise.all([getCate, getLevel])
+        const getCate = axios.get("http://167.172.92.40:8080/api/categories");
+        const getLevel = axios.get("http://167.172.92.40:8080/api/levels");
+        Promise.all([getCate, getLevel,getIns])
         .then(data => {
             return Promise.all(data.map(res => res.data))
         })
-        .then(([cate, lv]) => {
+        .then(([cate, lv,ins]) => {
             setCategory(cate);
             setLevel(lv);
+            setInstructor(ins);
+            console.log(cate,lv,ins);
         })
         .catch(error => console.log(error))
-    })
+    },[])
 
     return(
         <>
         {/* <InstructorNav /> */}
-
+        
         <Form.Group className="topic h-100" >
             <form onSubmit={handleSubmit}>
                 {inputForm.map((input, index) => {
@@ -74,7 +77,9 @@ function Add(){
                                     <option>Select category</option>
                                     { category.map((category, i) => {
                                         return (
-                                            <option className='sidebar-link-item fw-5' key = {i}>{category.name}</option>
+                                            <option className='sidebar-link-item fw-5' key = {i}>
+                                                {category.cateName}
+                                                </option>
                                         )})
                                     }
                                 </Form.Select>
@@ -84,10 +89,11 @@ function Add(){
                                     <option>Select level</option>
                                     { level.map((level, i) => {
                                         return (
-                                            <option className='sidebar-link-item fw-5' key={i}>{level.name}</option>
+                                            <option className='sidebar-link-item fw-5' key={i}>{level.levelName}</option>
                                         )
                                     })}
                                 </Form.Select>
+                                
                             </div>
 
                             <input id="add-course" className="mb-3 w-100"

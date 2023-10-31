@@ -6,7 +6,8 @@ function MyCourse() {
 
     const [course, setCourse] = useState([]);
     const navigate = useNavigate();
-    
+    const store = localStorage.getItem("role");
+    console.log(store);
     useEffect(() => {
         axios.get("http://167.172.92.40:8080/api/courses")
         //axios.get("http://localhost:8080/api/instructor/{instructorID}/coursesOfInstructor")

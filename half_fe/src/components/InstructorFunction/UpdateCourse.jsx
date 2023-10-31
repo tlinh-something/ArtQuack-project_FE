@@ -1,36 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 const UpdateCourse = () => {
   const { courseID } = useParams();
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const navigate = useNavigate();
+  const [courseEdit, setCourseEdit] = useState({
+    name: "",
+    description: "",
+    upload_date: "",
+    viewer: "",
+    rate: "",
+  });
 
   useEffect(() => {
     // Fetch course data using the courseId
-    axios
-      .get(`http://167.172.92.40:8080/api/course/${courseID}`)
-      .then(response => {
-        const { name, description } = response.data;
-        setName(name);
-        setDescription(description);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, [courseID]);
-
-  const handleSubmit = async e => {
+    const updateCourse = async () => {
+      await axios
+        .get(`http://167.172.92.40:8080/api/course/${courseID}`)
+        .then((response) => {
+          setCourseEdit(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    updateCourse();
+  }, []);
+  const handleEdit = (e) => {
+    setCourseEdit({ ...courseEdit, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       // Update course data
-      const updatedCourse = { name, description };
-      await axios.put(`http://167.172.92.40:8080/api/course/${courseID}`, updatedCourse);
+      const updatedCourse = 
+      await axios.put(
+        `http://167.172.92.40:8080/api/course/${courseID}/updatecourse`,
+        courseEdit
+      );
 
       // Handle successful update
-      console.log('Course updated successfully!');
+      
+      navigate("/instructor/mycourse");
+      window.alert("Update successful!");
     } catch (error) {
       // Handle error
       console.log(error);
@@ -38,29 +52,64 @@ const UpdateCourse = () => {
   };
 
   return (
+    <React.Fragment>
     <div>
       <h2>Update Course</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>  
         <div>
           <label htmlFor="name">Course Name:</label>
           <input
             type="text"
             id="name"
-            value={name}
-            onChange={e => setName(e.target.value)}
+            name="name"
+            value={courseEdit.name}
+            onChange={(e) => handleEdit(e)}
           />
         </div>
         <div>
           <label htmlFor="description">Course Description:</label>
           <input
+            type="text"
             id="description"
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-          ></input>
+            name="description"
+            value={courseEdit.description}
+            onChange={(e) => handleEdit(e)}
+          />
+        </div>
+        <div>
+          <label htmlFor="upload_date">Course Upload_date:</label>
+          <input
+            type="text"
+            id="upload_date"
+            name="upload_date"
+            value={courseEdit.upload_date}
+            onChange={(e) => handleEdit(e)}
+          />
+        </div>
+        <div>
+          <label htmlFor="viewer">Course Viewer:</label>
+          <input
+            type="text"
+            id="viewer"
+            name="viewer"
+            value={courseEdit.viewer}
+            onChange={(e) => handleEdit(e)}
+          />
+        </div>
+        <div>
+          <label htmlFor="rate">Course Rate:</label>
+          <input
+            type="text"
+            id="rate"
+            name="rate"
+            value={courseEdit.rate}
+            onChange={(e) => handleEdit(e)}
+          />
         </div>
         <button type="submit">Update</button>
       </form>
     </div>
+    </React.Fragment>
   );
 };
 
