@@ -67,8 +67,6 @@ function AddChapter() {
                                 onChange={(e) => handleFormChange(e, index)} />
 
                             <button onClick={() => remove(index)}>Remove</button>
-
-                            
                         </div>
                     )
                 })}

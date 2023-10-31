@@ -1,15 +1,19 @@
 import axios from "axios"
+import { useParams } from "react-router-dom";
 
-function EnrollCourse({courseId, studentId}) {
+function EnrollCourse({studentId}) {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const day = String(currentDate.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
 
+    const params = useParams()
+    const {id} = params.id
+
     const handleEnroll = () => {
         const enrollData = {
-            courseId: courseId,
+            courseId: id,
             studentId: studentId,
             enroll_date: formattedDate
         }
@@ -19,8 +23,7 @@ function EnrollCourse({courseId, studentId}) {
             })
             .catch(error => console.log(error))
     }
-
-
+    
     return(
         <button onClick={handleEnroll}>Enroll</button>
     )

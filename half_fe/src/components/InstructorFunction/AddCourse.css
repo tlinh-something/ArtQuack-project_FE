@@ -9,9 +9,10 @@
 }
 
 .topic{
-    margin-left: 10px;
+    margin: 0 auto;
     min-height: 100%;
     font-size: 14px;
+    text-align: center;
 }
 
 .form-control{
@@ -19,18 +20,19 @@
     height: 30px;
 }
 
-button{
+button.confirm-add{
     border: 1px solid #d3d3d3;
-    font-size: 15px;
-    margin: 0 10px;
-    padding: 2px 4px;
+    padding: 4px 6px;
     transition: .4s ease-in-out;
+    color: #fc4a1a;
 }
 
-button:hover{
+button.confirm-add:hover{
     transition: .4s ease-in-out;
-    padding: 2px 10px;
+    padding: 4px 15px;
     border-radius: 10px;
+    background-color: #fc4a1a;
+    color: #fff;
 }
 
 .top-course{
@@ -45,14 +47,38 @@ button:hover{
     height: 30px;
 }
 
-/* *{
-    font-size: 14px;
-} */
-
 .form-add-course{
-    border: 0.1em solid #000;
+    border: 1px solid #000;
     margin-bottom: 20px;
-    padding: 2px 10px;
+    width: 80%;
+}
+
+.add-form{
+    margin: 0 auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.display-form-add{
+    margin-top: 2%;
+    font-size: 16px;
+}
+
+.display-page-course{
+    height: 50vh;
+    margin: 0 auto;
+    margin-top: 5%;
+}
+
+.btn-confirm{
+    margin-right: 5px;
+    color: #fc4a1a;
+}
+
+.btn-confirm:hover{
+    text-decoration: none;
+    background-color: #fc4a1a;
+    color: #fff;
+    padding: 4px 5px
 }
 
 

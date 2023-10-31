@@ -1,16 +1,17 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import "./InstructorPage.css"
-import Footer from '../footer/Footer';
+// import "./InstructorPage.css"
+// import Footer from '../footer/Footer';
+import NavbarIns from '../navbar/NarbarIns';
 
 
-const InstructorPage = () => {
+function InstructorPage(){
 
   return (
     <>
-      <Footer />
+      <NavbarIns/>
     </>
     
-  );
+  )
 }
 
 export default InstructorPage;

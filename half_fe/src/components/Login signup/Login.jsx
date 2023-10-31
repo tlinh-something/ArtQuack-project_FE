@@ -1,8 +1,11 @@
-
+import { signInWithEmailAndPassword } from "firebase/auth"
 import axios from "axios";
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom";
+
 import { UserContext } from "../context/user_context";
+
+import { auth } from "../../common/firebase";
 
 function Login() {
     const [email, setEmail] = useState()
@@ -12,8 +15,17 @@ function Login() {
     const {loginContext} = useContext(UserContext);
     const login = (event) => {
         event.preventDefault();
+
         console.log(email, password, role)
         axios.get(`http://167.172.92.40:8080/api/login/email/${email}/password/${password}/role/${role}`)
+
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            console.log(userCredential)
+        })
+        
+//         axios.get(`http://localhost:8080/api/login/email/${email}/password/${password}/role/${role}`)
+
             .then(res => {
                 console.log(res);
                 const user = res.data;

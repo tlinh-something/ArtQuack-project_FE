@@ -12,12 +12,6 @@ import '../Test.css';
 
 
 const Navbar = () => {
-  //const {total_items} = useCartContext();
-  //const {openSidebar} = useSidebarContext();
-//   const handleSearch = (query) => {
-//     // Replace this with your actual search logic
-//     alert(`Searching for: ${query}`);
-//   };
   return (
     <>
       
@@ -56,26 +50,7 @@ const Navbar = () => {
           <div className="p-2">
           {/* <SearchBar className='SearchBar' onSearch={handleSearch} /> */}
           </div>
-
-          {/* <div id='navbar-btns flex' className="p-2 md-auto">
-            <Link to = "/cart" className='cart-btn'>
-              <MdShoppingCart />
-              <span className='item-count-badge'>{total_items}</span>
-            </Link> */}
-            {/* <button type = "button" className='sidebar-open-btn' onClick={() => openSidebar()}>
-              <MdMenu />
-            </button> */}
-          {/* </div> */}
-
-          {/* <div className="p-2">
-            <Nav id="Login-section" className='lg-6'>
-              <Link to="/registerIns" id="log">Teach on ArtQuack</Link>
-              <Link to='/login' id='log'>Log in</Link>
-              <Link to='/register' id='log'>Sign up</Link>
-            </Nav>
-          </div> */}
-          
-          
+         
         </div>
       </div>
     </NavbarWrapper>

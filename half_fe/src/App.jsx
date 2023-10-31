@@ -7,6 +7,7 @@ import Footer from "./components/footer/Footer";
 import { Home, Courses, SingleCourse } from "./components/pages/index";
 import Register from "./components/Register/Register";
 // import RegisterIns from './components/Register/RegisterIns';
+
 import Add from "./components/InstructorFunction/AddCourse";
 import MyCourse from "./components/InstructorFunction/MyCourse";
 import Update from "./components/InstructorFunction/UpdateCourse";
@@ -27,6 +28,9 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "./components/context/user_context";
 import SingleBlogPage from "./components/Blog/SingleBlogPage";
 import BlogDetails from "./components/Blog/BlogDetails";
+
+
+
 //import Date from './common/Date';
 //import { useState } from 'react';
 //import useToken from './services/useToke';
@@ -57,6 +61,9 @@ function App() {
   })
   return (
     <BrowserRouter>
+
+//       <Navbar />
+
       <Sidebar />
 
       <Routes>
@@ -70,6 +77,7 @@ function App() {
         <Route path="/login/v2" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
+
         <Route path = "/instructor/mycourse" element = {<MyCourse />}>
           <Route path = "add" element = {<Add />} />
         </Route>
@@ -81,6 +89,21 @@ function App() {
         <Route path="/learning" element={<LearningPage />} />
         <Route path="/enroll" element={<EnrollCourse />} />
         <Route path="/trial" element={<SidebarCourse />} />
+
+
+//         <Route path = "/instructor/mycourse" element = {<MyCourse />}>
+//           <Route path = "add" element = {<Add />} />
+//         </Route>
+//         <Route path = "/instructor/addchapter/:id" element = {<AddChapter />} />
+//         <Route path = "/instructor/update/:id" element = {<Update />} />
+//         <Route path = "/instructor/chapter/:id" element = {<ViewCourse />} />
+//         <Route path = "/instructor/item/:id" element = {<ViewItem />} />
+//         <Route path = "/instructor/additem/:id" element = {<AddItem />} />
+//         <Route path = "/learning" element = {<LearningPage />} />
+//         <Route path = "/enroll" element = {<EnrollCourse />} />
+//         <Route path = "/instructor" element = {<InstructorPage />} />
+//         <Route path = "/instructor/review" element = {<ViewReview />} />
+
       </Routes>
       <Footer />
     </BrowserRouter>
