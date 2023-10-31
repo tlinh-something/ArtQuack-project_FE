@@ -8,9 +8,14 @@ import Footer from '../footer/Footer';
 
 
 function UserHomePage () {
+  const a = localStorage.getItem("ID");
+  console.log(a);
   return (
-    
-      <Footer/>
+    <div>
+      <p>aa</p>
+    </div>
+  
+      
       
    
   );

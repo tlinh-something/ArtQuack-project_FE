@@ -1,11 +1,11 @@
 //import { Component } from 'react';
-//import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import "./Blog.css";
 
 
 const Blog = (props)=> {
         //const {postID,title,cateID,userRoleID,content} = props
-        const {title,cateID,userRoleID} = props
+        const {postID,title,cateID,userRoleID} = props
         
         return (    
             <div className='post-body'>
@@ -13,7 +13,9 @@ const Blog = (props)=> {
                 {/* <div className='blog-topic'>
                     <Link to = {`/BlogPage/${topicID}`}>{topicID}</Link>
                 </div> */}
-                <div className='blog-content'>{title}</div>
+                <div className='blog-content'>
+                <Link to={`/${postID}`}>{title}</Link>
+                    </div>
                 <div className='blog-creator'>{userRoleID}</div>
 
                 
