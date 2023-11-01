@@ -10,7 +10,6 @@ import {
   message,
   Image,
 } from "antd";
-import ReactPlayer from "react-player";
 import { useNavigate, useParams } from "react-router-dom";
 import uploadImage from "../../hooks/useUploadImage";
 import api from "../../config/axios";

@@ -37,3 +37,23 @@ body {
 #dropmenu:hover .dropcontent{
     display: block;
 }
+.p-2{
+    position: relative;
+    display: flex;
+    gap: 30px;
+    width: 100%;
+}
+.p-2 ul{
+    display: flex;
+    gap: 30px;
+}
+.drop-down-inf{
+    position: absolute;
+    top: 0;
+  
+  right:0; 
+  bottom: 0;
+}
+.p-2 li{
+    margin-top: 10px;
+}

@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import './UserDropdown.css'; // Import your CSS file for styling
-
+import { Link } from 'react-router-dom';
+import './UserDropdown.css'
 function UserDropdown() {
+
+  const userName = JSON.parse(localStorage.getItem("accessToken")).name;
+  
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const openDropdown = () => {
@@ -18,13 +23,16 @@ function UserDropdown() {
       onMouseEnter={openDropdown}
       onMouseLeave={closeDropdown}
     >
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8xQLBRU3YYpXVzydiD4jR8aXnsowpU2I16HDrn4VYSw&s" alt="User" />
+      <div className='learner-name'>{userName}</div>
       {isDropdownOpen && (
         <div className="dropdown" onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
-          <ul>
-            <li>My Profile</li>
-            <li>My Learning</li>
-          </ul>
+          
+            <div>My Profile</div>
+            <div>My Learning</div>
+            <div>
+                    <Link to='/logout'>Logout</Link>
+                  </div>
+          
         </div>
       )}
     </div>
