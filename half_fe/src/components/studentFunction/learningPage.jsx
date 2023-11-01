@@ -14,6 +14,7 @@ import axios from "axios";
 import ReactPlayer from "react-player";
 import { useNavigate } from "react-router-dom";
 import uploadImage from "../hooks/useUploadImage";
+import api from "../../config/axios";
 
 const { Sider, Content } = Layout;
 
@@ -28,8 +29,8 @@ function LearningPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/chapter")
+     api
+      .get("api/chapter")
       .then((response) => {
         setChapters(response.data);
       })
@@ -37,8 +38,8 @@ function LearningPage() {
         console.log(error);
       });
 
-    axios
-      .get("http://localhost:3000/item")
+    api
+      .get("api/item")
       .then((response) => {
         setItems(response.data);
         setSelectedItemId(response.data[0]?.id);

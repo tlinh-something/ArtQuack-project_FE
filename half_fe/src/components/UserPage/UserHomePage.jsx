@@ -5,14 +5,17 @@ import "./UserHomePage.css"
 // import Sidebar from "../Sidebar";
 import Footer from '../footer/Footer';
 //import {Home, Courses, SingleCourse, Cart} from './index';
-
-
+import UserDropdown from './UserDropdown';
+import NavbarUser from './NavbarUser';
+import AllCourse from './AllCourse';
 function UserHomePage () {
   const a = localStorage.getItem("ID");
   console.log(a);
   return (
     <div>
-      <p>aa</p>
+      <NavbarUser/>
+      <h2>Explore all courses</h2>
+      <AllCourse/>
     </div>
   
       

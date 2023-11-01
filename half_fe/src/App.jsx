@@ -15,7 +15,6 @@ import AddItem from "./components/InstructorFunction/AddItem";
 import AddChapter from "./components/InstructorFunction/AddChapter";
 import ViewItem from "./components/InstructorFunction/ViewItem";
 import BlogPage from "./components/Blog/BlogPage";
-import UserHomePage from "./components/UserPage/UserHomePage";
 import LoginSignup from "./components/Login signup/LoginSignup";
 import Login from "./components/Login signup/Login";
 import LearningPage from "./components/studentFunction/learningPage";
@@ -25,6 +24,8 @@ import { useContext } from "react";
 import { UserContext } from "./components/context/user_context";
 // import SingleBlogPage from "./components/Blog/SingleBlogPage";
 import BlogDetails from "./components/Blog/BlogDetails";
+import UserHomePage from "./components/UserPage/UserHomePage";
+import UserCourse from "./components/UserPage/UserCourse";
 
 //import Date from './common/Date';
 //import { useState } from 'react';
@@ -47,8 +48,9 @@ function App() {
   // if(!token) {
   //   return <Login setToken={setToken} />
   // }
-  const { user } = useContext(UserContext);
-  console.log(">>>user:", user);
+ 
+
+  const account = JSON.parse(localStorage.getItem(`accessToken`)).role;
   // useEffect(() => {
   //   if (localStorage.getItem("token")) {
   //     loginContext(localStorage.getItem());
@@ -61,17 +63,21 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/courses/:id" element={<SingleCourse />} />
         <Route path="/category/:category" element={<Courses />} />
-        <Route path="/user" element={<UserHomePage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/:postID" element={<BlogDetails />} />
         <Route path="/login" element={<LoginSignup />} />
         <Route path="/login/v2" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
+      
+        <Route path="/user" element={<UserHomePage/>} />
+        <Route path="/user/mycourse" element={<UserCourse/>}/>s
+
 
         <Route path="/instructor/mycourse" element={<MyCourse />}>
           {/* <Route path="add" element={<Add />} /> */}
         </Route>
+        
         <Route path="/instructor/addchapter/:id" element={<AddChapter />} />
         <Route path="/instructor/update/:courseID" element={<Update />} />
         <Route path="/instructor/chapter/:id" element={<ViewCourse />} />

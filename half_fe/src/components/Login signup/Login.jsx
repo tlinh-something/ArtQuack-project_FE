@@ -19,11 +19,12 @@ function Login() {
         console.log(res);
         const user = res.data;
         localStorage.setItem("accessToken", JSON.stringify(user));
-        if (
+        if ( 
           localStorage.getItem("accessToken") &&
           JSON.parse(localStorage.getItem("accessToken")).role === "learner"
         ) {
-          navigate("/");
+          
+          navigate("/user");
         } else if (
           localStorage.getItem("accessToken") &&
           JSON.parse(localStorage.getItem("accessToken")).role === "instructor"
