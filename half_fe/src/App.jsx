@@ -7,7 +7,7 @@ import Footer from "./components/footer/Footer";
 import { Home, Courses, SingleCourse } from "./components/pages/index";
 import Register from "./components/Register/Register";
 // import RegisterIns from './components/Register/RegisterIns';
-import Add from "./components/InstructorFunction/AddCourse";
+// import Add from "./components/InstructorFunction/AddCourse";
 import MyCourse from "./components/InstructorFunction/MyCourse";
 import Update from "./components/InstructorFunction/UpdateCourse";
 import ViewCourse from "./components/InstructorFunction/ViewCourse";
@@ -70,7 +70,7 @@ function App() {
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
 
         <Route path="/instructor/mycourse" element={<MyCourse />}>
-          <Route path="add" element={<Add />} />
+          {/* <Route path="add" element={<Add />} /> */}
         </Route>
         <Route path="/instructor/addchapter/:id" element={<AddChapter />} />
         <Route path="/instructor/update/:courseID" element={<Update />} />
