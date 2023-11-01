@@ -6,6 +6,7 @@ import {
   Card,
   Col,
   Input,
+  InputNumber,
   Modal,
   Row,
   Select,
@@ -29,6 +30,7 @@ function MyCourse() {
   const [levels, setLevels] = useState([]);
   const [chapters, setChapters] = useState([]);
   const [render, setRender] = useState();
+  const [price, setPrice] = useState(0);
   const [form] = useForm();
   const navigate = useNavigate();
 
@@ -124,6 +126,7 @@ function MyCourse() {
       rate: 0,
       status: true,
       avatar: img,
+      price: price,
     };
 
     const account = JSON.parse(localStorage.getItem(`accessToken`));
@@ -334,6 +337,27 @@ function MyCourse() {
             ]}
           >
             <TextArea />
+          </Form.Item>
+
+          <Form.Item
+            name="price"
+            label="Price"
+            rules={[
+              {
+                required: true,
+                message: "Enter price!",
+              },
+            ]}
+          >
+            <InputNumber
+              formatter={(value) =>
+                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+              onChange={(value) => {
+                setPrice(value);
+              }}
+            />
           </Form.Item>
 
           <Row

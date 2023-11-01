@@ -23,6 +23,7 @@ import BlogDetails from "./components/Blog/BlogDetails";
 import AddChapterNew from "./components/InstructorFunction/AddChapterNew";
 import UserHomePage from "./components/UserPage/UserHomePage";
 import UserCourse from "./components/UserPage/UserCourse";
+import NavBarNew from "./components/navbar/NewNav";
 
 //import Date from './common/Date';
 //import { useState } from 'react';
@@ -55,6 +56,7 @@ function App() {
   return (
     <BrowserRouter>
       <Sidebar />
+      <NavBarNew />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/courses/:id" element={<SingleCourse />} />
@@ -75,7 +77,7 @@ function App() {
         <Route path="/instructor/chapter/:id" element={<AddChapterNew />} />
         <Route path="/instructor/item/:id" element={<ViewItem />} />
         <Route path="/instructor/additem/:id" element={<AddItem />} />
-        <Route path="/learning:id" element={<LearningPage />} />
+        <Route path="/learning/:id" element={<LearningPage />} />
         <Route path="/enroll" element={<EnrollCourse />} />
       </Routes>
       <Footer />

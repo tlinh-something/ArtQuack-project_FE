@@ -19,22 +19,21 @@ function Login() {
         console.log(res);
         const user = res.data;
         localStorage.setItem("accessToken", JSON.stringify(user));
-        if ( 
+        if (
           localStorage.getItem("accessToken") &&
           JSON.parse(localStorage.getItem("accessToken")).role === "learner"
         ) {
-          
-          navigate("/user");
+          window.location = "/user";
         } else if (
           localStorage.getItem("accessToken") &&
           JSON.parse(localStorage.getItem("accessToken")).role === "instructor"
         ) {
-          navigate("/instructor/mycourse");
+          window.location = "/instructor/mycourse";
         } else if (
           localStorage.getItem("accessToken") &&
           JSON.parse(localStorage.getItem("accessToken")).role === "admin"
         ) {
-          navigate("/admin");
+          window.location = "/admin";
         }
       })
       .catch((error) => console.log(error));
@@ -85,7 +84,7 @@ function Login() {
             },
           ]}
         >
-          <Input.Password className="flex flex-end"/>
+          <Input.Password className="flex flex-end" />
         </Form.Item>
 
         <Form.Item
@@ -105,12 +104,12 @@ function Login() {
           </Radio.Group>
         </Form.Item>
 
-        <Button htmlType="submit">
-          Login
-        </Button>
+        <Button htmlType="submit">Login</Button>
 
         <div className="mt-5">
-          <Link to={"/register"} style={{color: '#fc4a1a'}}>Create account</Link>
+          <Link to={"/register"} style={{ color: "#fc4a1a" }}>
+            Create account
+          </Link>
         </div>
       </Form>
     </div>

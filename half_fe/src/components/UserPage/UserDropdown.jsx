@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import './UserDropdown.css'; // Import your CSS file for styling
-import { Link } from 'react-router-dom';
-import './UserDropdown.css'
+import { useState } from "react";
+import "./UserDropdown.css"; // Import your CSS file for styling
+import { Link, useNavigate } from "react-router-dom";
+import "./UserDropdown.css";
+import { Button } from "antd";
 function UserDropdown() {
-
-  const userName = JSON.parse(localStorage.getItem("accessToken")).name;
-  
+  const userName = JSON.parse(localStorage.getItem("accessToken"))?.name;
+  const navigate = useNavigate();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -23,16 +23,25 @@ function UserDropdown() {
       onMouseEnter={openDropdown}
       onMouseLeave={closeDropdown}
     >
-      <div className='learner-name'>{userName}</div>
+      <div className="learner-name">{userName}</div>
       {isDropdownOpen && (
-        <div className="dropdown" onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
-          
-            <div>My Profile</div>
-            <div>My Learning</div>
-            <div>
-                    <Link to='/logout'>Logout</Link>
-                  </div>
-          
+        <div
+          className="dropdown"
+          onMouseEnter={openDropdown}
+          onMouseLeave={closeDropdown}
+        >
+          <div>My Profile</div>
+          <div>My Learning</div>
+          <div>
+            <Button
+              onClick={() => {
+                localStorage.clear();
+                window.location = "/";
+              }}
+            >
+              Logout
+            </Button>
+          </div>
         </div>
       )}
     </div>
