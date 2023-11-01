@@ -10,7 +10,7 @@ import Register from "./components/Register/Register";
 // import Add from "./components/InstructorFunction/AddCourse";
 import MyCourse from "./components/InstructorFunction/MyCourse";
 import Update from "./components/InstructorFunction/UpdateCourse";
-import ViewCourse from "./components/InstructorFunction/ViewCourse";
+// import ViewCourse from "./components/InstructorFunction/ViewCourse";
 import AddItem from "./components/InstructorFunction/AddItem";
 import AddChapter from "./components/InstructorFunction/AddChapter";
 import ViewItem from "./components/InstructorFunction/ViewItem";
@@ -25,6 +25,8 @@ import { useContext } from "react";
 import { UserContext } from "./components/context/user_context";
 // import SingleBlogPage from "./components/Blog/SingleBlogPage";
 import BlogDetails from "./components/Blog/BlogDetails";
+import AddChapterNew from "./components/InstructorFunction/AddChapterNew";
+import { ConfigProvider } from "antd";
 
 //import Date from './common/Date';
 //import { useState } from 'react';
@@ -55,33 +57,46 @@ function App() {
   //   }
   // });
   return (
-    <BrowserRouter>
-      <Sidebar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/courses/:id" element={<SingleCourse />} />
-        <Route path="/category/:category" element={<Courses />} />
-        <Route path="/user" element={<UserHomePage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/:postID" element={<BlogDetails />} />
-        <Route path="/login" element={<LoginSignup />} />
-        <Route path="/login/v2" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
+    <ConfigProvider
+      theme={{
+        token: {
+          // Seed Token
+          colorPrimary: "#ff9249",
+          borderRadius: 2,
 
-        <Route path="/instructor/mycourse" element={<MyCourse />}>
-          {/* <Route path="add" element={<Add />} /> */}
-        </Route>
-        <Route path="/instructor/addchapter/:id" element={<AddChapter />} />
-        <Route path="/instructor/update/:courseID" element={<Update />} />
-        <Route path="/instructor/chapter/:id" element={<ViewCourse />} />
-        <Route path="/instructor/item/:id" element={<ViewItem />} />
-        <Route path="/instructor/additem/:id" element={<AddItem />} />
-        <Route path="/learning" element={<LearningPage />} />
-        <Route path="/enroll" element={<EnrollCourse />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+          // Alias Token
+          colorBgContainer: "#fff",
+        },
+      }}
+    >
+      <BrowserRouter>
+        <Sidebar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/courses/:id" element={<SingleCourse />} />
+          <Route path="/category/:category" element={<Courses />} />
+          <Route path="/user" element={<UserHomePage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/:postID" element={<BlogDetails />} />
+          <Route path="/login" element={<LoginSignup />} />
+          <Route path="/login/v2" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
+
+          <Route path="/instructor/mycourse" element={<MyCourse />}>
+            {/* <Route path="add" element={<Add />} /> */}
+          </Route>
+          <Route path="/instructor/addchapter/:id" element={<AddChapter />} />
+          <Route path="/instructor/update/:courseID" element={<Update />} />
+          <Route path="/instructor/chapter/:id" element={<AddChapterNew />} />
+          <Route path="/instructor/item/:id" element={<ViewItem />} />
+          <Route path="/instructor/additem/:id" element={<AddItem />} />
+          <Route path="/learning/:id" element={<LearningPage />} />
+          <Route path="/enroll" element={<EnrollCourse />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </ConfigProvider>
   );
 }
 

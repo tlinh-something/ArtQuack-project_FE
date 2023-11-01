@@ -4,7 +4,7 @@ const uploadImage = async (file) => {
   var form = new FormData();
   form.append("image", file);
 
-  console.log(form);
+  console.log(file);
 
   var config = {
     method: "post",

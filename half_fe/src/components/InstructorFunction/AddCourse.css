@@ -1,84 +1,91 @@
-#add-course{
-    border: 1px solid #d3d3d3;
-    margin-right: 1%;
-    width: 28%;
-    padding-left: 5px;
-    margin-top: 1%;
-    height: 30px;
-    border-radius: 3px;
+#add-course {
+  border: 1px solid #d3d3d3;
+  margin-right: 1%;
+  width: 28%;
+  padding-left: 5px;
+  margin-top: 1%;
+  height: 30px;
+  border-radius: 3px;
 }
 
-.topic{
-    margin: 0 auto;
-    min-height: 100%;
-    font-size: 14px;
-    text-align: center;
+.topic {
+  margin: 0 auto;
+  min-height: 100%;
+  font-size: 14px;
+  text-align: center;
 }
 
-.form-control{
-    width: 86%;
-    height: 30px;
+.form-control {
+  width: 86%;
+  height: 30px;
 }
 
-button.confirm-add{
-    border: 1px solid #d3d3d3;
-    padding: 4px 6px;
-    transition: .4s ease-in-out;
-    color: #fc4a1a;
+button.confirm-add {
+  border: 1px solid #d3d3d3;
+  padding: 4px 6px;
+  transition: 0.4s ease-in-out;
+  color: #fc4a1a;
 }
 
-button.confirm-add:hover{
-    transition: .4s ease-in-out;
-    padding: 4px 15px;
-    border-radius: 10px;
-    background-color: #fc4a1a;
-    color: #fff;
+button.confirm-add:hover {
+  transition: 0.4s ease-in-out;
+  padding: 4px 15px;
+  border-radius: 10px;
+  background-color: #fc4a1a;
+  color: #fff;
 }
 
-.top-course{
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
+.top-course {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
 }
 
-#level{
-    width: 15%;
-    margin-left: 1%;
-    height: 30px;
+#level {
+  width: 15%;
+  margin-left: 1%;
+  height: 30px;
 }
 
-.form-add-course{
-    border: 1px solid #000;
-    margin-bottom: 20px;
-    width: 80%;
+.form-add-course {
+  border: 1px solid #000;
+  margin-bottom: 20px;
+  width: 80%;
 }
 
-.add-form{
-    margin: 0 auto;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+.add-form {
+  margin: 0 auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.display-form-add{
-    margin-top: 2%;
-    font-size: 16px;
+.display-form-add {
+  margin-top: 2%;
+  font-size: 16px;
 }
 
-.display-page-course{
-    height: 50vh;
-    margin: 0 auto;
-    margin-top: 5%;
+.display-page-course {
+  height: 50vh;
+  margin: 0 auto;
+  margin-top: 5%;
 }
 
-.btn-confirm{
-    margin-right: 5px;
-    color: #fc4a1a;
+.btn-confirm {
+  margin-right: 5px;
+  color: #fc4a1a;
 }
 
-.btn-confirm:hover{
-    text-decoration: none;
-    background-color: #fc4a1a;
-    color: #fff;
-    padding: 4px 5px
+.btn-confirm:hover {
+  text-decoration: none;
+  background-color: #fc4a1a;
+  color: #fff;
+  padding: 4px 5px;
 }
 
+td {
+  vertical-align: middle !important;
+  margin: 0 auto;
+}
 
+th {
+  text-align: center;
+}

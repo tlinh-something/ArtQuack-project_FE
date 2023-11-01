@@ -1,24 +1,116 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Button, Card, Col, Input, Modal, Row, Select, Upload } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Input,
+  Modal,
+  Row,
+  Select,
+  Space,
+  Table,
+  // Space,
+  // Table,
+  Upload,
+} from "antd";
 import { Form } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import api from "../../config/axios";
 import { useForm } from "antd/es/form/Form";
 import Swal from "sweetalert";
-import uploadImage from "../hooks/useUploadImage";
+import uploadImage from "../../hooks/useUploadImage";
 
 function MyCourse() {
   const [course, setCourse] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [levels, setLevels] = useState([]);
+  const [chapters, setChapters] = useState([]);
   const [render, setRender] = useState();
   const [form] = useForm();
+  const navigate = useNavigate();
 
   // eslint-disable-next-line no-unused-vars
   const [img, setImg] = useState(null);
+  const [loading, setLoading] = useState();
+
+  useEffect(() => {
+    console.log(chapters);
+  }, [chapters]);
+
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "courseID",
+      key: "courseID",
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      align: "center",
+      render: (image) => (
+        <img
+          src={
+            image ||
+            "https://www.analyticssteps.com/backend/media/thumbnail/2435072/1339082_1630931780_Use%20of%20AI%20in%20Language%20LearningArtboard%201.jpg"
+          }
+          alt=""
+          style={{
+            width: 200,
+            margin: "0 auto",
+          }}
+        />
+      ),
+    },
+    {
+      title: "Course Name",
+      dataIndex: "name",
+      key: "name",
+      render: (courseName, record) => (
+        <Link to={`/instructor/chapter/${record.courseID}`}>{courseName}</Link>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      align: "center",
+      render: (text, record) => (
+        <Space>
+          <Button
+            onClick={() => {
+              navigate(`/instructor/chapter/${record.courseID}`);
+            }}
+          >
+            Add chapter
+          </Button>
+          <Button
+            onClick={() => {
+              navigate(`/instructor/chapter/${record.courseID}`);
+            }}
+            type="primary"
+          >
+            Update
+          </Button>
+          <Button
+            type="primary"
+            danger
+            onClick={async () => {
+              console.log(record);
+              const response = await axios.delete(
+                `http://167.172.92.40:8080/api/deletecourse/${record.courseID}`
+              );
+              console.log(response);
+            }}
+          >
+            Delete
+          </Button>
+        </Space>
+      ),
+    },
+  ];
 
   const onFinish = async (values) => {
     console.log(values);
@@ -31,6 +123,7 @@ function MyCourse() {
       viewer: 0,
       rate: 0,
       status: true,
+      avatar: img,
     };
 
     const account = JSON.parse(localStorage.getItem(`accessToken`));
@@ -74,9 +167,21 @@ function MyCourse() {
     api
       .get(`/api/instructor/${account.instructorID}/coursesOfInstructor`)
       .then((response) => {
-        setCourse(response.data);
+        setCourse(
+          response.data.map((item, index) => {
+            return {
+              ...item,
+              key: index,
+            };
+          })
+        );
         console.log(response.data);
       });
+  };
+
+  const fetchChapter = async (id) => {
+    const response = await api.get(`/api/course/` + id + `/chapters`);
+    setChapters(response.data);
   };
 
   useEffect(() => {
@@ -87,15 +192,19 @@ function MyCourse() {
     fetch();
     fetchCategory();
     fetchLevel();
+    fetchChapter();
   }, []);
 
   const handleUploadCourseImg = async (file) => {
-    setImg(await uploadImage(file.originFileObj));
+    console.log(file);
+    setLoading(true);
+    const url = await uploadImage(file.originFileObj);
+    setImg(url);
+    setLoading(false);
   };
 
   return (
     <div className="display-form-add">
-      {/* <Navbar /> */}
       <Card className="w-50 add-form">
         <Row>
           <Col span={12} style={{ fontSize: "16px" }}>
@@ -114,13 +223,12 @@ function MyCourse() {
         </Row>
       </Card>
 
-      {/* {displayForm && <Outlet />} */}
-
       <div className="table-responsive mx-auto" style={{ width: "80%" }}>
-        <table className="display-page-course table table-hover">
+        {/* <table className="display-page-course table table-hover">
           <thead>
             <tr>
               <th scope="col">ID</th>
+              <th scope="col">Image</th>
               <th scope="col">Course Name</th>
               <th scope="col">Action</th>
             </tr>
@@ -129,13 +237,31 @@ function MyCourse() {
             {course.map((data, i) => (
               <tr key={i}>
                 <td scope="row">{i + 1}</td>
+                <td scope="row">
+                  {data.avatar ? (
+                    <img
+                      src={data.avatar}
+                      width="100"
+                      alt=""
+                      style={{
+                        width: 250,
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src="https://www.analyticssteps.com/backend/media/thumbnail/2435072/1339082_1630931780_Use%20of%20AI%20in%20Language%20LearningArtboard%201.jpg"
+                      alt=""
+                      style={{
+                        width: 250,
+                      }}
+                    />
+                  )}
+                </td>
                 <td>
                   <Link to={`/instructor/chapter/${data.courseID}`}>
                     {data.name}
                   </Link>
                 </td>
-                {/* <td>{data.description}</td> */}
-
                 <td>
                   <Link
                     to={`/instructor/addchapter/${data.courseID}`}
@@ -149,7 +275,6 @@ function MyCourse() {
                   >
                     Update
                   </Link>
-                  {/* <Link to={`/delete/${data.id}`} className='btn btn-danger ms-1'>Delete</Link> */}
                   <button
                     onClick={async () => {
                       console.log(data);
@@ -166,7 +291,9 @@ function MyCourse() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> */}
+
+        <Table columns={columns} dataSource={course} />
       </div>
 
       <Modal
@@ -174,6 +301,7 @@ function MyCourse() {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        confirmLoading={loading}
       >
         <Form
           form={form}

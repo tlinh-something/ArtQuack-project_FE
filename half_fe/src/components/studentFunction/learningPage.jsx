@@ -10,10 +10,10 @@ import {
   message,
   Image,
 } from "antd";
-import axios from "axios";
 import ReactPlayer from "react-player";
-import { useNavigate } from "react-router-dom";
-import uploadImage from "../hooks/useUploadImage";
+import { useNavigate, useParams } from "react-router-dom";
+import uploadImage from "../../hooks/useUploadImage";
+import api from "../../config/axios";
 
 const { Sider, Content } = Layout;
 
@@ -27,26 +27,31 @@ function LearningPage() {
   const [image, setImage] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/chapter")
-      .then((response) => {
-        setChapters(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const params = useParams();
 
-    axios
-      .get("http://localhost:3000/item")
-      .then((response) => {
-        setItems(response.data);
-        setSelectedItemId(response.data[0]?.id);
-        setSelectedChapterId(response.data[0]?.chapterId);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const fetchCourse = async () => {
+    const response = await api.get(`/api/courses/${params.id}`);
+    console.log(response);
+  };
+
+  const fetchChapters = async () => {
+    const response = await api.get(`/api/course/${params.id}/chapters`);
+    setChapters(response.data);
+    console.log(response.data);
+  };
+
+  const fetchItems = async () => {
+    const response = await api.get(`/api/items`);
+    setItems(response.data);
+    setSelectedItemId(response.data[0]?.id);
+    setSelectedChapterId(response.data[0]?.chapterID);
+    console.log(response.data);
+  };
+
+  useEffect(() => {
+    fetchChapters();
+    fetchItems();
+    fetchCourse();
   }, []);
 
   const handleChapterClick = (chapterId) => {
@@ -64,7 +69,7 @@ function LearningPage() {
   };
 
   const handleSubmit = () => {
-    if (file) {
+    if (image) {
       // Perform file upload logic
       message.success("File submitted successfully!");
     } else {
@@ -81,22 +86,22 @@ function LearningPage() {
       >
         {chapters.map((chapter) => {
           const chapterItems = items.filter(
-            (item) => item.chapterId === chapter.id
+            (item) => item.chapterID === chapter.chapterID
           );
           return (
             <Menu.SubMenu
-              key={chapter.id}
-              title={chapter.name}
-              onTitleClick={() => handleChapterClick(chapter.id)}
+              key={chapter.chapterID}
+              title={chapter.chapterName}
+              onTitleClick={() => handleChapterClick(chapter.chapterID)}
               popupOffset={[0, -10]}
               popupClassName="submenu-popup"
             >
               {chapterItems.map((item) => (
                 <Menu.Item
-                  key={item.id}
-                  onClick={() => handleItemSelect(item.id)}
+                  key={item.itemID}
+                  onClick={() => handleItemSelect(item.itemID)}
                 >
-                  <Typography.Text>{item.name}</Typography.Text>
+                  <Typography.Text>{item.itemName}</Typography.Text>
                 </Menu.Item>
               ))}
             </Menu.SubMenu>
@@ -106,7 +111,7 @@ function LearningPage() {
     );
   };
 
-  const selectedItem = items.find((item) => item.id === selectedItemId);
+  const selectedItem = items.find((item) => item.itemID === selectedItemId);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -114,27 +119,37 @@ function LearningPage() {
         <VideoSidebar />
       </Sider>
       <Layout>
-        <Content style={{ padding: 16 }}>
+        <Content>
           {selectedItem ? (
             <Card
               style={{
-                marginBottom: 16,
                 borderRadius: 8,
                 boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <Typography.Title level={4}>{selectedItem.name}</Typography.Title>
+              <Typography.Title level={4} style={{ paddingBottom: 0 }}>
+                {selectedItem.itemName}
+              </Typography.Title>
               {selectedItem.content &&
               selectedItem.content.startsWith("https") ? (
-                <ReactPlayer
-                  url={selectedItem.content}
-                  controls={true}
-                  width="100%"
+                // <ReactPlayer
+                //   muted
+                //   autoplay
+                //   url={selectedItem.content}
+                //   controls={true}
+                //   width="100%"
+                // />
+                <video
+                  width={"100%"}
+                  autoPlay
+                  muted
+                  src={selectedItem.content}
+                  controls
                 />
               ) : (
                 <Typography.Text>{selectedItem.content}</Typography.Text>
               )}
-              {selectedItem.name.toLowerCase().startsWith("peer") && (
+              {selectedItem.itemName.toLowerCase().startsWith("peer") && (
                 <Card style={{ marginTop: 16 }}>
                   <Form layout="vertical">
                     <Form.Item label="Upload File">
