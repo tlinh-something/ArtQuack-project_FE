@@ -9,7 +9,7 @@ const Hero = () => {
       <div className="container h-100 flex flex-start">
         <div className="hero-content">
           <h1>Online Art Course</h1>
-          <p>Find what you feel interseted on the ArtQuack website</p>
+          <p>Find what you feel interested on the ArtQuack website</p>
           <Link to="/register" className="joinbtn">
             Start for free
           </Link>
@@ -26,18 +26,21 @@ const HeroWrapper = styled.div`
   .container {
     .hero-content {
       background-color: var(--clr-white);
-      max-width: 400px;
-      width: 100%;
+      height: 180px;
       margin-left: 0;
       padding: 20px;
+      width: 500px;
 
       h1 {
+        padding-top: 10px;
         font-size: 32px;
         margin-bottom: 5px;
         white-space: nowrap;
       }
       p {
         font-size: 15px;
+        padding-top: 10px;
+        padding-bottom: 20px;
       }
       a.joinbtn {
         background-color: #fc4a1a;

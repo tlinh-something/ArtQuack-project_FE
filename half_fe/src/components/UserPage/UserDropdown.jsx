@@ -31,7 +31,7 @@ function UserDropdown() {
           onMouseLeave={closeDropdown}
         >
           <div>My Profile</div>
-          <div>My Learning</div>
+
           <div>
             <Button
               onClick={() => {

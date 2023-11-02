@@ -19,7 +19,10 @@ const Navbar = () => {
           <div className="brand-and-toggler flex flex-between w-100">
             <div className="p-2">
               <ul>
-                <Link to="/" className="navbar-brand text-uppercase ls-1 fw-8">
+                <Link
+                  to="/instructor"
+                  className="navbar-brand text-uppercase ls-1 fw-8"
+                >
                   <span className="topic">A</span>rtquack
                 </Link>
 
@@ -33,9 +36,7 @@ const Navbar = () => {
                     <li>
                       <Link to="/instructor/submission">Submission</Link>
                     </li>
-                    <li>
-                      <Link to="/instructor/account">Account</Link>
-                    </li>
+
                     <li>
                       <UserDropdown />
                     </li>

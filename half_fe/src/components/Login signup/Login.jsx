@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Input, Radio } from "antd";
 import api from "../../config/axios";
-
+import "./LoginSignup.css";
 function Login() {
   const navigate = useNavigate();
 

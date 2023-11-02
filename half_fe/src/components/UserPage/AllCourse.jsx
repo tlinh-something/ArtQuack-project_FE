@@ -99,7 +99,6 @@ function AllCourse() {
                 : "https://www.analyticssteps.com/backend/media/thumbnail/2435072/1339082_1630931780_Use%20of%20AI%20in%20Language%20LearningArtboard%201.jpg"
             }
           />
-
           <div className="course-detail-info">
             Instuctor: <strong>{courseDetail?.instructorName}</strong>
           </div>
@@ -107,7 +106,6 @@ function AllCourse() {
             Price: <strong>{formatCurrencyUSD(courseDetail?.price)}</strong>
           </div>
           <p>{courseDetail?.description}</p>
-
           <PayPalScriptProvider options={scriptOptions}>
             <PayPalButtons
               createOrder={(data, actions) => {

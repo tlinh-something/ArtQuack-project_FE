@@ -1,19 +1,17 @@
-
 import styled from "styled-components";
 // import {MdMenu} from "react-icons/md";
 // import {Link} from 'react-router-dom';
 // import { useSidebarContext } from '../context/sidebar_context';
 //import { useCartContext } from './context/cart_context';
-import SearchBar from '../SearchBar';
+import SearchBar from "../SearchBar";
 //import '../components/Test.css';
-import '../Test.css';
+import "../Test.css";
 import { Nav, NavDropdown } from "react-bootstrap";
 import axios from "axios";
 import { useEffect, useState } from "react";
 //import { useCoursesContext } from "../context/course_context";
 // import Nav from 'react-bootstrap/Nav';
 //import { Stack } from "react-bootstrap";
-
 
 const Navbar = () => {
   //const {total_items} = useCartContext();
@@ -23,16 +21,14 @@ const Navbar = () => {
     alert(`Searching for: ${query}`);
   };
 
-  const [category, setCategory] = useState([])
+  const [category, setCategory] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/category')
-    .then(response => {
-      setCategory(response.data)
-      console.log(response.data)
-    })
-    
-  }, [])
+    axios.get("http://localhost:3000/category").then((response) => {
+      setCategory(response.data);
+      console.log(response.data);
+    });
+  }, []);
 
   //const {categories} = useCoursesContext();
 
@@ -41,76 +37,85 @@ const Navbar = () => {
       <div className="header">
         <NavbarWrapper className="flex flex-start w-100" gap={4}>
           <nav className="navbar navbar-expand-sm bg-light">
-
             <a className="navbar-brand fw-8 text-uppercase" href="/">
               <span>A</span>rtQuack
             </a>
             <Nav>
               {/* <NavDropdown > */}
-                {category.map((data, i) => {
-                  <NavDropdown key={i} title='Category'>
-                    <NavDropdown.Item>{data.name}</NavDropdown.Item>
-                  </NavDropdown>
-                  
-                })}
-                {/* { categories.map((category, index) => {
+              {category.map((data, i) => {
+                <NavDropdown key={i} title="Category">
+                  <NavDropdown.Item>{data.name}</NavDropdown.Item>
+                </NavDropdown>;
+              })}
+              {/* { categories.map((category, index) => {
                     <NavDropdown key={index} type='hide'></NavDropdown>
                     <NavDropdown.Item href={`category/${category}`} value={`${category}`} >{category}</NavDropdown.Item>
                 })} */}
               {/* </NavDropdown> */}
             </Nav>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded='false' aria-label="Toggle navigation">
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <SearchBar className='SearchBar' onSearch={handleSearch} />
+            {/* <SearchBar className="SearchBar" onSearch={handleSearch} /> */}
             <div className="collapse navbar-collapse flex">
               <ul className="navbar-nav">
                 <li className="nav-item">
-                  <a className="nav-link" href='/register'>Teach on ArtQuack</a>
+                  <a className="nav-link" href="/register">
+                    Teach on ArtQuack
+                  </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href='/login/v2'>Login</a>
+                  <a className="nav-link" href="/login/v2">
+                    Login
+                  </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href='/register'>SignUp</a>
+                  <a className="nav-link" href="/register">
+                    SignUp
+                  </a>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <a className="nav-link" href='/learning'>Learn</a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href='/trial'>Test</a>
-                </li>
+                </li> */}
               </ul>
             </div>
-{/*             
+            {/*             
             <a className="navbar-brand" href="#">
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8xQLBRU3YYpXVzydiD4jR8aXnsowpU2I16HDrn4VYSw&s"/>
             </a> */}
-            
           </nav>
-
         </NavbarWrapper>
       </div>
     </div>
-    
-  )
-}
+  );
+};
 
 const NavbarWrapper = styled.nav`
   width: 100%;
   height: 80px;
 
-  .navbar-brand{
+  .navbar-brand {
     font-size: 30px;
-    span{
+    span {
       color: var(--clr-orange);
     }
   }
-  .cart-btn{
+  .cart-btn {
     margin-right: 18px;
     font-size: 23px;
     position: relative;
-    .item-count-badge{
+    .item-count-badge {
       background-color: var(--clr-orange);
       position: absolute;
       right: -10px;
@@ -128,18 +133,18 @@ const NavbarWrapper = styled.nav`
     }
   }
 
-  .sidebar-open-btn{
+  .sidebar-open-btn {
     transition: all 300ms ease-in-out;
-    &:hover{
+    &:hover {
       opacity: 0.7;
     }
   }
-  .SearchBar{
+  .SearchBar {
     width: 20%;
     height: 100px;
   }
-  media screen and (max-width: 768px){
-    .SearchBar{
+  media screen and (max-width: 768px) {
+    .SearchBar {
       display: none;
     }
   }

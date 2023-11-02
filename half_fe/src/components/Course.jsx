@@ -27,8 +27,8 @@ const Course = (props) => {
         </div>
       </div>
       <div className='item-btns flex'>
-        <Link to = {`/courses/${id}`} className = "item-btn see-details-btn">See details</Link>
-        <Link to = "/cart" className='item-btn add-to-cart-btn' onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}>Add to cart</Link>
+        <Link to = {`/courses/${id}`} className = "item-btn see-details-btn" style={{ margin:"0 auto"}}>See details</Link>
+        {/* <Link to = "/cart" className='item-btn add-to-cart-btn' onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}>Add to cart</Link> */}
       </div>
     </CourseCard>
   )

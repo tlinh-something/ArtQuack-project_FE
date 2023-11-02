@@ -24,6 +24,7 @@ import AddChapterNew from "./components/InstructorFunction/AddChapterNew";
 import UserHomePage from "./components/UserPage/UserHomePage";
 import UserCourse from "./components/UserPage/UserCourse";
 import NavBarNew from "./components/navbar/NewNav";
+import AllCourse from "./components/UserPage/AllCourse";
 
 //import Date from './common/Date';
 //import { useState } from 'react';
@@ -68,10 +69,11 @@ function App() {
         <Route path="/register" element={<Register />} />
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
         <Route path="/user" element={<UserHomePage />} />
-        <Route path="/user/mycourse" element={<UserCourse />} />s
+        <Route path="/user/mycourse" element={<UserCourse />} />
         <Route path="/instructor/mycourse" element={<MyCourse />}>
           {/* <Route path="add" element={<Add />} /> */}
         </Route>
+        <Route path="/instructor" element={<AllCourse />} />
         <Route path="/instructor/addchapter/:id" element={<AddChapter />} />
         <Route path="/instructor/update/:courseID" element={<Update />} />
         <Route path="/instructor/chapter/:id" element={<AddChapterNew />} />

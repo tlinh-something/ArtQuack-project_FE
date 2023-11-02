@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./AddCourse.css";
 import {
   Button,
   Card,
@@ -213,6 +214,7 @@ function MyCourse() {
           <Col span={12} style={{ fontSize: "16px" }}>
             Create more course?
           </Col>
+
           <Col span={12} className="flex flex-end">
             <Button
               type="primary"
