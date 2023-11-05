@@ -6,6 +6,7 @@ import "./UserCourse.css";
 import swal from "sweetalert";
 import formatCurrencyUSD from "../../common/convertToCurrency";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import Course from "../Course";
 function AllCourse() {
   const userID = JSON.parse(localStorage.getItem("accessToken")).learnerID;
   const [isModalOpen, setIsModalOpen] = useState(null);
@@ -59,29 +60,7 @@ function AllCourse() {
     <div className="displayAllCourse">
       <div className="courses-grid">
         {courses.map((course) => (
-          <div
-            key={course.id}
-            className="course"
-            onClick={() => {
-              showModal(course.courseID);
-            }}
-          >
-            <img
-              src={
-                course.avatar
-                  ? course.avatar
-                  : "https://www.analyticssteps.com/backend/media/thumbnail/2435072/1339082_1630931780_Use%20of%20AI%20in%20Language%20LearningArtboard%201.jpg"
-              }
-              alt=""
-            />
-            <div className="course-info">
-              <h3>{course.name}</h3>
-              <h5>
-                {course.cateName} - {course.levelName}
-              </h5>
-              <p>{course.description}</p>
-            </div>
-          </div>
+          <Course course={course} key={course.courseID} />
         ))}
       </div>
       <div>

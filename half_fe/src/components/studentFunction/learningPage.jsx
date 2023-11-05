@@ -13,6 +13,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import uploadImage from "../../hooks/useUploadImage";
 import api from "../../config/axios";
+import ReactPlayer from "react-player";
 
 const { Sider, Content } = Layout;
 
@@ -67,9 +68,21 @@ function LearningPage() {
     // setFile(file);
   };
 
-  const handleSubmit = () => {
+  //submit peer graded take the link to db
+  const handleSubmit = async () => {
     if (image) {
-      // Perform file upload logic
+      const data = {
+        date: new Date().toISOString(),
+        status: true,
+        homework: image,
+      };
+
+      const account = JSON.parse(localStorage.getItem("accessToken"));
+      const respone = await api.post(
+        `/api/Item/${selectedItemId}/Learner/${account.learnerID}/complete`,
+        data
+      );
+      console.log(respone.data);
       message.success("File submitted successfully!");
     } else {
       message.error("Please select a file to submit.");
@@ -112,13 +125,46 @@ function LearningPage() {
 
   const selectedItem = items.find((item) => item.itemID === selectedItemId);
 
+  const generateContent = (content) => {
+    if (content.startsWith("https")) {
+      if (content.includes("youtube")) {
+        return (
+          <ReactPlayer
+            url={content}
+            width={"100%"}
+            height={800}
+            style={{
+              height: 1000,
+            }}
+          />
+        );
+      } else {
+        return (
+          <video
+            width={"100%"}
+            autoPlay
+            muted
+            src={selectedItem.content}
+            controls
+          />
+        );
+      }
+    } else {
+      return <Typography.Text>{content}</Typography.Text>;
+    }
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider theme="light" width={200}>
         <VideoSidebar />
       </Sider>
       <Layout>
-        <Content>
+        <Content
+          style={{
+            height: "100vh",
+          }}
+        >
           {selectedItem ? (
             <Card
               style={{
@@ -129,34 +175,14 @@ function LearningPage() {
               <Typography.Title level={4} style={{ paddingBottom: 0 }}>
                 {selectedItem.itemName}
               </Typography.Title>
-              {selectedItem.content &&
-              selectedItem.content.startsWith("https") ? (
-                // <ReactPlayer
-                //   muted
-                //   autoplay
-                //   url={selectedItem.content}
-                //   controls={true}
-                //   width="100%"
-                // />
-                <video
-                  width={"100%"}
-                  autoPlay
-                  muted
-                  src={selectedItem.content}
-                  controls
-                />
-              ) : (
-                <Typography.Text>{selectedItem.content}</Typography.Text>
-              )}
+              {selectedItem.content && generateContent(selectedItem.content)}
               {selectedItem.itemName.toLowerCase().startsWith("peer") && (
                 <Card style={{ marginTop: 16 }}>
                   <Form layout="vertical">
                     <Form.Item label="Upload File">
                       <Upload.Dragger
                         name="file"
-                        // listType="picture-card"
-                        accept=".pdf,.doc,.docx, .png"
-                        // fileList={image ? [image] : []}
+                        accept=".pdf,.png, .jpg"
                         beforeUpload={false}
                         onChange={(info) => handleFileUpload(info.file)}
                       >

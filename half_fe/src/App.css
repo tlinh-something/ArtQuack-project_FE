@@ -66,7 +66,7 @@
   scroll-behavior: smooth;
 }
 html {
-  font-size: 10px;
+  font-size: 14px !important;
   width: 100%;
 }
 body {
@@ -371,10 +371,53 @@ select {
   margin-top: 20px;
 }
 
-.course-info {
-  padding: 20px;
+.courses-grid {
 }
 
-.courses-grid{
-    
+.ant-menu .ant-menu-submenu-arrow {
+  top: 23% !important;
+}
+
+.ant-menu-inline.ant-menu-root
+  .ant-menu-submenu-title
+  > .ant-menu-title-content {
+  font-size: 15px;
+}
+
+.item-rating div {
+  transform: translateY(-5px);
+}
+
+.rating-star-val,
+.rating-count {
+  font-size: 17px !important;
+}
+
+.item-price-new {
+  font-size: 20px !important;
+}
+.course-head h5 {
+  font-size: 30px !important;
+}
+
+.course-rating {
+  font-size: 25px;
+}
+
+.course-rating div {
+  transform: translateY(-5px);
+}
+
+.course-rating div span {
+  font-size: 18px;
+}
+
+.submit-container {
+  display: flex;
+  margin-top: 20px;
+}
+
+.ant-image-preview-root .ant-image-preview-img {
+  max-width: none !important;
+  max-height: none !important;
 }

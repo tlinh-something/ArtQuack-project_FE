@@ -70,7 +70,7 @@ body {
 .courses-list-top h1,
 p {
   font-style: italic;
-  text-align: center;
+  /* text-align: center; */
 }
 .courses-list-top {
   padding-top: 50px;

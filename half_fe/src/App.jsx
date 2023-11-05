@@ -25,6 +25,8 @@ import UserHomePage from "./components/UserPage/UserHomePage";
 import UserCourse from "./components/UserPage/UserCourse";
 import NavBarNew from "./components/navbar/NewNav";
 import AllCourse from "./components/UserPage/AllCourse";
+import SubmissionPageNew from "./components/InstructorFunction/SubmissionPageNew";
+import SubmitPageDetail from "./components/InstructorFunction/SubmitPageDetail";
 
 //import Date from './common/Date';
 //import { useState } from 'react';
@@ -81,6 +83,9 @@ function App() {
         <Route path="/instructor/additem/:id" element={<AddItem />} />
         <Route path="/learning/:id" element={<LearningPage />} />
         <Route path="/enroll" element={<EnrollCourse />} />
+        <Route path="/instructor/submission" element={<SubmissionPageNew />}>
+          <Route path=":id" element={<SubmitPageDetail />} />
+        </Route>
       </Routes>
       <Footer />
     </BrowserRouter>

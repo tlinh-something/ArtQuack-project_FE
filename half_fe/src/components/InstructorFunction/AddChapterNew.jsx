@@ -1,40 +1,74 @@
+/* eslint-disable no-unused-vars */
 import { useParams } from "react-router-dom";
 import api from "../../config/axios";
 import { useEffect, useState } from "react";
-import { Button, Card, Form, Input, Modal, Switch, Table, Upload } from "antd";
+import { Button, Form, Input, Modal, Space, Switch, Table } from "antd";
 import { useForm } from "antd/es/form/Form";
 import swal from "sweetalert";
 import Dragger from "antd/es/upload/Dragger";
 import uploadVideo from "../../hooks/useUploadFileFirebase";
-import TextArea from "antd/es/input/TextArea";
+// import TextArea from "antd/es/input/TextArea";
 
 const AddChapterNew = () => {
   const params = useParams();
   const [chapters, setChapters] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectChapter, setSelectChapter] = useState([]);
+  const [currentChapterID, setCurrentChapterID] = useState(null);
+
   const [form] = useForm();
   const [render, setRender] = useState(0);
   const [course, setCourse] = useState();
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
 
   const handleOk = () => {
     form.submit();
   };
 
   const handleSubmitForm = async (values) => {
-    const response = await api.post(`/api/course/${params.id}/chapter`, values);
-    console.log(response.data);
+    if (currentChapterID === 0) {
+      const response = await api.post(
+        `/api/course/${params.id}/chapter`,
+        values
+      );
+      console.log(response.data);
+      form.resetFields();
+      swal("Good Job", "Create chapter success!", "success");
+      handleCancel();
+      setRender(render + 1);
+    } else {
+      const response = await api.put(
+        `/api/chapter/${currentChapterID}/updatechapter`,
+        {
+          ...values,
+          chapterID: currentChapterID,
+          status: true,
+        }
+      );
+      console.log(response.data);
+      form.resetFields();
+      swal("Good Job", "Update chapter success!", "success");
+      handleCancel();
+      setRender(render + 1);
+    }
+  };
+
+  const handleUpdateChapter = async (values) => {
+    const data = {
+      chapterID: selectChapter,
+      chapterName: values.chapterName,
+    };
+
+    const response = await api.put(
+      `/api/chapter/${selectChapter}/updatechapter`,
+      data
+    );
     form.resetFields();
-    swal("Good Job", "Create chapter success!", "success");
     handleCancel();
+    swal("Good Job!", "You update course success!", "success");
     setRender(render + 1);
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setCurrentChapterID(null);
   };
 
   const fetchChapter = async () => {
@@ -49,6 +83,20 @@ const AddChapterNew = () => {
     );
   };
 
+  const filterChapter = async () => {
+    const respone = await api.get(`/api/course/${params.id}/chapters`);
+    setChapters(
+      respone.data
+        .filter((item) => item.status)
+        .map((item) => {
+          return {
+            ...item,
+            key: item.chapterID,
+          };
+        })
+    );
+  };
+
   const fetchCourse = async () => {
     const response = await api.get(`/api/course/${params.id}`);
     setCourse(response.data);
@@ -59,8 +107,22 @@ const AddChapterNew = () => {
   }, [render]);
 
   useEffect(() => {
+    filterChapter();
+  }, [render]);
+
+  useEffect(() => {
     fetchCourse();
   }, []);
+
+  useEffect(() => {
+    if (currentChapterID && currentChapterID !== 0) {
+      api.get(`/api/chapter/${currentChapterID}`).then((response) => {
+        form.setFieldsValue(response.data);
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [currentChapterID]);
 
   return (
     <div style={{ padding: 30 }}>
@@ -72,7 +134,7 @@ const AddChapterNew = () => {
       <Button
         type="primary"
         onClick={() => {
-          showModal();
+          setCurrentChapterID(0);
         }}
       >
         Add Chapter
@@ -83,6 +145,38 @@ const AddChapterNew = () => {
             title: "Chapter name",
             dataIndex: "chapterName",
             key: "chapterName",
+          },
+          {
+            title: "Action",
+            key: "action",
+            align: "center",
+            render: (record) => {
+              return (
+                <Space>
+                  <Button
+                    onClick={() => {
+                      setCurrentChapterID(record.chapterID);
+                    }}
+                    type="primary"
+                  >
+                    Update
+                  </Button>
+
+                  <Button
+                    type="primary"
+                    danger
+                    onClick={() => {
+                      const response = api.delete(
+                        `/api/deletechapter/${record.chapterID}`
+                      );
+                      setRender(render + 1);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </Space>
+              );
+            },
           },
         ]}
         dataSource={chapters}
@@ -95,8 +189,8 @@ const AddChapterNew = () => {
       />
 
       <Modal
-        title="Add New Chapter"
-        open={isModalOpen}
+        title={`${currentChapterID === 0 ? "Add" : "Update"}`}
+        open={currentChapterID != null}
         onOk={handleOk}
         onCancel={handleCancel}
       >
@@ -108,12 +202,12 @@ const AddChapterNew = () => {
           onFinish={handleSubmitForm}
         >
           <Form.Item
-            label="Chapter name"
+            label="New chapter name"
             name="chapterName"
             rules={[
               {
                 required: true,
-                message: "Enter chapter name",
+                message: "Enter new chapter name",
               },
             ]}
           >
@@ -127,23 +221,19 @@ const AddChapterNew = () => {
 
 const TableItem = ({ chapterID }) => {
   const [items, setItems] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentItemID, setCurrentItemID] = useState(null);
   const [form] = useForm();
   const [file, setFile] = useState();
   const [render, setRender] = useState(0);
   const [loading, setLoading] = useState(false);
   const [contentType, setContentType] = useState("file");
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
   const handleOk = () => {
     form.submit();
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setCurrentItemID(null);
   };
 
   const handleFinish = async (values) => {
@@ -151,15 +241,27 @@ const TableItem = ({ chapterID }) => {
       ...values,
       content: contentType === "file" ? file : values.content,
     };
-
-    const response = await api.post(
-      `/api/chapter/${chapterID}/createitem`,
-      data
-    );
-    form.resetFields();
-    swal("Good Job!", "Successfully create new item", "success");
-    handleCancel();
-    setRender(render + 1);
+    if (!currentItemID) {
+      // eslint-disable-next-line no-unused-vars
+      const response = await api.post(
+        `/api/chapter/${chapterID}/createitem`,
+        data
+      );
+      form.resetFields();
+      swal("Good Job!", "Successfully create new item", "success");
+      handleCancel();
+      setRender(render + 1);
+    } else {
+      // eslint-disable-next-line no-unused-vars
+      const response = await api.put(
+        `/api/item/${currentItemID}/updateitem`,
+        data
+      );
+      form.resetFields();
+      swal("Good Job!", "Successfully update item", "success");
+      handleCancel();
+      setRender(render + 1);
+    }
   };
 
   const fetchItem = async () => {
@@ -170,6 +272,18 @@ const TableItem = ({ chapterID }) => {
   useEffect(() => {
     fetchItem();
   }, [render]);
+
+  useEffect(() => {
+    console.log(currentItemID);
+    if(currentItemID && currentItemID !== 0){
+      api.get(`/api/item/${currentItemID}`)
+      .then(response => {
+        form.setFieldsValue(response.data);
+      })
+    }else{
+      form.resetFields();
+    }
+  }, [currentItemID]);
 
   const props = {
     name: "file",
@@ -202,7 +316,7 @@ const TableItem = ({ chapterID }) => {
           marginBottom: 10,
         }}
         type="primary"
-        onClick={showModal}
+        onClick={()=> setCurrentItemID(0)}
       >
         Add Item
       </Button>
@@ -235,15 +349,26 @@ const TableItem = ({ chapterID }) => {
             align: "center",
             render: (value) => {
               return (
-                <Button
-                  type="primary"
-                  danger
-                  onClick={() => {
-                    handleDelete(value);
-                  }}
-                >
-                  Delete Item
-                </Button>
+                <Space>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setCurrentItemID(value);
+                    }}
+                  >
+                    Update Item
+                  </Button>
+
+                  <Button
+                    type="primary"
+                    danger
+                    onClick={() => {
+                      handleDelete(value);
+                    }}
+                  >
+                    Delete Item
+                  </Button>
+                </Space>
               );
             },
           },
@@ -251,8 +376,8 @@ const TableItem = ({ chapterID }) => {
         dataSource={items}
       />
       <Modal
-        title="Add new item"
-        open={isModalOpen}
+        title={`${currentItemID === 0 ? "Add" : "Update"}`}
+        open={currentItemID !== null}
         onOk={handleOk}
         onCancel={handleCancel}
         confirmLoading={loading}

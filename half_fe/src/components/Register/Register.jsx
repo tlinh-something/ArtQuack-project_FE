@@ -1,6 +1,6 @@
 import "./Register.css";
 // import HomePage from "../pages/HomePage";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Input, Radio } from "antd";
 import { useState } from "react";
 import api from "../../config/axios";
@@ -12,7 +12,7 @@ const PWD_REGEX = /^(?=(.*[0-9]))(?=(.*[A-Z]))(?=(.*[a-z])).{8,24}$/;
 function Register() {
   const [success, setSuccess] = useState(false);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleSubmit = (values) => {
     const data = {
       fullName: values.fullName,
@@ -25,7 +25,7 @@ function Register() {
       .post(`/api/register/role/${values.role}`, data)
       .then((response) => {
         alert("Registration Successfully");
-        // navigate('/login/v2')
+        navigate('/login/v2')
         // toast.success("Registration Successfully");
       })
       .catch((error) => console.log(error));
@@ -34,11 +34,7 @@ function Register() {
 
   return (
     <>
-      {success ? (
-        <section>
-          <Login />
-        </section>
-      ) : (
+      
         <div className="login-form">
         <Form
           onFinish={handleSubmit}
@@ -129,7 +125,6 @@ function Register() {
           </div>
         </Form>
         </div>
-      )}
     </>
   );
 }

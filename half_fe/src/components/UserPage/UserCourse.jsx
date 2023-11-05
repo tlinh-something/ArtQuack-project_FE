@@ -3,6 +3,7 @@ import api from "../../config/axios";
 import "./UserCourse.css";
 import { Col, Row } from "antd";
 import { useNavigate } from "react-router-dom";
+import Course from "../Course";
 function UserCourse() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
@@ -27,42 +28,18 @@ function UserCourse() {
       >
         My Course
       </h1>
-      <Row gutter={12}>
+      {/* <Row gutter={12}>
         {courses.map((course) => (
-          <Col key={course.courseID} span={6}>
-            <div
-              key={course.id}
-              className="course"
-              onClick={() => {
-                // showModal(course.courseID);
-                navigate(`/learning/${course.courseID}`);
-              }}
-            >
-              <img
-                src={
-                  course.avatar
-                    ? course.avatar
-                    : "https://www.analyticssteps.com/backend/media/thumbnail/2435072/1339082_1630931780_Use%20of%20AI%20in%20Language%20LearningArtboard%201.jpg"
-                }
-                alt=""
-                style={{
-                  height: 200,
-                  width: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                }}
-              />
-              <div className="course-info">
-                <h3>{course.courseName}</h3>
-                <h5>
-                  {course.cateName} - {course.levelName}
-                </h5>
-                <p>{course.description}</p>
-              </div>
-            </div>
+          <Col span={4} key={course.courseID}>
+            <Course course={course} key={course.courseID} />
           </Col>
         ))}
-      </Row>
+      </Row> */}
+      <div className="courses-grid">
+        {courses.map((course) => (
+          <Course course={course} key={course.courseID} type="mycourse" />
+        ))}
+      </div>
     </div>
   );
 }

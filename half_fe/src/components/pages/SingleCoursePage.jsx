@@ -1,69 +1,79 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useCoursesContext } from "../context/course_context";
 import StarRating from "../StarRating";
 import { MdInfo } from "react-icons/md";
 import { TbWorld } from "react-icons/tb";
 //import {FaShoppingCart} from "react-icons/fa";
-import { RiClosedCaptioningFill } from "react-icons/ri";
-import { BiCheck } from "react-icons/bi";
-import { Link } from "react-router-dom";
-import { useCartContext } from "../context/cart_context";
+import { CheckOutlined } from "@ant-design/icons";
+import api from "../../config/axios";
+import { Table } from "antd";
+import { MailOutlined } from "@ant-design/icons";
+import { FaShoppingCart } from "react-icons/fa";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const SingleCoursePage = () => {
   const { id } = useParams();
-  const { fetchSingleCourse, single_course } = useCoursesContext();
-  const { addToCart } = useCartContext();
+  const [course, setCourse] = useState([]);
+  const [chapter, setChapter] = useState([]);
+  const price = useRef();
+  useEffect(() => {
+    api.get(`/api/course/${id}`).then((response) => {
+      setCourse(response.data);
+      price.current = response.data.price;
+    });
+  }, [id]);
+
+  const fetchChapter = () => {
+    api.get(`/api/course/${id}/chapters`).then((response) => {
+      setChapter(response.data);
+      console.log(response.data);
+    });
+  };
 
   useEffect(() => {
-    fetchSingleCourse(id);
+    fetchChapter();
   }, []);
 
-  const {
-    id: courseID,
-    category,
-    image,
-    course_name,
-    description,
-    rating_count,
-    rating_star,
-    students,
-    creator,
-    updated_date,
-    lang,
-    actual_price,
-    discounted_price,
-    what_you_will_learn: learnItems,
-    content,
-  } = single_course;
-
+  const scriptOptions = {
+    clientId:
+      "AS_kGKyi8kMb-m3z7SZocpoPihQLS9MGjq7QaYTG3N9b64CRE6mgcFs7HzH16qwPTblmix3ivoSPf0ly",
+  };
   return (
     <SingleCourseWrapper>
       <div className="course-intro mx-auto grid">
         <div className="course-img">
-          <img src={image} alt={course_name} />
+          <img
+            src={
+              course.avatar ||
+              "https://th.bing.com/th/id/R.34852e2b6e117af5cbb1af009319e292?rik=uXyTqlmPFqtFsQ&pid=ImgRaw&r=0"
+            }
+            alt={course.name}
+          />
         </div>
         <div className="course-details">
           <div className="course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block">
-            {category}
+            {course.cateName}
           </div>
           <div className="course-head">
-            <h5>{course_name}</h5>
+            <h5>{course.name}</h5>
           </div>
           <div className="course-body">
-            <p className="course-para fs-18">{description}</p>
+            <p className="course-para fs-18">{course.description}</p>
             <div className="course-rating flex">
-              <span className="rating-star-val fw-8 fs-16">{rating_star}</span>
-              <StarRating rating_star={rating_star} />
-              <span className="rating-count fw-5 fs-14">({rating_count})</span>
-              <span className="students-count fs-14">{students}</span>
+              <span className="rating-star-val fw-8 fs-16">{4}</span>
+              <StarRating rating_star={4} />
+              <span className="rating-count fw-5 fs-14">({4})</span>
+              <span className="students-count fs-14">{10}</span>
             </div>
 
             <ul className="course-info">
               <li>
                 <span className="fs-14">
-                  Created by <span className="fw-6 opacity-08">{creator}</span>
+                  Created by{" "}
+                  <span className="fw-6 opacity-08">
+                    {course.instructorName}
+                  </span>
                 </span>
               </li>
               <li className="flex">
@@ -71,40 +81,56 @@ const SingleCoursePage = () => {
                   <MdInfo />
                 </span>
                 <span className="fs-14 course-info-txt fw-5">
-                  Last updated {updated_date}
+                  Last updated 20/11/2023
                 </span>
               </li>
               <li className="flex">
                 <span>
                   <TbWorld />
                 </span>
-                <span className="fs-14 course-info-txt fw-5">{lang}</span>
-              </li>
-              <li className="flex">
-                <span>
-                  <RiClosedCaptioningFill />
-                </span>
-                <span className="fs-14 course-info-txt fw-5">
-                  {lang} [Auto]
-                </span>
+                <span className="fs-14 course-info-txt fw-5">English</span>
               </li>
             </ul>
           </div>
 
           <div className="course-foot">
             <div className="course-price">
-              <span className="new-price fs-26 fw-8">${discounted_price}</span>
-              <span className="old-price fs-26 fw-6">${actual_price}</span>
+              <span className="new-price fs-26 fw-8">${course.price}</span>
             </div>
           </div>
 
-          {/* <div className='course-btn'>
-            <Link to = "/cart" className='add-to-cart-btn d-inline-block fw-7 bg-purple' onClick={() => addToCart(courseID, image, course_name, creator, discounted_price, category)}>
+          <div className="course-btn">
+            {/* <Link
+              to="/cart"
+              className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+              style={{
+                backgroundColor: "var(--clr-orange)",
+              }}
+            >
               <FaShoppingCart /> Add to cart
-            </Link>
-            <Link to="/enroll" className='add-to-cart-btn d-inline-block fw-7 bg-orange'
-            onClick={() => addToCart(courseID, image, course_name, creator, discounted_price, category)}>Enroll</Link>
-          </div> */}
+            </Link> */}
+
+            <PayPalScriptProvider options={scriptOptions}>
+              <PayPalButtons
+                createOrder={(data, actions) => {
+                  console.log("Creating order:", data);
+
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        amount: {
+                          value: price.current, // Set the payment amount here
+                        },
+                      },
+                    ],
+                  });
+                }}
+                onApprove={async (data, actions) => {
+                  // handleEnroll();
+                }}
+              />
+            </PayPalScriptProvider>
+          </div>
         </div>
       </div>
 
@@ -112,7 +138,16 @@ const SingleCoursePage = () => {
         <div className="course-learn mx-auto">
           <div className="course-sc-title">What you will learn</div>
           <ul className="course-learn-list grid">
-            {learnItems &&
+            <li>
+              <span>
+                <CheckOutlined />
+              </span>
+              <span className="fs-16 fw-5 opacity-09">
+                {course.description}
+              </span>
+            </li>
+
+            {/* {learnItems &&
               learnItems.map((learnItem, idx) => {
                 return (
                   <li key={idx}>
@@ -122,18 +157,18 @@ const SingleCoursePage = () => {
                     <span className="fs-14 fw-5 opacity-09">{learnItem}</span>
                   </li>
                 );
-              })}
+              })} */}
           </ul>
         </div>
 
         <div className="course-content mx-auto">
           <div className="course-sc-title">Course content</div>
           <ul className="course-content-list">
-            {content &&
-              content.map((contentItem, idx) => {
+            {chapter &&
+              chapter.map((chapter) => {
                 return (
-                  <li key={idx}>
-                    <span>{contentItem}</span>
+                  <li key={chapter.chapterID}>
+                    <span>{chapter.chapterName}</span>
                   </li>
                 );
               })}
@@ -162,7 +197,7 @@ const SingleCourseWrapper = styled.div`
     }
 
     .course-head {
-      font-size: 38px;
+      font-size: 50px;
       line-height: 1.2;
       padding: 12px 0 0 0;
     }
@@ -183,7 +218,6 @@ const SingleCourseWrapper = styled.div`
     }
     .course-info {
       li {
-        margin-bottom: 2px;
         &:nth-child(2) {
           margin-top: 10px;
         }
@@ -195,7 +229,6 @@ const SingleCourseWrapper = styled.div`
       }
     }
     .course-price {
-      margin-top: 12px;
       .old-price {
         color: #eceb98;
         text-decoration: line-through;
@@ -220,6 +253,7 @@ const SingleCourseWrapper = styled.div`
       }
       .course-img {
         order: 2;
+        font-size: 20px;
       }
     }
 
@@ -247,6 +281,7 @@ const SingleCourseWrapper = styled.div`
           span {
             &:nth-child(1) {
               opacity: 0.95;
+              display: flex;
               margin-right: 12px;
             }
           }
