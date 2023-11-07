@@ -43,9 +43,10 @@ body {
     gap: 30px;
     width: 100%;
 }
-.p-2 ul{
-    display: flex;
-    gap: 30px;
+.p-2 ul {
+  display: flex;
+  gap: 30px;
+  width: 100%;
 }
 .drop-down-inf{
     position: absolute;
