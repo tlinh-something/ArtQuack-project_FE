@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import api from "../../config/axios";
 import './UserCourse.css';
 function UserCourse() {
+  console.log();
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const account = JSON.parse(localStorage.getItem(`accessToken`));
   const fetchCourse = async () => {
@@ -14,14 +16,28 @@ function UserCourse() {
   }, []);
 
   return (
-    <div className="courses-grid">
-      {courses.map((course) => (
-        <div key={course.id} className="course">
-          <h3>{course.courseName}</h3>
-          <h4>{course.date}</h4>
-          <p>{course.description}</p>
-        </div>
-      ))}
+    <div className="course-info">
+      <h1
+        style={{
+          textAlign: "center",
+          marginTop: 30,
+          marginBottom: 25,
+        }}
+      >
+        My Course
+      </h1>
+      {/* <Row gutter={12}>
+        {courses.map((course) => (
+          <Col span={4} key={course.courseID}>
+            <Course course={course} key={course.courseID} />
+          </Col>
+        ))}
+      </Row> */}
+      <div className="courses-grid">
+        {courses.map((course) => (
+          <Course course={course} key={course.courseID} type="mycourse" />
+        ))}
+      </div>
     </div>
   );
 }

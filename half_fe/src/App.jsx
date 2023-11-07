@@ -26,6 +26,13 @@ import { UserContext } from "./components/context/user_context";
 import BlogDetails from "./components/Blog/BlogDetails";
 import UserHomePage from "./components/UserPage/UserHomePage";
 import UserCourse from "./components/UserPage/UserCourse";
+import NavBarNew from "./components/navbar/NewNav";
+import AllCourse from "./components/UserPage/AllCourse";
+import SubmissionPageNew from "./components/InstructorFunction/SubmissionPageNew";
+import SubmitPageDetail from "./components/InstructorFunction/SubmitPageDetail";
+import ViewSubmission from "./components/studentFunction/ViewSubmission";
+import ViewSubmitDetail from "./components/studentFunction/ViewSubmitDetail";
+import UserRate from "./components/UserPage/UserRate";
 
 //import Date from './common/Date';
 //import { useState } from 'react';
@@ -69,11 +76,9 @@ function App() {
         <Route path="/login/v2" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
-      
-        <Route path="/user" element={<UserHomePage/>} />
-        <Route path="/user/mycourse" element={<UserCourse/>}/>s
-
-
+        <Route path="/user" element={<UserHomePage />} />
+        <Route path="/user/mycourse" element={<UserCourse />} />
+        <Route path="user/rate/:id" element = {<UserRate/>}/>
         <Route path="/instructor/mycourse" element={<MyCourse />}>
           {/* <Route path="add" element={<Add />} /> */}
         </Route>

@@ -2,12 +2,24 @@
 import styled from 'styled-components';
 import {Link} from "react-router-dom";
 import StarRating from "../components/StarRating";
-import { useCartContext } from './context/cart_context'
+import { useCartContext } from "./context/cart_context";
+import './Test.css';
+import api from "../config/axios";
+import { useState } from "react";
+const Course = ({ course, type }) => {
 
-const Course = (props) => {
-  const {id, image, course_name, creator, actual_price, discounted_price, rating_count, rating_star, category} = props;
-  const {addToCart} = useCartContext();
-
+  const account = JSON.parse(localStorage.getItem(`accessToken`));
+  const rate = course.rate;
+  const [enrollCheck,setEnrollCheck] = useState('');
+  console.log(rate);
+  const fetchEnrolled = () =>{
+    api.get(`api/course/${course.courseID}/learner/${account.learnerID}`).then(res=>{
+      setEnrollCheck(res.data);
+    })
+  }
+  useState(()=>{
+    fetchEnrolled();
+  },[]);
   return (
     <CourseCard>
       <div className='item-img'>
@@ -26,10 +38,32 @@ const Course = (props) => {
           <span className='item-price-old'>${actual_price}</span>
         </div>
       </div>
-      <div className='item-btns flex'>
-        <Link to = {`/courses/${id}`} className = "item-btn see-details-btn">See details</Link>
-        <Link to = "/cart" className='item-btn add-to-cart-btn' onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}>Add to cart</Link>
+      <div className="item-btns flex">
+        <Link
+          to={
+            type === "mycourse"
+              ? `/learning/${course.courseID}`
+              : `/courses/${course.courseID}`
+          }
+          className="item-btn see-details-btn"
+          style={{ margin: "0 auto" }}
+        >
+          See details
+        </Link>
+        {/* {enrollCheck && ( */}
+        <Link
+          to={
+            `/user/rate/${course.courseID}`
+          }
+          className="item-btn see-details-btn"
+          style={{ margin: "0 auto" }}
+        >
+          Review this course
+        </Link>
+        {/* )} */}
+        {/* <Link to = "/cart" className='item-btn add-to-cart-btn' onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}>Add to cart</Link> */}
       </div>
+      
     </CourseCard>
   )
 }

@@ -110,7 +110,9 @@ function Login() {
         </Button>
 
         <div className="mt-5">
-          <Link to={"/register"} style={{color: '#fc4a1a'}}>Create account</Link>
+          <Link to={"/register"} style={{ color: "#fc8f1a" }}>
+            Create account
+          </Link>
         </div>
       </Form>
     </div>

@@ -25,36 +25,37 @@ const NavbarUser = () => {
               <span className="topic">A</span>rtquack 
             </Link>
 
-            {localStorage.getItem("accessToken") && JSON.parse(localStorage.getItem("accessToken")).role === 'learner' ? (
-                <>
-                  <li>
-                    <Link to='/user/mycourse'>My Course</Link>
+                {localStorage.getItem("accessToken") &&
+                JSON.parse(localStorage.getItem("accessToken")).role ===
+                  "learner" ? (
+                  <>
+                    <li>
+                      <div className="tes" style={{marginLeft:20}}> <Link to="/user/mycourse">My Course</Link></div>
+                     
+                    </li>
+                    <li>
+                    <div className="tes" style={{marginLeft:20}}><Link to="/user/submission">Submission</Link></div>
+                    </li>
+                    <li>
+                    <div className="tes" style={{marginLeft:20}}><Link to="/user/account">Account</Link></div>
+                    </li>
+                  </>
+                ) : (
+                  <li className="user-information">
+                    <Link to="/login/v2">Login</Link>
                   </li>
-                  <li>
-                    <Link to='/user/submission'>Submission</Link>
-                  </li>
-                  <li>
-                    <Link to='/user/account'>Account</Link>
-                  </li>
-                  
-                </>
-              ) : (
-                <li>
-                  <Link to='/login/v2'>Login</Link>
-                </li>
-              )}
-              <li className="drop-down-inf">
-
-              
-              <UserDropdown/>
-              </li>
+                )}
+               
               </ul>
-              
+            </div>
+            <div>
+            <UserDropdown />
+            </div>
           </div>
          
          
         </div>
-      </div>
+      
     </NavbarWrapper>
     </>
     

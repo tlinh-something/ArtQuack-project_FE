@@ -14,9 +14,9 @@ const CategoriesList = () => {
         </div>
         <div className='categories-list grid'>
           {
-            categories.map((category, idx) => {
+            categories.map((cateName, idx) => {
               return (
-                <Category image = {categories_images[idx]} category = {category} key = {idx} />
+                <Category image = {categories_images[idx]} category = {cateName} key = {idx} />
               )
             })
           }
