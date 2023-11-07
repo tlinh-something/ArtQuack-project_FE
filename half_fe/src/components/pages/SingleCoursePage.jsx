@@ -9,7 +9,12 @@ import { CheckOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
 import { Table } from "antd";
 import { MailOutlined } from "@ant-design/icons";
-import { FaShoppingCart } from "react-icons/fa";
+import {
+  FaBook,
+  FaBookOpen,
+  FaBookReader,
+  FaShoppingCart,
+} from "react-icons/fa";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import swal from "sweetalert";
 
@@ -18,13 +23,17 @@ const SingleCoursePage = () => {
   const [course, setCourse] = useState([]);
   const [chapter, setChapter] = useState([]);
   const price = useRef();
+  const [render, setRender] = useState(0);
   const account = JSON.parse(localStorage.getItem("accessToken"));
+
   useEffect(() => {
-    api.get(`/api/course/${id}/${account.learnerID}`).then((response) => {
-      setCourse(response.data);
-      price.current = response.data.price;
-    });
-  }, [id]);
+    api
+      .get(`/api/course/${id}/${account.learnerID ? account.learnerID : 0}`)
+      .then((response) => {
+        setCourse(response.data);
+        price.current = response.data.price;
+      });
+  }, [id, render]);
 
   const fetchChapter = () => {
     api.get(`/api/course/${id}/chapters`).then((response) => {
@@ -36,6 +45,31 @@ const SingleCoursePage = () => {
   useEffect(() => {
     fetchChapter();
   }, []);
+
+  function formatDate(timestamp, format) {
+    const date = new Date(timestamp);
+
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    };
+
+    const formattedDate = date.toLocaleString("vi-VN", options);
+
+    const formatMapping = {
+      "dd/MM/yyyy": formattedDate,
+      "MM/dd/yyyy": formattedDate,
+      "yyyy-MM-dd": formattedDate,
+      "HH:mm:ss": formattedDate.slice(11),
+      // Add more formats if needed
+    };
+    return formatMapping[format] || "Invalid Format";
+  }
 
   const scriptOptions = {
     clientId:
@@ -83,7 +117,7 @@ const SingleCoursePage = () => {
                   <MdInfo />
                 </span>
                 <span className="fs-14 course-info-txt fw-5">
-                  Last updated 20/11/2023
+                  Last updated {formatDate(course.upload_date, "dd/MM/yyyy")}
                 </span>
               </li>
               <li className="flex">
@@ -102,7 +136,7 @@ const SingleCoursePage = () => {
           </div>
 
           <div className="course-btn">
-            {!course.enrolled ? (
+            {!course.enrolled && account.learnerID ? (
               <PayPalScriptProvider options={scriptOptions}>
                 <PayPalButtons
                   createOrder={(data, actions) => {
@@ -135,10 +169,11 @@ const SingleCoursePage = () => {
                       "Successfully enroll to course",
                       "success"
                     );
+                    setRender(render + 1);
                   }}
                 />
               </PayPalScriptProvider>
-            ) : (
+            ) : account.learnerID ? (
               <Link
                 to={`/learning/${id}`}
                 className="add-to-cart-btn d-inline-block fw-7 bg-orange"
@@ -146,9 +181,9 @@ const SingleCoursePage = () => {
                   backgroundColor: "var(--clr-orange)",
                 }}
               >
-                <FaShoppingCart /> Learn
+                <FaBookOpen /> Learn
               </Link>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

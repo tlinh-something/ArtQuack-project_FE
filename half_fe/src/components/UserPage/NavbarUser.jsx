@@ -36,9 +36,9 @@ const NavbarUser = () => {
                     <li>
                       <Link to="/user/submission">Submission</Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link to="/user/account">Account</Link>
-                    </li>
+                    </li> */}
                   </>
                 ) : (
                   <li>

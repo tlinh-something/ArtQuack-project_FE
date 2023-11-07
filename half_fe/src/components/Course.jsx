@@ -2,7 +2,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import StarRating from "../components/StarRating";
-import { useCartContext } from "./context/cart_context";
+// import { useCartContext } from "./context/cart_context";
 
 const Course = ({ course, type }) => {
   console.log(course);

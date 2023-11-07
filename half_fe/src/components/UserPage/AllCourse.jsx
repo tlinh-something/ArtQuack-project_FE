@@ -1,13 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
 import api from "../../config/axios";
-import { Link } from "react-router-dom";
+import { Link, useFetcher } from "react-router-dom";
 import { Button, Modal } from "antd";
 import "./UserCourse.css";
 import swal from "sweetalert";
 import formatCurrencyUSD from "../../common/convertToCurrency";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Course from "../Course";
+
 function AllCourse() {
+
+  // const [courses, setCourses] = useState([])
+
+  // const fetchCourse = () => {
+  //   api.get(`/api/courses`).then(response => {
+  //     setCourses(response.data.filter(course => course.status))
+  //   })
+  // }
+
+  // useEffect(() => {
+  //   fetchCourse()
+  // }, [])
+
+  // return (
+  //   <div className="courses-grid">
+  //        {courses.map((course) => (
+  //         <Course course={course} key={course.courseID} />
+  //       ))}
+  //     </div>
+  // )
+
   const userID = JSON.parse(localStorage.getItem("accessToken")).learnerID;
   const [isModalOpen, setIsModalOpen] = useState(null);
   const [data, setData] = useState("");
@@ -18,13 +40,13 @@ function AllCourse() {
     clientId:
       "AS_kGKyi8kMb-m3z7SZocpoPihQLS9MGjq7QaYTG3N9b64CRE6mgcFs7HzH16qwPTblmix3ivoSPf0ly",
   };
-  const showModal = (id) => {
-    setIsModalOpen(id);
-  };
+  // const showModal = (id) => {
+  //   setIsModalOpen(id);
+  // };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
+  // const handleOk = () => {
+  //   setIsModalOpen(false);
+  // };
   const handleEnroll = async () => {
     const response = await api.post(
       `/api/learner/${userID}/course/${isModalOpen}/enrollment`
@@ -37,7 +59,7 @@ function AllCourse() {
   };
   const [courses, setCourses] = useState([]);
   const fetchCourse = async () => {
-    const response = await api.get(`/api/courses-learner/${userID}`);
+    const response = await api.get(`/api/courses-learner/${userID?userID:0}`);
     setCourses(response.data);
   };
   useEffect(() => {

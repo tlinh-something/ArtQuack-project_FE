@@ -9,6 +9,7 @@ function UserDropdown() {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const wallet = JSON.parse(localStorage.getItem("accessToken")).wallet;
   const openDropdown = () => {
     setIsDropdownOpen(true);
   };
@@ -31,7 +32,9 @@ function UserDropdown() {
           onMouseLeave={closeDropdown}
         >
           <div>My Profile</div>
-
+          <div>
+            Wallet: <span style={{ color: "orange" }}>{wallet.balance}</span>
+          </div>
           <div>
             <Button
               onClick={() => {
