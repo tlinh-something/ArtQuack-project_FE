@@ -26,7 +26,8 @@ function UserCourse() {
       <h1
         style={{
           textAlign: "center",
-          marginBottom: 20,
+          marginTop: 30,
+          marginBottom: 25,
         }}
       >
         My Course

@@ -171,7 +171,7 @@
 }
 
 .link-signup {
-  color: #fc4a1a;
+  color: #fc8f1a;
 }
 
 .animation-title span {
@@ -182,7 +182,7 @@
 
 .animation-title span::before {
   content: "WELCOME BACK";
-  color: #fc4a1a;
+  color: #fc8f1a;
 }
 
 .animation-title span::after {
@@ -191,7 +191,7 @@
   width: 0;
   height: 100%;
   background-color: #fff;
-  border-left: 2px solid #fc4a1a;
+  border-left: 2px solid #fc8f1a;
   right: -8px;
   animation: cursor 18s infinite;
 }

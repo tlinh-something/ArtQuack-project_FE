@@ -2,10 +2,24 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import StarRating from "../components/StarRating";
-// import { useCartContext } from "./context/cart_context";
-
+import { useCartContext } from "./context/cart_context";
+import './Test.css';
+import api from "../config/axios";
+import { useState } from "react";
 const Course = ({ course, type }) => {
-  console.log(course);
+
+  const account = JSON.parse(localStorage.getItem(`accessToken`));
+  const rate = course.rate;
+  const [enrollCheck,setEnrollCheck] = useState('');
+  console.log(rate);
+  const fetchEnrolled = () =>{
+    api.get(`api/course/${course.courseID}/learner/${account.learnerID}`).then(res=>{
+      setEnrollCheck(res.data);
+    })
+  }
+  useState(()=>{
+    fetchEnrolled();
+  },[]);
   return (
     <CourseCard>
       <div className="item-img">
@@ -47,8 +61,20 @@ const Course = ({ course, type }) => {
         >
           See details
         </Link>
+        {/* {enrollCheck && ( */}
+        <Link
+          to={
+            `/user/rate/${course.courseID}`
+          }
+          className="item-btn see-details-btn"
+          style={{ margin: "0 auto" }}
+        >
+          Review this course
+        </Link>
+        {/* )} */}
         {/* <Link to = "/cart" className='item-btn add-to-cart-btn' onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}>Add to cart</Link> */}
       </div>
+      
     </CourseCard>
   );
 };

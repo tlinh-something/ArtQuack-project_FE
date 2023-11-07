@@ -46,6 +46,7 @@ body {
 .p-2 ul {
   display: flex;
   gap: 30px;
+  width: 100%;
 }
 .drop-down-inf {
   position: absolute;
@@ -58,6 +59,62 @@ body {
   margin-top: 10px;
   display: flex;
   align-items: center;
+  
+  display: flex;
+  align-items: center;
+  width: 150px;
+}
+.learner-name{
+  width: 10px;
+}
+.p-2 ul a {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+.nav-item {
+  margin-left: 30px;
+}
+.courses-list-top h1,
+p {
+  font-style: italic;
+  /* text-align: center; */
+}
+.courses-list-top {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+/* .navbar-collapse {
+  position: absolute;
+  bottom: 0px;
+
+  right: 0px;
+}
+.container {
+  position: relative;
+} */
+.rating-box{
+  width: 800px;
+  margin:0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  margin-top: 30px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+  border-radius: 50px;
+}
+.rating-box textarea{
+  border-style: solid;
+  border-width: 1px;
+  border-color: grey;
+  width: 800px;
+  height: 200px;
+}
+.stars{
+  padding-bottom: 20px;
+  margin-top: 10px;
 }
 .learner-name,
 .p-2 ul a {

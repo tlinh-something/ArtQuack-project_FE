@@ -131,7 +131,7 @@ p #usernote, #pwdnote, #confirmnote ::before{
 
 .animation-title-regis span::before{
   content: "REGISTER";
-  color:#fc4a1a;
+  color:#fc8f1a;
 }
 
 .animation-title-regis span::after{
@@ -140,7 +140,7 @@ p #usernote, #pwdnote, #confirmnote ::before{
   width: 0;
   height: 100%;
   background-color: #fff;
-  border-left: 2px solid #fc4a1a;
+  border-left: 2px solid #fc8f1a;
   right: -6px;
   animation: cursor 18s infinite;
 }

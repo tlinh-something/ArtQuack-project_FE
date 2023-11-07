@@ -31,28 +31,30 @@ const NavbarUser = () => {
                   "learner" ? (
                   <>
                     <li>
-                      <Link to="/user/mycourse">My Course</Link>
+                      <div className="tes" style={{marginLeft:20}}> <Link to="/user/mycourse">My Course</Link></div>
                     </li>
                     <li>
-                      <Link to="/user/submission">Submission</Link>
+                      <div className="tes" style={{marginLeft:20}}><Link to="/user/submission">Submission</Link></div>
                     </li>
                     {/* <li>
-                      <Link to="/user/account">Account</Link>
+                    <div className="tes" style={{marginLeft:20}}><Link to="/user/account">Account</Link></div>
                     </li> */}
                   </>
                 ) : (
-                  <li>
+                  <li className="user-information">
                     <Link to="/login/v2">Login</Link>
                   </li>
                 )}
-                <li>
-                  <UserDropdown />
-                </li>
+               
               </ul>
+            </div>
+            <div>
+            <UserDropdown />
             </div>
           </div>
         </div>
-      </NavbarWrapper>
+      
+    </NavbarWrapper>
     </>
   );
 };

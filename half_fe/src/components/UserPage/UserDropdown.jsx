@@ -24,7 +24,23 @@ function UserDropdown() {
       onMouseEnter={openDropdown}
       onMouseLeave={closeDropdown}
     >
-      <div className="learner-name">{userName}</div>
+      <div
+        className="learner-name"
+        style={{
+          width: 180,
+          paddingTop: 7,
+          borderStyle: "solid",
+          borderWidth: 1,
+          borderRadius: 50,
+          textAlign: "center",
+          borderColor: "grey",
+          marginLeft:10,
+          marginRight:10,
+          marginBottom:15
+        }}
+      >
+        {userName}
+      </div>
       {isDropdownOpen && (
         <div
           className="dropdown"

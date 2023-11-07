@@ -35,9 +35,9 @@ const CategoriesList = () => {
             <h3>{cate.cateName}</h3>
           })}
           {
-            categories.map((category, idx) => {
+            categories.map((cateName, idx) => {
               return (
-                <Category image = {categories_images[idx]} category = {category} key = {idx} />
+                <Category image = {categories_images[idx]} category = {cateName} key = {idx} />
               )
             })
           }

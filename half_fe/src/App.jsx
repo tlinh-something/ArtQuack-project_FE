@@ -25,11 +25,13 @@ import UserHomePage from "./components/UserPage/UserHomePage";
 import UserCourse from "./components/UserPage/UserCourse";
 import NavBarNew from "./components/navbar/NewNav";
 // import AllCourse from "./components/UserPage/AllCourse";
+import AllCourse from "./components/UserPage/AllCourse";
 import SubmissionPageNew from "./components/InstructorFunction/SubmissionPageNew";
 import SubmitPageDetail from "./components/InstructorFunction/SubmitPageDetail";
 import ViewSubmission from "./components/studentFunction/ViewSubmission";
 import ViewSubmitDetail from "./components/studentFunction/ViewSubmitDetail";
 import InstructorPage from "./components/InstructorFunction/InstructorPage";
+import UserRate from "./components/UserPage/UserRate";
 
 function App() {
   return (
@@ -48,6 +50,7 @@ function App() {
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
         <Route path="/user" element={<UserHomePage />} />
         <Route path="/user/mycourse" element={<UserCourse />} />
+        <Route path="user/rate/:id" element = {<UserRate/>}/>
         <Route path="/instructor/mycourse" element={<MyCourse />}>
           {/* <Route path="add" element={<Add />} /> */}
         </Route>
