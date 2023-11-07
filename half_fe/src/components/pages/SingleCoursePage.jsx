@@ -11,14 +11,16 @@ import { Table } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { FaShoppingCart } from "react-icons/fa";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import swal from "sweetalert";
 
 const SingleCoursePage = () => {
   const { id } = useParams();
   const [course, setCourse] = useState([]);
   const [chapter, setChapter] = useState([]);
   const price = useRef();
+  const account = JSON.parse(localStorage.getItem("accessToken"));
   useEffect(() => {
-    api.get(`/api/course/${id}`).then((response) => {
+    api.get(`/api/course/${id}/${account.learnerID}`).then((response) => {
       setCourse(response.data);
       price.current = response.data.price;
     });
@@ -100,36 +102,53 @@ const SingleCoursePage = () => {
           </div>
 
           <div className="course-btn">
-            {/* <Link
-              to="/cart"
-              className="add-to-cart-btn d-inline-block fw-7 bg-orange"
-              style={{
-                backgroundColor: "var(--clr-orange)",
-              }}
-            >
-              <FaShoppingCart /> Add to cart
-            </Link> */}
+            {!course.enrolled ? (
+              <PayPalScriptProvider options={scriptOptions}>
+                <PayPalButtons
+                  createOrder={(data, actions) => {
+                    console.log("Creating order:", data);
 
-            <PayPalScriptProvider options={scriptOptions}>
-              <PayPalButtons
-                createOrder={(data, actions) => {
-                  console.log("Creating order:", data);
-
-                  return actions.order.create({
-                    purchase_units: [
-                      {
-                        amount: {
-                          value: price.current, // Set the payment amount here
+                    return actions.order.create({
+                      purchase_units: [
+                        {
+                          amount: {
+                            value: price.current, // Set the payment amount here
+                          },
                         },
-                      },
-                    ],
-                  });
+                      ],
+                    });
+                  }}
+                  onApprove={async (data, actions) => {
+                    // handleEnroll();
+                    const response = await api.post(
+                      `/api/learner/${account.learnerID}/course/${id}/enrollment`,
+                      {
+                        enrollmentID: 0,
+                        rate: 0,
+                        comment: "string",
+                        date: new Date().toISOString(),
+                        status: true,
+                      }
+                    );
+                    swal(
+                      "Good Job",
+                      "Successfully enroll to course",
+                      "success"
+                    );
+                  }}
+                />
+              </PayPalScriptProvider>
+            ) : (
+              <Link
+                to={`/learning/${id}`}
+                className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+                style={{
+                  backgroundColor: "var(--clr-orange)",
                 }}
-                onApprove={async (data, actions) => {
-                  // handleEnroll();
-                }}
-              />
-            </PayPalScriptProvider>
+              >
+                <FaShoppingCart /> Learn
+              </Link>
+            )}
           </div>
         </div>
       </div>

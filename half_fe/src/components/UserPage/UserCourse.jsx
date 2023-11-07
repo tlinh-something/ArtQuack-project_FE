@@ -4,15 +4,18 @@ import "./UserCourse.css";
 import { Col, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import Course from "../Course";
+
 function UserCourse() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const account = JSON.parse(localStorage.getItem(`accessToken`));
+  
   const fetchCourse = async () => {
     const response = await api.get(
       `/api/enrollment/learner/${account.learnerID}`
     );
     setCourses(response.data);
+    setCourses(response.data.filter(course => course.status))
   };
   useEffect(() => {
     fetchCourse();

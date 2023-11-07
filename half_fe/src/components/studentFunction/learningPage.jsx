@@ -127,7 +127,7 @@ function LearningPage() {
 
   const generateContent = (content) => {
     if (content.startsWith("https")) {
-      if (content.includes("youtube")) {
+      if (content.includes("youtu")) {
         return (
           <ReactPlayer
             url={content}

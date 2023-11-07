@@ -2,11 +2,23 @@
 import { useParams } from "react-router-dom";
 import api from "../../config/axios";
 import { useEffect, useState } from "react";
-import { Button, Form, Input, Modal, Space, Switch, Table } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  Popconfirm,
+  Space,
+  Switch,
+  Table,
+  Typography,
+  message,
+} from "antd";
 import { useForm } from "antd/es/form/Form";
 import swal from "sweetalert";
 import Dragger from "antd/es/upload/Dragger";
 import uploadVideo from "../../hooks/useUploadFileFirebase";
+import ReactPlayer from "react-player";
 // import TextArea from "antd/es/input/TextArea";
 
 const AddChapterNew = () => {
@@ -100,6 +112,7 @@ const AddChapterNew = () => {
   const fetchCourse = async () => {
     const response = await api.get(`/api/course/${params.id}`);
     setCourse(response.data);
+    console.log(course);
   };
 
   useEffect(() => {
@@ -123,6 +136,19 @@ const AddChapterNew = () => {
       form.resetFields();
     }
   }, [currentChapterID]);
+
+  const handleDeleteChapter = (chapterID) => {
+    console.log(chapterID);
+    const response = api.delete(
+      `/api/deletechapter/${chapterID}`
+    );
+    message.success('Deleted chapter successfully')
+    setRender(render + 1);
+  }
+  
+  const cancel = () => {
+    message.error('This chapter cancel to delete')
+  }
 
   return (
     <div style={{ padding: 30 }}>
@@ -162,18 +188,13 @@ const AddChapterNew = () => {
                     Update
                   </Button>
 
-                  <Button
-                    type="primary"
-                    danger
-                    onClick={() => {
-                      const response = api.delete(
-                        `/api/deletechapter/${record.chapterID}`
-                      );
-                      setRender(render + 1);
-                    }}
-                  >
-                    Delete
-                  </Button>
+                  <Popconfirm
+                  title="Delete the chapter"
+                  description="Are you sure to delete this chapter"
+                  onConfirm={() => handleDeleteChapter(record.chapterID)}
+                  onCancel={cancel}>
+                    <Button danger>Delete</Button>
+                  </Popconfirm>
                 </Space>
               );
             },
@@ -239,6 +260,7 @@ const TableItem = ({ chapterID }) => {
   const handleFinish = async (values) => {
     const data = {
       ...values,
+      itemID: currentItemID,
       content: contentType === "file" ? file : values.content,
     };
     if (!currentItemID) {
@@ -275,12 +297,11 @@ const TableItem = ({ chapterID }) => {
 
   useEffect(() => {
     console.log(currentItemID);
-    if(currentItemID && currentItemID !== 0){
-      api.get(`/api/item/${currentItemID}`)
-      .then(response => {
+    if (currentItemID && currentItemID !== 0) {
+      api.get(`/api/item/${currentItemID}`).then((response) => {
         form.setFieldsValue(response.data);
-      })
-    }else{
+      });
+    } else {
       form.resetFields();
     }
   }, [currentItemID]);
@@ -302,8 +323,14 @@ const TableItem = ({ chapterID }) => {
 
   const handleDelete = async (id) => {
     const response = await api.delete(`/api/deleteitem/${id}`);
+    message.success('Delete item successfully')
     setRender(render + 1);
   };
+
+  const cancel = () => {
+    message.error('This item cancel to delete')
+  }
+
   return (
     <div
       style={{
@@ -316,7 +343,7 @@ const TableItem = ({ chapterID }) => {
           marginBottom: 10,
         }}
         type="primary"
-        onClick={()=> setCurrentItemID(0)}
+        onClick={() => setCurrentItemID(0)}
       >
         Add Item
       </Button>
@@ -336,7 +363,18 @@ const TableItem = ({ chapterID }) => {
             align: "center",
             render: (value) => {
               return value?.startsWith("http") ? (
-                <video src={value} controls width="50%" height="auto" />
+                value?.includes("youtu") ? (
+                  <ReactPlayer
+                    url={value}
+                    width={"90%"}
+                    height={300}
+                    style={{
+                      height: 1000,
+                    }}
+                  />
+                ) : (
+                  <video src={value} controls width="50%" height="auto" />
+                )
               ) : (
                 <>{value}</>
               );
@@ -359,7 +397,7 @@ const TableItem = ({ chapterID }) => {
                     Update Item
                   </Button>
 
-                  <Button
+                  {/* <Button
                     type="primary"
                     danger
                     onClick={() => {
@@ -367,7 +405,15 @@ const TableItem = ({ chapterID }) => {
                     }}
                   >
                     Delete Item
-                  </Button>
+                  </Button> */}
+
+                  <Popconfirm
+                  title="Delete the chapter"
+                  description="Are you sure to delete this chapter"
+                  onConfirm={() => handleDelete(value)}
+                  onCancel={cancel}>
+                    <Button danger>Delete</Button>
+                  </Popconfirm>
                 </Space>
               );
             },

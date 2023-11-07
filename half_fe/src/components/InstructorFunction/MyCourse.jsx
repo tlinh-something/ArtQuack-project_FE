@@ -9,11 +9,13 @@ import {
   Input,
   InputNumber,
   Modal,
+  Popconfirm,
   Row,
   Select,
   Space,
   Table,
   Upload,
+  message,
 } from "antd";
 import { Form } from "antd";
 import TextArea from "antd/es/input/TextArea";
@@ -24,9 +26,7 @@ import uploadImage from "../../hooks/useUploadImage";
 
 function MyCourse() {
   const [course, setCourse] = useState([]);
-  const [selectCourse, setSelectCourse] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [selectCourse, setSelectCourse] = useState(null);
   const [categories, setCategories] = useState([]);
   const [levels, setLevels] = useState([]);
   const [render, setRender] = useState();
@@ -38,6 +38,16 @@ function MyCourse() {
   // eslint-disable-next-line no-unused-vars
   const [img, setImg] = useState(null);
   const [loading, setLoading] = useState();
+
+  const handleDelete = (courseID) => {
+    api.delete(`/api/deletecourse/${courseID}`);
+    message.success("Deleted course successfully");
+    setRender(render + 1);
+  };
+
+  const cancel = () => {
+    message.error("This course cancel to delete");
+  };
 
   const columns = [
     {
@@ -88,14 +98,13 @@ function MyCourse() {
             </Button>
             <Button
               onClick={() => {
-                showModal2(`${record.courseID}`);
-                setRender(render + 1)
+                setSelectCourse(record.courseID);
               }}
               type="primary"
             >
               Update
             </Button>
-            <Button
+            {/* <Button
               type="primary"
               danger
               onClick={() => {
@@ -104,15 +113,23 @@ function MyCourse() {
               }}
             >
               Delete
-            </Button>
+            </Button> */}
+
+            <Popconfirm
+              title="Delete the course"
+              description="Are you sure to delete this course"
+              onConfirm={() => handleDelete(record.courseID)}
+              onCancel={cancel}
+            >
+              <Button danger>Delete</Button>
+            </Popconfirm>
           </Space>
         );
       },
     },
   ];
-
+  
   const onFinish = async (values) => {
-    console.log(values);
     const data = {
       courseID: 0,
       name: values.name,
@@ -125,47 +142,24 @@ function MyCourse() {
       avatar: img,
       price: price,
     };
-
-    const account = JSON.parse(localStorage.getItem(`accessToken`));
-    // eslint-disable-next-line no-unused-vars
-    const response = await api.post(
-      `/api/instructor/${account.instructorID}/category/${values.category}/level/${values.level}/course`,
-      data
-    );
-    setRender(render + 1);
-    form.resetFields();
-    handleCancel();
-    Swal("Good job!", "You clicked the button!", "success");
-  };
-
-  const handleUpdate = (values) => {
-    const data = {
-      courseID: selectCourse,
-      name: values.name,
-      description: values.description,
-      upload_date: new Date().toISOString(),
-      // picture: values.picture,
-      viewer: 0,
-      rate: 0,
-      status: true,
-      avatar: img,
-      price: price,
-    };
-
-    const res = api.put(`/api/course/${selectCourse}/updatecourse`, data);
-    form.resetFields();
-    handleCancel();
-    Swal("Good Job!", "You update course success!", "success");
-    setRender(render + 1);
-  };
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const showModal2 = (selectCourse) => {
-    setIsModalOpen2(true);
-    setSelectCourse(selectCourse);
+    if (!selectCourse) {
+      const account = JSON.parse(localStorage.getItem(`accessToken`));
+      // eslint-disable-next-line no-unused-vars
+      const response = await api.post(
+        `/api/instructor/${account.instructorID}/category/${values.category}/level/${values.level}/course`,
+        data
+      );
+      setRender(render + 1);
+      form.resetFields();
+      handleCancel();
+      Swal("Good job!", "You clicked the button!", "success");
+    } else {
+      const res = api.put(`/api/course/${selectCourse}/updatecourse`, data);
+      form.resetFields();
+      handleCancel();
+      Swal("Good Job!", "You update course success!", "success");
+      setRender(render + 1);
+    }
   };
 
   const handleOk = () => {
@@ -173,8 +167,7 @@ function MyCourse() {
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
-    setIsModalOpen2(false);
+    setSelectCourse(null);
   };
 
   const fetchCategory = async () => {
@@ -236,6 +229,16 @@ function MyCourse() {
     fetchCourse();
   }, [render]);
 
+  useEffect(() => {
+    if (selectCourse && selectCourse !== 0) {
+      api.get(`/api/course/${selectCourse}`).then((response) => {
+        form.setFieldsValue(response.data);
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [selectCourse]);
+
   return (
     <div className="display-form-add">
       <Card className="w-50 add-form">
@@ -248,7 +251,7 @@ function MyCourse() {
             <Button
               type="primary"
               onClick={() => {
-                showModal();
+                setSelectCourse(0);
               }}
             >
               Add course
@@ -262,8 +265,8 @@ function MyCourse() {
       </div>
 
       <Modal
-        title="Add new course"
-        open={isModalOpen}
+        title={`${selectCourse === 0 ? "Add" : "Update"}`}
+        open={selectCourse !== null}
         onOk={handleOk}
         onCancel={handleCancel}
         confirmLoading={loading}
@@ -386,7 +389,7 @@ function MyCourse() {
         </Form>
       </Modal>
 
-      <Modal
+      {/* <Modal
         title="Update course"
         open={isModalOpen2}
         onOk={handleOk}
@@ -410,8 +413,10 @@ function MyCourse() {
               },
             ]}
           >
-            <Input value={course.name}
-            onChange={(e) =>  setCourse(e.target.value)}/>
+            <Input
+              value={course.name}
+              onChange={(e) => setCourse(e.target.value)}
+            />
           </Form.Item>
 
           <Form.Item
@@ -519,7 +524,7 @@ function MyCourse() {
             </Upload.Dragger>
           </Form.Item>
         </Form>
-      </Modal>
+      </Modal> */}
     </div>
   );
 }

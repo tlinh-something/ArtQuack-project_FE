@@ -4,6 +4,7 @@ import { Layout, Menu } from "antd";
 import api from "../../config/axios";
 import { Link, Outlet } from "react-router-dom";
 import { Content } from "antd/es/layout/layout";
+
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -13,7 +14,8 @@ function getItem(label, key, icon, children, type) {
     type,
   };
 }
-const SubmissionPageNew = () => {
+
+const ViewSubmission = () => {
   const [items, setItems] = useState([
     getItem("Navigation One", "sub1", <MailOutlined />, [
       getItem(
@@ -35,31 +37,34 @@ const SubmissionPageNew = () => {
 
   useEffect(() => {
     const account = JSON.parse(localStorage.getItem("accessToken"));
-    api.get(`/api/submit/${account.instructorID}`).then((response) => {
+    console.log(account.learnerID);
+    api.get(`/api/submit-of-learner/${account.learnerID}`).then((response) => {
       const courses = response.data.courses;
 
       setItems(
-        courses.map((course) => {
-          return getItem(
-            course.courseName,
-            `course-${course.courseID}`,
-            <MailOutlined />,
-            course.chapters.map((chapter) => {
-              return getItem(
-                chapter.chapterName,
-                `chapter-${chapter.chapterID}`,
-                <MailOutlined />,
-                chapter.items.map((item) => {
-                  return getItem(
-                    item.itemName,
-                    `${item.itemID}`,
-                    <MailOutlined />
-                  );
-                })
-              );
-            })
-          );
-        })
+        courses
+          .filter((item) => item.status)
+          .map((course) => {
+            return getItem(
+              course.courseName,
+              `course-${course.courseID}`,
+              <MailOutlined />,
+              course.chapters.map((chapter) => {
+                return getItem(
+                  chapter.chapterName,
+                  `chapter-${chapter.chapterID}`,
+                  <MailOutlined />,
+                  chapter.items.map((item) => {
+                    return getItem(
+                      item.itemName,
+                      `${item.itemID}`,
+                      <MailOutlined />
+                    );
+                  })
+                );
+              })
+            );
+          })
       );
     });
   }, []);
@@ -67,6 +72,7 @@ const SubmissionPageNew = () => {
   const onClick = (e) => {
     console.log("click ", e);
   };
+
   return (
     <div className="submit-container">
       <Menu
@@ -93,4 +99,4 @@ const SubmissionPageNew = () => {
     </div>
   );
 };
-export default SubmissionPageNew;
+export default ViewSubmission;

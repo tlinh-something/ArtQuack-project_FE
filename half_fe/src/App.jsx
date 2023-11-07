@@ -27,35 +27,10 @@ import NavBarNew from "./components/navbar/NewNav";
 import AllCourse from "./components/UserPage/AllCourse";
 import SubmissionPageNew from "./components/InstructorFunction/SubmissionPageNew";
 import SubmitPageDetail from "./components/InstructorFunction/SubmitPageDetail";
+import ViewSubmission from "./components/studentFunction/ViewSubmission";
+import ViewSubmitDetail from "./components/studentFunction/ViewSubmitDetail";
 
-//import Date from './common/Date';
-//import { useState } from 'react';
-//import useToken from './services/useToke';
-
-// function setToken(userToken){
-//   sessionStorage.setItem('token', JSON.stringify(userToken));
-// }
-
-// function getToken(){
-//   const tokenString = sessionStorage.getItem('token');
-//   const userToken = JSON.parse(tokenString);
-//   return userToken?.token
-// }s
 function App() {
-  //const token = getToken();
-  // const { token, setToken } = useToken();
-  // //const [token, setToken] = useState();
-
-  // if(!token) {
-  //   return <Login setToken={setToken} />
-  // }
-
-  // const account = JSON.parse(localStorage.getItem(`accessToken`)).role;
-  // useEffect(() => {
-  //   if (localStorage.getItem("token")) {
-  //     loginContext(localStorage.getItem());
-  //   }
-  // });
   return (
     <BrowserRouter>
       <Sidebar />
@@ -85,6 +60,9 @@ function App() {
         <Route path="/enroll" element={<EnrollCourse />} />
         <Route path="/instructor/submission" element={<SubmissionPageNew />}>
           <Route path=":id" element={<SubmitPageDetail />} />
+        </Route>
+        <Route path="/user/submission" element={<ViewSubmission />}>
+          <Route path=":id" element={<ViewSubmitDetail />} />
         </Route>
       </Routes>
       <Footer />

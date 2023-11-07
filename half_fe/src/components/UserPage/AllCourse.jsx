@@ -37,7 +37,7 @@ function AllCourse() {
   };
   const [courses, setCourses] = useState([]);
   const fetchCourse = async () => {
-    const response = await api.get("/api/courses");
+    const response = await api.get(`/api/courses-learner/${userID}`);
     setCourses(response.data);
   };
   useEffect(() => {
@@ -45,7 +45,7 @@ function AllCourse() {
   }, []);
 
   const fetchCourseDetail = async () => {
-    const response = await api.get(`/api/course/${isModalOpen}`);
+    const response = await api.get(`/api/courses/${isModalOpen}`);
     setCourseDetail(response.data);
     price.current = response.data.price;
   };

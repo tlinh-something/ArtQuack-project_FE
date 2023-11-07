@@ -26,9 +26,9 @@ const HeroWrapper = styled.div`
   .container {
     .hero-content {
       background-color: var(--clr-white);
-      height: 180px;
+      height: 230px;
       margin-left: 0;
-      padding: 20px;
+      padding: 30px;
       width: 500px;
 
       h1 {
