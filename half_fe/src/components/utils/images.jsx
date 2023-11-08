@@ -1,4 +1,4 @@
-import hero_img from "../images/hero_img.png";
+import hero_img from "../images/duck-seamless-pattern-rubber-ducky-isolated-cartoon-illustration-bird-bath-shower-repeat-wallpaper-tile-background-gift-wrap-paper-white-vector.jpg";
 import logo_udemy from "../images/logo_udemy.svg";
 import aws_1 from "../images/aws_1.jpg";
 import aws_2 from "../images/aws_2.jpg";
@@ -28,12 +28,12 @@ import design_2 from "../images/design_2.jpg";
 // import cat_design from "../images/cat_design.png";
 // import cat_marketing from "../images/cat_marketing.png";
 // import cat_python from "../images/cat_python.png";
-import pottery from '../images/pottery.jpeg';
-import oil from '../images/Oil paint.jpg';
-import inlay from '../images/inlay art.jpg';
-import copper from '../images/Gallery-17-Green-Room-Works-4K-2-680x360.jpg';
-import sand from '../images/Paint Splashing PNG Transparent, Vector Splash Of Paint, Splash Vector, Paint Vector, Splash PNG Image For Free Download.jpeg';
-import spary from '../images/Palette Drawing Painting Art PNG - Free Download.jpeg';
+import pottery from '../images/potrait.jpeg';
+import oil from '../images/landscape.jpg';
+import inlay from '../images/stilllife.jpg';
+import copper from '../images/figure.jpg';
+import sand from '../images/cartoon.jpg';
+import spary from '../images/anime.jpeg';
 
 const course_images = {aws_1, aws_2, aws_3, data_science_1, data_science_2, data_science_3, data_science_4, data_science_5, 
     python_1, python_2, python_3, python_4, python_5, web_dev_1, web_dev_2, web_dev_3, web_dev_4, web_dev_5, 
@@ -41,6 +41,14 @@ const course_images = {aws_1, aws_2, aws_3, data_science_1, data_science_2, data
 
 const other_images = {hero_img, logo_udemy};
 
-const categories_images = [pottery, oil, inlay, copper, sand, spary ];
+const categories_images = {
+'Potrait Drawing': pottery,
+'Landscape Drawing': oil,
+'Still Life Drawing': inlay,
+'Figure Drawing': copper,
+'Cartoon Drawing': sand,
+'Anime Drawing': spary,
+
+};
 
 export {course_images, other_images, categories_images};

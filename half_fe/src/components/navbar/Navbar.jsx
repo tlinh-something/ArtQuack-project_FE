@@ -10,6 +10,7 @@ import '../Test.css';
 import { Nav, NavDropdown } from "react-bootstrap";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import api from "../../config/axios";
 //import { useCoursesContext } from "../context/course_context";
 // import Nav from 'react-bootstrap/Nav';
 //import { Stack } from "react-bootstrap";
@@ -26,16 +27,14 @@ const Navbar = () => {
   const [category, setCategory] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:3000/category')
-    .then(response => {
-      setCategory(response.data)
-      console.log(response.data)
-    })
-    
-  }, [])
+    api.get("/api/categories").then((response) => {
+      setCategory(response.data);
+      console.log(response.data);
+    });
+  }, []);
 
   //const {categories} = useCoursesContext();
-
+  console.log(category);
   return (
     <div className="container w-100">
       <div className="header">
@@ -45,21 +44,30 @@ const Navbar = () => {
             <a className="navbar-brand fw-8 text-uppercase" href="/">
               <span>A</span>rtQuack
             </a>
-            <Nav>
-              {/* <NavDropdown > */}
-                {category.map((data, i) => {
-                  <NavDropdown key={i} title='Category'>
-                    <NavDropdown.Item>{data.name}</NavDropdown.Item>
-                  </NavDropdown>
-                  
-                })}
-                {/* { categories.map((category, index) => {
+            
+              <Nav>
+
+              
+              {category.map((data, i) => {
+                <NavDropdown key={i} title="cateName">
+                  <NavDropdown.Item>{data.cateName}</NavDropdown.Item>
+                </NavDropdown>;
+              })}
+              {/* { categories.map((category, index) => {
                     <NavDropdown key={index} type='hide'></NavDropdown>
                     <NavDropdown.Item href={`category/${category}`} value={`${category}`} >{category}</NavDropdown.Item>
                 })} */}
-              {/* </NavDropdown> */}
-            </Nav>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded='false' aria-label="Toggle navigation">
+              </Nav>
+            
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
               <span className="navbar-toggler-icon"></span>
             </button>
             <SearchBar className='SearchBar' onSearch={handleSearch} />

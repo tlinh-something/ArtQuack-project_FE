@@ -22,19 +22,26 @@ const Hero = () => {
 const HeroWrapper = styled.div`
   background: url(${other_images.hero_img}) center/cover no-repeat;
   height: 300px;
-
+  
   .container {
+    margin-top:20px;
     .hero-content {
       background-color: var(--clr-white);
       max-width: 400px;
       width: 100%;
       margin-left: 0;
-      padding: 20px;
+      padding: 30px;
+      width: 500px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: #ccc;
+      border-radius:10px;
 
       h1 {
         font-size: 32px;
         margin-bottom: 5px;
         white-space: nowrap;
+       
       }
       p {
         font-size: 15px;

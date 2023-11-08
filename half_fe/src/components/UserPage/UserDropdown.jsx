@@ -41,14 +41,25 @@ function UserDropdown() {
         {userName}
       </div>
       {isDropdownOpen && (
-        <div className="dropdown" onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
-          
-            <div>My Profile</div>
-            <div>My Learning</div>
-            <div>
-                    <Link to='/logout'>Logout</Link>
-                  </div>
-          
+        <div
+          className="dropdown"
+          onMouseEnter={openDropdown}
+          onMouseLeave={closeDropdown}
+        >
+          <div>My Profile</div>
+          {/* <div>
+            Wallet: <span style={{ color: "orange" }}>{wallet.balance}</span>
+          </div> */}
+          <div>
+            <Button
+              onClick={() => {
+                localStorage.clear();
+                window.location = "/";
+              }}
+            >
+              Logout
+            </Button>
+          </div>
         </div>
       )}
     </div>
