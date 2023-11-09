@@ -22,7 +22,6 @@ const Course = ({ course, type }) => {
   // useState(()=>{
   //   fetchEnrolled();
   // },[]);
-
   return (
     <CourseCard>
       <div className="item-img">
@@ -52,6 +51,8 @@ const Course = ({ course, type }) => {
           <span className="item-price-new">${course.price}</span>
         </div>
       </div>
+      {account?.learnerID && (
+  <>
       <div className="item-btns flex">
         <Link
           to={
@@ -78,7 +79,7 @@ const Course = ({ course, type }) => {
         {/* )} */}
         {/* <Link to = "/cart" className='item-btn add-to-cart-btn' onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}>Add to cart</Link> */}
       </div>
-      
+      </>)}
     </CourseCard>
   );
 };

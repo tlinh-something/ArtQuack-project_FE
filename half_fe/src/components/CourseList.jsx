@@ -1,18 +1,27 @@
 //import React from 'react';
 import styled from "styled-components";
-import Tabs from "../components/Tab";
-import { useCoursesContext } from "./context/course_context";
-
+// import Tabs from "../components/Tab";
+// import { useCoursesContext } from "./context/course_context";
+import api from "../config/axios";
+import { useEffect, useState } from "react";
 const CourseList = () => {
-  const { courses } = useCoursesContext();
-
+  // const { courses } = useCoursesContext();
+  const [count,setCount] = useState('');
+  const fetchCount = () =>{
+    api.get('/api/courses').then(res=>{
+      setCount(res.data.length);
+    })
+  }
+  useEffect(()=>{
+    fetchCount();
+  })
   return (
     <CoursesListWrapper>
       <div className="container">
         <div className="courses-list-top">
           <h1>A broad selection of courses</h1>
           <p>
-            We have about 204,000 online video courses with new additions
+            We have {count} online video courses with new additions
             published every month
           </p>
         </div>
