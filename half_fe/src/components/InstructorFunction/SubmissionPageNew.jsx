@@ -40,7 +40,7 @@ const SubmissionPageNew = () => {
 
       setItems(
         courses
-          // .filter((item) => item.status)
+          .filter((item) => item.status)
           .map((course) => {
             return getItem(
               course.courseName,
@@ -51,7 +51,8 @@ const SubmissionPageNew = () => {
                   chapter.chapterName,
                   `chapter-${chapter.chapterID}`,
                   <MinusOutlined />,
-                  chapter.items.map((item) => {
+                  chapter.items.filter(item => item.status).map((item) => {
+                    console.log(chapter.items);
                     return getItem(
                       item.itemName,
                       `${item.itemID}`,

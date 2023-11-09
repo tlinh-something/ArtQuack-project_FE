@@ -2,26 +2,25 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import StarRating from "../components/StarRating";
-import { useCartContext } from "./context/cart_context";
-import './Test.css';
+import "./Test.css";
 import api from "../config/axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const Course = ({ course, type }) => {
-
   const account = JSON.parse(localStorage.getItem(`accessToken`));
-  // const rate = course.rate;
-  // const [enrollCheck,setEnrollCheck] = useState('');
+  const [enroll, setEnroll] = useState(false);
+  const fetchEnroll = async() => {
+    await api
+      .get(`/api/course/${course.courseID}/${account.learnerID}`)
+      .then((response) => {
+        setEnroll(response.data);
+        console.log(response.data);
+      });
+  };
 
-  // console.log(rate);
+  useEffect(() => {
+    fetchEnroll()
+  }, [course.courseID]);
 
-  // const fetchEnrolled = () =>{
-  //   api.get(`/api/course/${course.courseID}/${account.learnerID}`).then(res=>{
-  //     setEnrollCheck(res.data);
-  //   })
-  // }
-  // useState(()=>{
-  //   fetchEnrolled();
-  // },[]);
   return (
     <CourseCard>
       <div className="item-img">
@@ -51,8 +50,6 @@ const Course = ({ course, type }) => {
           <span className="item-price-new">${course.price}</span>
         </div>
       </div>
-      {account?.learnerID && (
-  <>
       <div className="item-btns flex">
         <Link
           to={
@@ -65,21 +62,20 @@ const Course = ({ course, type }) => {
         >
           See details
         </Link>
-        
-        { account.learnerID ? (<Link
-          to={
-            `/user/rate/${course.courseID}`
-          }
-          className="item-btn see-details-btn"
-          style={{ margin: "0 auto" }}
-        >
-          Review this course
-        </Link>) : null}
-        
+
+          {account.learnerID && enroll.enrolled ? (
+            <Link
+              to={`/user/rate/${course.courseID}`}
+              className="item-btn see-details-btn"
+              style={{ margin: "0 auto" }}
+            >
+              Review this course
+            </Link>
+          ) : null}
+
         {/* )} */}
         {/* <Link to = "/cart" className='item-btn add-to-cart-btn' onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}>Add to cart</Link> */}
       </div>
-      </>)}
     </CourseCard>
   );
 };

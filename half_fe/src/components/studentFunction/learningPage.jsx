@@ -192,7 +192,7 @@ function LearningPage() {
                       </Upload.Dragger>
                     </Form.Item>
 
-                    {image && <Image src={image} />}
+                    {image && <Image src={image} style={{height: '400px'}}/>}
                     <Form.Item>
                       <Button type="primary" onClick={handleSubmit}>
                         Submit

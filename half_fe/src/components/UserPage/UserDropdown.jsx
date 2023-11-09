@@ -48,7 +48,6 @@ function UserDropdown() {
               {wallet.balance}
             </span>
           </div>
-          <div>My Profile</div>
           {/* <div>
             Wallet: <span style={{ color: "orange" }}>{wallet.balance}</span>
           </div> */}

@@ -47,17 +47,17 @@ function AllCourse() {
     fetchCourse();
   }, []);
 
-  const fetchCourseDetail = async () => {
-    const response = await api.get(`/api/courses/${isModalOpen}`);
-    setCourseDetail(response.data);
-    price.current = response.data.price;
-  };
+  // const fetchCourseDetail = async () => {
+  //   const response = await api.get(`/api/courses/${isModalOpen}`);
+  //   setCourseDetail(response.data);
+  //   price.current = response.data.price;
+  // };
 
-  useEffect(() => {
-    if (isModalOpen) {
-      fetchCourseDetail();
-    }
-  }, [isModalOpen]);
+  // useEffect(() => {
+  //   if (isModalOpen) {
+  //     fetchCourseDetail();
+  //   }
+  // }, [isModalOpen]);
 
   return (
     <div className="displayAllCourse">

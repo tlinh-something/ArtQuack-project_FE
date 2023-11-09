@@ -5,7 +5,7 @@
     padding-left: 2%;
     padding-top: 2%;
     padding-bottom: 3%;
-    position: unset;
+    position: static;
     /* bottom: 0; */
 }
 
