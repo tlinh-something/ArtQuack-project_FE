@@ -23,6 +23,7 @@ import api from "../../config/axios";
 import { useForm } from "antd/es/form/Form";
 import Swal from "sweetalert";
 import uploadImage from "../../hooks/useUploadImage";
+import { FaQuestionCircle } from "react-icons/fa";
 
 function MyCourse() {
   const [course, setCourse] = useState([]);
@@ -45,6 +46,8 @@ function MyCourse() {
     setRender(render + 1);
   };
 
+  useEffect(() => {});
+
   const cancel = () => {
     message.error("This course cancel to delete");
   };
@@ -64,7 +67,7 @@ function MyCourse() {
         <img
           src={
             image ||
-            "https://www.analyticssteps.com/backend/media/thumbnail/2435072/1339082_1630931780_Use%20of%20AI%20in%20Language%20LearningArtboard%201.jpg"
+            "https://th.bing.com/th/id/R.d84f37a5b4e943152abc3baa7bd23c82?rik=j01Fex7vq7e%2fNA&riu=http%3a%2f%2ftopalski.com%2fwp-content%2fuploads%2f2011%2f09%2fNa-kraj-Shume-m.jpg&ehk=wig0r%2bpjBHeo01%2f8R%2fzwOBbcC9LnSXd44qFGiX6ps%2bA%3d&risl=&pid=ImgRaw&r=0"
           }
           alt=""
           style={{
@@ -104,21 +107,23 @@ function MyCourse() {
             >
               Update
             </Button>
-            {/* <Button
-              type="primary"
-              danger
-              onClick={() => {
-                const response = api.delete(`/api/deletecourse/${record.courseID}`);
-                setRender(render + 1);
-              }}
-            >
-              Delete
-            </Button> */}
 
             <Popconfirm
               title="Delete the course"
               description="Are you sure to delete this course"
-              onConfirm={() => handleDelete(record.courseID)}
+              onConfirm={() => {
+                api.delete(`/api/deletecourse/${record.courseID}`);
+                message.success("Deleted course successfully");
+                setRender(render + 1);
+                // handleDelete(record.courseID)
+              }}
+              icon={
+                <FaQuestionCircle
+                  style={{
+                    color: 'red',
+                  }}
+                />
+              }
               onCancel={cancel}
             >
               <Button danger>Delete</Button>
@@ -128,7 +133,7 @@ function MyCourse() {
       },
     },
   ];
-  
+
   const onFinish = async (values) => {
     const data = {
       courseID: 0,
@@ -152,8 +157,9 @@ function MyCourse() {
       setRender(render + 1);
       form.resetFields();
       handleCancel();
-      Swal("Good job!", "You clicked the button!", "success");
+      Swal("Good job!", "You create a new course success!", "success");
     } else {
+      // eslint-disable-next-line no-unused-vars
       const res = api.put(`/api/course/${selectCourse}/updatecourse`, data);
       form.resetFields();
       handleCancel();
@@ -388,143 +394,6 @@ function MyCourse() {
           </Form.Item>
         </Form>
       </Modal>
-
-      {/* <Modal
-        title="Update course"
-        open={isModalOpen2}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        confirmLoading={loading}
-      >
-        <Form
-          labelCol={{
-            span: 24,
-          }}
-          form={form}
-          onFinish={handleUpdate}
-        >
-          <Form.Item
-            name="name"
-            label="New Course name"
-            rules={[
-              {
-                required: true,
-                message: "Enter new course name",
-              },
-            ]}
-          >
-            <Input
-              value={course.name}
-              onChange={(e) => setCourse(e.target.value)}
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="description"
-            label="Descript"
-            rules={[
-              {
-                required: true,
-                message: "Enter new  descript!",
-              },
-            ]}
-          >
-            <TextArea />
-          </Form.Item>
-
-          <Form.Item
-            name="price"
-            label="Price"
-            rules={[
-              {
-                required: true,
-                message: "Enter new price!",
-              },
-            ]}
-          >
-            <InputNumber
-              formatter={(value) =>
-                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
-              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              onChange={(value) => {
-                setPrice(value);
-              }}
-            />
-          </Form.Item>
-
-          <Row
-            style={{
-              width: "100%",
-            }}
-            gutter={12}
-          >
-            <Col span={12}>
-              <Form.Item
-                name="category"
-                label="Category"
-                rules={[
-                  {
-                    required: true,
-                    message: "Choose new  category!",
-                  },
-                ]}
-              >
-                <Select
-                  options={categories.map((item) => {
-                    return {
-                      value: item.cateID,
-                      label: item.cateName,
-                    };
-                  })}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="level"
-                label="Level"
-                rules={[
-                  {
-                    required: true,
-                    message: "Choose new level!",
-                  },
-                ]}
-              >
-                <Select
-                  options={levels.map((item) => {
-                    return {
-                      value: item.levelID,
-                      label: item.levelName,
-                    };
-                  })}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Form.Item
-            name="avatar"
-            label="New avatar for course"
-            rules={[
-              {
-                required: true,
-                message: "Choose new picture",
-              },
-            ]}
-          >
-            <Upload.Dragger
-              name="picture"
-              accept=".png, .jpg"
-              onChange={(info) => handleUploadCourseImg(info.file)}
-            >
-              <p className="ant-upload-text">
-                Click or drag file to this area to upload
-              </p>
-            </Upload.Dragger>
-          </Form.Item>
-        </Form>
-      </Modal> */}
     </div>
   );
 }

@@ -32,9 +32,22 @@ import ViewSubmission from "./components/studentFunction/ViewSubmission";
 import ViewSubmitDetail from "./components/studentFunction/ViewSubmitDetail";
 import InstructorPage from "./components/InstructorFunction/InstructorPage";
 import UserRate from "./components/UserPage/UserRate";
+import { ConfigProvider } from "antd";
 
 function App() {
   return (
+    <ConfigProvider
+    theme={{
+      token: {
+        // Seed Token
+        colorPrimary: '#ff6e01',
+        borderRadius: 2,
+        
+        // Alias Token
+        colorBgContainer: '#fff',
+      },
+    }}
+    >
     <BrowserRouter>
       <Sidebar />
       <NavBarNew />
@@ -50,7 +63,7 @@ function App() {
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
         <Route path="/user" element={<UserHomePage />} />
         <Route path="/user/mycourse" element={<UserCourse />} />
-        <Route path="user/rate/:id" element = {<UserRate/>}/>
+        <Route path="user/rate/:id" element={<UserRate />} />
         <Route path="/instructor/mycourse" element={<MyCourse />}>
           {/* <Route path="add" element={<Add />} /> */}
         </Route>
@@ -72,6 +85,7 @@ function App() {
       </Routes>
       <Footer />
     </BrowserRouter>
+  </ConfigProvider>
   );
 }
 

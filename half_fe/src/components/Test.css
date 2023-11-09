@@ -57,16 +57,12 @@ body {
 }
 .p-2 li {
   margin-top: 10px;
-  display: flex;
-  align-items: center;
-  
+  justify-content: center;
   display: flex;
   align-items: center;
   width: 150px;
 }
-.learner-name{
-  width: 10px;
-}
+
 .p-2 ul a {
   display: flex;
   align-items: center;
@@ -120,6 +116,7 @@ p {
 .p-2 ul a {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 .nav-item {
   margin-left: 30px;

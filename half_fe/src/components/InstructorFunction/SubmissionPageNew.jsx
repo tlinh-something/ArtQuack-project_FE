@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MailOutlined } from "@ant-design/icons";
+import { MailOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import api from "../../config/axios";
 import { Link, Outlet } from "react-router-dom";
@@ -39,27 +39,29 @@ const SubmissionPageNew = () => {
       const courses = response.data.courses;
 
       setItems(
-        courses.map((course) => {
-          return getItem(
-            course.courseName,
-            `course-${course.courseID}`,
-            <MailOutlined />,
-            course.chapters.map((chapter) => {
-              return getItem(
-                chapter.chapterName,
-                `chapter-${chapter.chapterID}`,
-                <MailOutlined />,
-                chapter.items.map((item) => {
-                  return getItem(
-                    item.itemName,
-                    `${item.itemID}`,
-                    <MailOutlined />
-                  );
-                })
-              );
-            })
-          );
-        })
+        courses
+          // .filter((item) => item.status)
+          .map((course) => {
+            return getItem(
+              course.courseName,
+              `course-${course.courseID}`,
+              <PlusOutlined />,
+              course.chapters.map((chapter) => {
+                return getItem(
+                  chapter.chapterName,
+                  `chapter-${chapter.chapterID}`,
+                  <MinusOutlined />,
+                  chapter.items.map((item) => {
+                    return getItem(
+                      item.itemName,
+                      `${item.itemID}`,
+                      // <MailOutlined />
+                    );
+                  })
+                );
+              })
+            );
+          })
       );
     });
   }, []);

@@ -92,3 +92,13 @@ th {
 .add-form {
   margin-bottom: 20px;
 }
+
+.navigate-link:hover{
+  color: #ff6e01;
+  width: 150px;
+}
+
+.navigate-link{
+  margin-top: 25px;
+  width: 150px;
+}

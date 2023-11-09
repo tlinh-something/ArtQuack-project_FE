@@ -9,17 +9,20 @@ import { useState } from "react";
 const Course = ({ course, type }) => {
 
   const account = JSON.parse(localStorage.getItem(`accessToken`));
-  const rate = course.rate;
-  const [enrollCheck,setEnrollCheck] = useState('');
-  console.log(rate);
-  const fetchEnrolled = () =>{
-    api.get(`api/course/${course.courseID}/learner/${account.learnerID}`).then(res=>{
-      setEnrollCheck(res.data);
-    })
-  }
-  useState(()=>{
-    fetchEnrolled();
-  },[]);
+  // const rate = course.rate;
+  // const [enrollCheck,setEnrollCheck] = useState('');
+
+  // console.log(rate);
+
+  // const fetchEnrolled = () =>{
+  //   api.get(`/api/course/${course.courseID}/${account.learnerID}`).then(res=>{
+  //     setEnrollCheck(res.data);
+  //   })
+  // }
+  // useState(()=>{
+  //   fetchEnrolled();
+  // },[]);
+
   return (
     <CourseCard>
       <div className="item-img">
@@ -61,8 +64,8 @@ const Course = ({ course, type }) => {
         >
           See details
         </Link>
-        {/* {enrollCheck && ( */}
-        <Link
+        
+        { account.learnerID ? (<Link
           to={
             `/user/rate/${course.courseID}`
           }
@@ -70,7 +73,8 @@ const Course = ({ course, type }) => {
           style={{ margin: "0 auto" }}
         >
           Review this course
-        </Link>
+        </Link>) : null}
+        
         {/* )} */}
         {/* <Link to = "/cart" className='item-btn add-to-cart-btn' onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}>Add to cart</Link> */}
       </div>

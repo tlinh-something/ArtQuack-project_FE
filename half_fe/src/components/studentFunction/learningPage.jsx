@@ -156,7 +156,7 @@ function LearningPage() {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Sider theme="light" width={200}>
+      <Sider theme="light" width={300}>
         <VideoSidebar />
       </Sider>
       <Layout>
@@ -206,7 +206,7 @@ function LearningPage() {
             <Typography.Text>This chapter has no content yet.</Typography.Text>
           )}
 
-          <Button type="primary" onClick={() => navigate("/")}>
+          <Button type="primary" className="mt-4" onClick={() => navigate("/user/mycourse")}>
             Back to Home
           </Button>
         </Content>

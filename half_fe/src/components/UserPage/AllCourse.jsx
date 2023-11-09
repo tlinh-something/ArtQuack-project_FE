@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "../../config/axios";
-import { Link, useFetcher } from "react-router-dom";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import "./UserCourse.css";
 import swal from "sweetalert";
 import formatCurrencyUSD from "../../common/convertToCurrency";
@@ -10,31 +9,11 @@ import Course from "../Course";
 
 function AllCourse() {
 
-  // const [courses, setCourses] = useState([])
-
-  // const fetchCourse = () => {
-  //   api.get(`/api/courses`).then(response => {
-  //     setCourses(response.data.filter(course => course.status))
-  //   })
-  // }
-
-  // useEffect(() => {
-  //   fetchCourse()
-  // }, [])
-
-  // return (
-  //   <div className="courses-grid">
-  //        {courses.map((course) => (
-  //         <Course course={course} key={course.courseID} />
-  //       ))}
-  //     </div>
-  // )
-
   const userID = JSON.parse(localStorage.getItem("accessToken")).learnerID;
   const [isModalOpen, setIsModalOpen] = useState(null);
-  const [data, setData] = useState("");
+  // const [data, setData] = useState("");
   const [courseDetail, setCourseDetail] = useState();
-  const [enrollDetail, setEnrollDetail] = useState();
+  // const [enrollDetail, setEnrollDetail] = useState();
   const price = useRef();
   const scriptOptions = {
     clientId:
@@ -59,7 +38,9 @@ function AllCourse() {
   };
   const [courses, setCourses] = useState([]);
   const fetchCourse = async () => {
-    const response = await api.get(`/api/courses-learner/${userID?userID:0}`);
+    const response = await api.get(
+      `/api/courses-learner/${userID ? userID : 0}`
+    );
     setCourses(response.data);
   };
   useEffect(() => {
@@ -97,7 +78,7 @@ function AllCourse() {
             src={
               courseDetail?.avatar
                 ? courseDetail?.avatar
-                : "https://www.analyticssteps.com/backend/media/thumbnail/2435072/1339082_1630931780_Use%20of%20AI%20in%20Language%20LearningArtboard%201.jpg"
+                : "https://th.bing.com/th/id/R.d84f37a5b4e943152abc3baa7bd23c82?rik=j01Fex7vq7e%2fNA&riu=http%3a%2f%2ftopalski.com%2fwp-content%2fuploads%2f2011%2f09%2fNa-kraj-Shume-m.jpg&ehk=wig0r%2bpjBHeo01%2f8R%2fzwOBbcC9LnSXd44qFGiX6ps%2bA%3d&risl=&pid=ImgRaw&r=0"
             }
           />
           <div className="course-detail-info">

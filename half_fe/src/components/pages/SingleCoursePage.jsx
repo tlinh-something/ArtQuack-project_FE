@@ -7,7 +7,7 @@ import { TbWorld } from "react-icons/tb";
 //import {FaShoppingCart} from "react-icons/fa";
 import { CheckOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
-import { Table } from "antd";
+import { Rate, Table } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import {
   FaBook,
@@ -75,6 +75,7 @@ const SingleCoursePage = () => {
     clientId:
       "AS_kGKyi8kMb-m3z7SZocpoPihQLS9MGjq7QaYTG3N9b64CRE6mgcFs7HzH16qwPTblmix3ivoSPf0ly",
   };
+
   return (
     <SingleCourseWrapper>
       <div className="course-intro mx-auto grid">

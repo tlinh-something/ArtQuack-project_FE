@@ -7,7 +7,7 @@ import { TbWorld } from "react-icons/tb";
 //import {FaShoppingCart} from "react-icons/fa";
 import { CheckOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { FaShoppingCart } from "react-icons/fa";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
@@ -221,7 +221,7 @@ const RateCoursePage = () => {
           onChange={handleDescriptionChange}
         />
         </div>
-        <button onClick={handleSubmit}>Submit</button>
+        <Button onClick={handleSubmit} style={{fontSize: '17px'}}>Submit</Button>
       </div>
     </div>
   );

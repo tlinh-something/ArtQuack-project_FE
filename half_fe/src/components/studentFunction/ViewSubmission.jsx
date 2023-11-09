@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { MailOutlined } from "@ant-design/icons";
+import { MailOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import api from "../../config/axios";
 import { Link, Outlet } from "react-router-dom";
 import { Content } from "antd/es/layout/layout";
 
-function getItem(label, key, icon, children, type) {
+function getItems(label, key, icon, children, type) {
   return {
     key,
     icon,
@@ -17,19 +17,19 @@ function getItem(label, key, icon, children, type) {
 
 const ViewSubmission = () => {
   const [items, setItems] = useState([
-    getItem("Navigation One", "sub1", <MailOutlined />, [
-      getItem(
+    getItems("Navigation One", "sub1", <MailOutlined />, [
+      getItems(
         "Item 1",
         "g1",
         null,
-        [getItem("Option 1", "1"), getItem("Option 2", "2")],
+        [getItems("Option 1", "1"), getItems("Option 2", "2")],
         "group"
       ),
-      getItem(
+      getItems(
         "Item 2",
         "g2",
         null,
-        [getItem("Option 3", "3"), getItem("Option 4", "4")],
+        [getItems("Option 3", "3"), getItems("Option 4", "4")],
         "group"
       ),
     ]),
@@ -40,25 +40,26 @@ const ViewSubmission = () => {
     console.log(account.learnerID);
     api.get(`/api/submit-of-learner/${account.learnerID}`).then((response) => {
       const courses = response.data.courses;
+      console.log(courses);
 
       setItems(
         courses
           .filter((item) => item.status)
           .map((course) => {
-            return getItem(
+            return getItems(
               course.courseName,
               `course-${course.courseID}`,
-              <MailOutlined />,
+              <PlusOutlined />,
               course.chapters.map((chapter) => {
-                return getItem(
+                return getItems(
                   chapter.chapterName,
                   `chapter-${chapter.chapterID}`,
-                  <MailOutlined />,
+                  <MinusOutlined />,
                   chapter.items.map((item) => {
-                    return getItem(
+                    return getItems(
                       item.itemName,
                       `${item.itemID}`,
-                      <MailOutlined />
+                      // <MailOutlined />
                     );
                   })
                 );

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import api from "../../config/axios";
 import { useEffect, useState } from "react";
 import {
@@ -14,11 +14,14 @@ import {
   Typography,
   message,
 } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import swal from "sweetalert";
 import Dragger from "antd/es/upload/Dragger";
 import uploadVideo from "../../hooks/useUploadFileFirebase";
 import ReactPlayer from "react-player";
+import { FaQuestionCircle } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import TextArea from "antd/es/input/TextArea";
 
 const AddChapterNew = () => {
@@ -166,6 +169,7 @@ const AddChapterNew = () => {
         Add Chapter
       </Button>
       <Table
+        pagination={false}
         columns={[
           {
             title: "Chapter name",
@@ -191,7 +195,22 @@ const AddChapterNew = () => {
                   <Popconfirm
                   title="Delete the chapter"
                   description="Are you sure to delete this chapter"
-                  onConfirm={() => handleDeleteChapter(record.chapterID)}
+                  onConfirm={() => {
+                    const response = api.delete(
+                      `/api/deletechapter/${record.chapterID}`
+                    );
+                    message.success('Deleted chapter successfully')
+                    setRender(render + 1);
+                  }
+                    // handleDeleteChapter(record.chapterID)
+                  }
+                  icon={
+                    <FaQuestionCircle
+                      style={{
+                        color: 'red',
+                      }}
+                    />
+                  }
                   onCancel={cancel}>
                     <Button danger>Delete</Button>
                   </Popconfirm>
@@ -208,6 +227,10 @@ const AddChapterNew = () => {
           rowExpandable: () => true,
         }}
       />
+
+      <div className="navigate-link">
+      <ArrowLeftOutlined /><Link to='/instructor/mycourse'> Back</Link>
+      </div>
 
       <Modal
         title={`${currentChapterID === 0 ? "Add" : "Update"}`}
@@ -397,20 +420,17 @@ const TableItem = ({ chapterID }) => {
                     Update Item
                   </Button>
 
-                  {/* <Button
-                    type="primary"
-                    danger
-                    onClick={() => {
-                      handleDelete(value);
-                    }}
-                  >
-                    Delete Item
-                  </Button> */}
-
                   <Popconfirm
                   title="Delete the chapter"
                   description="Are you sure to delete this chapter"
                   onConfirm={() => handleDelete(value)}
+                  icon={
+                    <FaQuestionCircle
+                      style={{
+                        color: 'red',
+                      }}
+                    />
+                  }
                   onCancel={cancel}>
                     <Button danger>Delete</Button>
                   </Popconfirm>

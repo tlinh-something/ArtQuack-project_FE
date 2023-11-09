@@ -1,46 +1,56 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Input, Radio } from "antd";
+import { Button, Form, Input, Radio, notification } from "antd";
 import api from "../../config/axios";
 import "./LoginSignup.css";
+import { toast } from "react-toastify";
 function Login() {
   const navigate = useNavigate();
+  const [noti, contextHolder] = notification.useNotification();
 
   const [form] = Form.useForm();
   const email = Form.useWatch("email", form);
   const password = Form.useWatch("password", form);
   const role = Form.useWatch("role", form);
 
-  const onLogin = (values) => {
+  const onLogin = async (values) => {
     console.log(values);
     console.log(email, password, role);
-    api
-      .get(`/api/login/email/${email}/password/${password}/role/${role}`)
-      .then((res) => {
-        console.log(res);
-        const user = res.data;
-        localStorage.setItem("accessToken", JSON.stringify(user));
-        if (
-          localStorage.getItem("accessToken") &&
-          JSON.parse(localStorage.getItem("accessToken")).role === "learner"
-        ) {
-          window.location = "/user";
-        } else if (
-          localStorage.getItem("accessToken") &&
-          JSON.parse(localStorage.getItem("accessToken")).role === "instructor"
-        ) {
-          window.location = "/instructor/mycourse";
-        } else if (
-          localStorage.getItem("accessToken") &&
-          JSON.parse(localStorage.getItem("accessToken")).role === "admin"
-        ) {
-          window.location = "/admin";
-        }
-      })
-      .catch((error) => console.log(error));
+
+    try {
+      const res = await api.get(
+        `/api/login/email/${email}/password/${password}/role/${role}`
+      );
+      console.log(res);
+      const user = res.data;
+      localStorage.setItem("accessToken", JSON.stringify(user));
+      if (
+        localStorage.getItem("accessToken") &&
+        JSON.parse(localStorage.getItem("accessToken")).role === "learner"
+      ) {
+        window.location = "/user";
+      } else if (
+        localStorage.getItem("accessToken") &&
+        JSON.parse(localStorage.getItem("accessToken")).role === "instructor"
+      ) {
+        window.location = "/instructor/mycourse";
+      } else if (
+        localStorage.getItem("accessToken") &&
+        JSON.parse(localStorage.getItem("accessToken")).role === "admin"
+      ) {
+        window.location = "/admin";
+      }
+    } catch (e) {
+      console.log(e);
+      noti.error({
+        message: e.response.data,
+      });
+      // toast.error(e.response.data);
+    }
   };
 
   return (
     <div className="login-form">
+      {contextHolder}
       <Form
         form={form}
         className="text-center"

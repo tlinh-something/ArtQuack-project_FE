@@ -17,7 +17,7 @@ const NavbarUser = () => {
       <NavbarWrapper className="bg-white flex" direction="horizontal" gap={6}>
         <div className="container">
           <div className="brand-and-toggler flex flex-between w-100">
-            <div className="p-2">
+            <div className="p-2 row">
               <ul>
                 <Link
                   to="/user"
@@ -30,31 +30,27 @@ const NavbarUser = () => {
                 JSON.parse(localStorage.getItem("accessToken")).role ===
                   "learner" ? (
                   <>
-                    <li>
-                      <div className="tes" style={{marginLeft:20}}> <Link to="/user/mycourse">My Course</Link></div>
+                    <li className="col">
+                      <Link to="/user/mycourse">My Course</Link>
                     </li>
-                    <li>
-                      <div className="tes" style={{marginLeft:20}}><Link to="/user/submission">Submission</Link></div>
+                    <li className="col">
+                      <Link to="/user/submission">Submission</Link>
                     </li>
-                    {/* <li>
-                    <div className="tes" style={{marginLeft:20}}><Link to="/user/account">Account</Link></div>
-                    </li> */}
+
+                    <li className="col-md-4 offset-md-4">
+                      <UserDropdown />
+                    </li>
                   </>
                 ) : (
-                  <li className="user-information">
+                  <li>
                     <Link to="/login/v2">Login</Link>
                   </li>
                 )}
-               
               </ul>
-            </div>
-            <div>
-            <UserDropdown />
             </div>
           </div>
         </div>
-      
-    </NavbarWrapper>
+      </NavbarWrapper>
     </>
   );
 };
@@ -67,8 +63,10 @@ const NavbarWrapper = styled.nav`
 
   .navbar-brand {
     font-size: 30px;
+    padding-top: 10px;
     span {
       color: var(--clr-orange);
+      padding-bottom: 10px;
     }
   }
   .cart-btn {

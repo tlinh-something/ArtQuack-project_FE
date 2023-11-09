@@ -1,11 +1,9 @@
 import { useState } from "react";
-import "./UserDropdown.css"; // Import your CSS file for styling
-import { Link, useNavigate } from "react-router-dom";
 import "./UserDropdown.css";
 import { Button } from "antd";
 function UserDropdown() {
   const userName = JSON.parse(localStorage.getItem("accessToken"))?.name;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -27,16 +25,10 @@ function UserDropdown() {
       <div
         className="learner-name"
         style={{
-          width: 180,
-          paddingTop: 7,
-          borderStyle: "solid",
-          borderWidth: 1,
-          borderRadius: 50,
-          textAlign: "center",
-          borderColor: "grey",
-          marginLeft:10,
-          marginRight:10,
-          marginBottom:15
+          border: "1px solid #000",
+          padding: "0 10px",
+          width: "150px",
+          borderRadius: "30px",
         }}
       >
         {userName}
@@ -47,9 +39,14 @@ function UserDropdown() {
           onMouseEnter={openDropdown}
           onMouseLeave={closeDropdown}
         >
-          <div>My Profile</div>
-          <div>
-            Wallet: <span style={{ color: "orange" }}>{wallet.balance}</span>
+          <div style={{ fontSize: "18px" }} className="mb-2">
+            My Profile
+          </div>
+          <div style={{ fontSize: "18px" }} className="mb-2">
+            Wallet:{" "}
+            <span style={{ color: "orange", fontWeight: "600" }}>
+              {wallet.balance}
+            </span>
           </div>
           <div>
             <Button

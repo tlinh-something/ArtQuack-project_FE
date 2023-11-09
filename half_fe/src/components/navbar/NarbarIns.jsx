@@ -17,7 +17,7 @@ const Navbar = () => {
       <NavbarWrapper className="bg-white flex" direction="horizontal" gap={6}>
         <div className="container">
           <div className="brand-and-toggler flex flex-between w-100">
-            <div className="p-2">
+            <div className="p-2 row">
               <ul>
                 <Link
                   to="/instructor"
@@ -30,14 +30,14 @@ const Navbar = () => {
                 JSON.parse(localStorage.getItem("accessToken")).role ===
                   "instructor" ? (
                   <>
-                    <li>
+                    <li className="col">
                       <Link to="/instructor/mycourse">My Course</Link>
                     </li>
-                    <li>
+                    <li className="col">
                       <Link to="/instructor/submission">Submission</Link>
                     </li>
 
-                    <li>
+                    <li className="col-md-4 offset-md-4">
                       <UserDropdown />
                     </li>
                   </>
@@ -47,9 +47,6 @@ const Navbar = () => {
                   </li>
                 )}
               </ul>
-            </div>
-            <div className="p-2">
-              {/* <SearchBar className='SearchBar' onSearch={handleSearch} /> */}
             </div>
           </div>
         </div>
@@ -66,8 +63,10 @@ const NavbarWrapper = styled.nav`
 
   .navbar-brand {
     font-size: 30px;
+    padding-top: 10px;
     span {
       color: var(--clr-orange);
+      padding-bottom: 10px;
     }
   }
   .cart-btn {
