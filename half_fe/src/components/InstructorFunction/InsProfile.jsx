@@ -44,13 +44,13 @@ const InsProfile = () => {
     e.preventDefault();
     console.log(userEdit);
    
-    //   const updateUser = async() => {
-    //     const res =await api.put(`/api/learner/${id}/updatelearner`, userEdit);
-    //     console.log(res);
-    //   };
+      const updateUser = async() => {
+        const res =await api.put(`/api/learner/${id}/updatelearner`, userEdit);
+        console.log(res);
+      };
 
-    //   updateUser();
-    //   window.alert("Update successful!");
+      updateUser();
+      window.alert("Update successful!");
    
   };
 
