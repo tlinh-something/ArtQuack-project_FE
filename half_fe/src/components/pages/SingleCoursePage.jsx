@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import swal from "sweetalert";
+import '../Test.css'
 const SingleCoursePage = () => {
   const { id } = useParams();
   const [course, setCourse] = useState([]);
@@ -244,8 +245,8 @@ const SingleCoursePage = () => {
           </ul>
         </div>
         <div className="Table">
-
-        
+              
+        <h3>Reviews</h3>
         <Table
         pagination={false}
         columns={[

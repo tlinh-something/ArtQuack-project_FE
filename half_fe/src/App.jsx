@@ -32,7 +32,9 @@ import ViewSubmission from "./components/studentFunction/ViewSubmission";
 import ViewSubmitDetail from "./components/studentFunction/ViewSubmitDetail";
 import InstructorPage from "./components/InstructorFunction/InstructorPage";
 import UserRate from "./components/UserPage/UserRate";
+import UserProfile from "./components/UserPage/UserProfile";
 import { ConfigProvider } from "antd";
+import InsProfile from "./components/InstructorFunction/InsProfile";
 
 function App() {
   return (
@@ -64,11 +66,13 @@ function App() {
         <Route path="/user" element={<UserHomePage />} />
         <Route path="/user/mycourse" element={<UserCourse />} />
         <Route path="user/rate/:id" element={<UserRate />} />
+        <Route path="user/profile/:id" element={<UserProfile/>}/>
         <Route path="/instructor/mycourse" element={<MyCourse />}>
           {/* <Route path="add" element={<Add />} /> */}
         </Route>
         {/* <Route path="/instructor" element={<AllCourse />} /> */}
         <Route path="/instructor" element={<InstructorPage />} />
+        <Route path = "/instructor/profile/:id" element={<InsProfile/>}/>
         <Route path="/instructor/addchapter/:id" element={<AddChapter />} />
         <Route path="/instructor/update/:courseID" element={<Update />} />
         <Route path="/instructor/chapter/:id" element={<AddChapterNew />} />
