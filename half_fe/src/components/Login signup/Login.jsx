@@ -121,6 +121,11 @@ function Login() {
             Create account
           </Link>
         </div>
+        <div>
+          <a href={"http://127.0.0.1:3030/login"}style={{ color: "#fc8f1a" }}>
+            Login as ADMIN
+          </a>
+        </div>
       </Form>
     </div>
   );

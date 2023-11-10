@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../config/axios";
-<<<<<<< HEAD
-import "../UserProfile.css";
-=======
-import './UserProfile.css'
->>>>>>> 4a2e7d45eb548a9192f083737915621a1e102b28
+import '../UserPage/UserProfile.css'
 
-const UserProfile = () => {
+const InsProfile = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,7 +13,7 @@ const UserProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [userEdit, setUserEdit] = useState({
-    learnerID: "",
+    instructorID: "",
     name: "",
     email: "",
     password: "",
@@ -27,34 +23,35 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchUser = () => {
-      api.get(`/api/learner/${id}`).then((res) => {
+      api.get(`/api/instructor/${id}`).then((res) => {
         const userData = res.data;
 
         setUserEdit({
-          learnerID: userData.learnerID,
+            instructorID:userData. instructorID,
           name: userData.name,
           email: userData.email,
           password: userData.password,
-          status: userData.status,
-          role: userData.role,
+        status:userData.status,
+        role:userData.role
         });
       });
     };
 
     fetchUser();
   }, [id]);
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(userEdit);
+   
+    //   const updateUser = async() => {
+    //     const res =await api.put(`/api/learner/${id}/updatelearner`, userEdit);
+    //     console.log(res);
+    //   };
 
-    const updateUser = async () => {
-      const res = await api.put(`/api/learner/${id}/updatelearner`, userEdit);
-      console.log(res);
-    };
-
-    updateUser();
-    window.alert("Update successful!");
+    //   updateUser();
+    //   window.alert("Update successful!");
+   
   };
 
   const handleEdit = (e) => {
@@ -90,25 +87,21 @@ const UserProfile = () => {
             Password:
             <input
               type={showPassword ? "text" : "password"}
-              name="password"
+              name='password'
               value={userEdit.password}
               onChange={(e) => handleEdit(e)}
+              
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-            >
+            <button type="button" onClick={() => setShowPassword(!showPassword)}>
               {showPassword ? "Hide" : "Show"} Password
             </button>
           </label>
-          <br></br>
-          <button type="submit" style={{ margin: "0 auto" }}>
-            Save
-          </button>
+        <br></br>
+          <button type="submit" style={{margin: '0 auto'}}>Save</button>
         </div>
       </form>
     </div>
   );
 };
 
-export default UserProfile;
+export default InsProfile;

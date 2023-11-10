@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "./UserDropdown.css";
 import { Button } from "antd";
+import { Link } from "react-router-dom";
 function UserDropdown() {
   const userName = JSON.parse(localStorage.getItem("accessToken"))?.name;
   // const navigate = useNavigate();
-
+  const account = JSON.parse(localStorage.getItem(`accessToken`));
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const wallet = JSON.parse(localStorage.getItem("accessToken")).wallet;
@@ -39,8 +40,17 @@ function UserDropdown() {
           onMouseEnter={openDropdown}
           onMouseLeave={closeDropdown}
         >
-          <div style={{ fontSize: "18px" }} className="mb-2">
-            My Profile
+          <div>
+          
+            {account.learnerID ? (
+              <Link to={`/user/profile/${account.learnerID}`}>
+                Go to User Profile
+              </Link>
+            ) : (
+              <Link to={`/instructor/profile/${account.instructorID}`}>
+                Go to Instructor Profile
+              </Link>
+            )}
           </div>
           <div style={{ fontSize: "18px" }} className="mb-2">
             Wallet:{" "}
