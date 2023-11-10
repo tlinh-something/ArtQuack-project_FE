@@ -7,239 +7,292 @@ import { TbWorld } from "react-icons/tb";
 //import {FaShoppingCart} from "react-icons/fa";
 import { CheckOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
-import { Button, Table } from "antd";
-import { MailOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Table } from "antd";
 import { FaShoppingCart } from "react-icons/fa";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import swal from "sweetalert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { Modal } from "antd";
 import "../Test.css";
-  const RateCoursePage = () => {
-    const { id } = useParams();
-    const [course, setCourse] = useState([]);
-    const [chapter, setChapter] = useState([]);
-    const [description, setDescription] = useState('Tell us here!')
-    const [rateEdit,setRateEdit] = useState({
-      rate:"",
-      description:"",
-    })
-    const price = useRef();
-    const account = JSON.parse(localStorage.getItem("accessToken"));
-    useEffect(() => {
-      api.get(`/api/course/${id}/${account.learnerID}`).then((response) => {
-        setCourse(response.data);
-        price.current = response.data.price;
+import TextArea from "antd/es/input/TextArea";
+
+const RateCoursePage = () => {
+  const { id } = useParams();
+  const [course, setCourse] = useState([]);
+  const [chapter, setChapter] = useState([]);
+  const [description, setDescription] = useState("Tell us here!");
+  let data = 0;
+  const [enroll, setEnroll] = useState(0);
+  const fetchEnroll = async () => {
+    const response = await api
+      .get(`/api/enrollment/course/${id}/learner/${account.learnerID}`)
+      .then((res) => {
+        setEnroll(res.data);
+        if (res.data.length > 0) {
+          const enrollmentID = res.data[0].enrollmentID;
+          setEnroll(enrollmentID);
+        }
       });
-    }, [id]);
+  };
 
-    const fetchChapter = () => {
-      api.get(`/api/course/${id}/chapters`).then((response) => {
-        setChapter(response.data);
-        console.log(response.data);
-      });
-    };
+  const price = useRef();
+  const account = JSON.parse(localStorage.getItem("accessToken"));
+  useEffect(() => {
+    api.get(`/api/course/${id}/${account.learnerID}`).then((response) => {
+      setCourse(response.data);
+      price.current = response.data.price;
+    });
+  }, [id]);
 
-    useEffect(() => {
-      fetchChapter();
-    }, []);
+  const fetchChapter = () => {
+    api.get(`/api/course/${id}/chapters`).then((response) => {
+      setChapter(response.data);
+      console.log(response.data);
+    });
+  };
 
-    const scriptOptions = {
-      clientId:
-        "AS_kGKyi8kMb-m3z7SZocpoPihQLS9MGjq7QaYTG3N9b64CRE6mgcFs7HzH16qwPTblmix3ivoSPf0ly",
-    };
+  useEffect(() => {
+    fetchChapter();
+    fetchEnroll();
+  }, []);
 
-    const [rating, setRating] = useState(0);
-    const handleStarClick = (selectedRating) => {
-      setRating(selectedRating);
-      setRateEdit({ ...rateEdit, rate: selectedRating });
-      console.log("Selected rating:", selectedRating);
-    };
-   
+  const scriptOptions = {
+    clientId:
+      "AS_kGKyi8kMb-m3z7SZocpoPihQLS9MGjq7QaYTG3N9b64CRE6mgcFs7HzH16qwPTblmix3ivoSPf0ly",
+  };
 
-    const starStyle = {
-      color: "#e6e6e6",
-      fontSize: "35px",
-      cursor: "pointer",
-      transition: "color 0.2s ease",
-    };
+  const [rating, setRating] = useState(0);
+  const handleStarClick = (selectedRating) => {
+    setRating(selectedRating);
+    setRateEdit({ ...rateEdit, rate: selectedRating });
+    console.log("Selected rating:", selectedRating);
+  };
 
-    const activeStarStyle = {
-      color: "#ff9c1a",
-    };
+  const starStyle = {
+    color: "#e6e6e6",
+    fontSize: "35px",
+    cursor: "pointer",
+    transition: "color 0.2s ease",
+  };
 
-    const handleDescriptionChange=()=>{
+  const activeStarStyle = {
+    color: "#ff9c1a",
+    fontSize: "35px", // Keep the font size consistent with starStyle
+  };
+  const handleDescriptionChange = () => {};
+  const handleSubmit = async () => {
+    await api.put(`/api/enrollment/${enroll}/update`, rateEdit);
+    console.log(rateEdit);
+    window.alert("successful");
+  };
+  const [rateEdit, setRateEdit] = useState(
+    {
+      enrollmentID: 0,
+      rate: 0,
+      comment: " ",
+    },
+    []
+  );
+  const handleEdit = (e) => {
+    setRateEdit({
+      ...rateEdit,
+      comment: e.target.value,
+    });
+  };
 
-    }
-    const handleSubmit=async(e)=>{
-      
-        if(await api.put(`/api/learner/${account.learnerID}/course/${id}/enrollment`,rateEdit)) 
-        window.alert("oke");
-        
-    }
-    const handleEdit=(e)=>{
-      setRateEdit({...rateEdit,[e.target.description]:e.target.value});
-    }
-    return (
-      <div>
-        <RateCourseWrapper>
-          <div className="course-intro mx-auto grid">
-            <div className="course-img">
-              <img
-                src={
-                  course.avatar ||
-                  "https://th.bing.com/th/id/R.34852e2b6e117af5cbb1af009319e292?rik=uXyTqlmPFqtFsQ&pid=ImgRaw&r=0"
-                }
-                alt={course.name}
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  useEffect(() => {
+    setRateEdit({ ...rateEdit, enrollmentID: enroll });
+  }, [enroll]);
+  const handleOk = () => {
+    handleSubmit();
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div>
+      <RateCourseWrapper>
+        <div className="course-intro mx-auto grid">
+          <div className="course-img">
+            <img
+              src={
+                course.avatar ||
+                "https://th.bing.com/th/id/R.34852e2b6e117af5cbb1af009319e292?rik=uXyTqlmPFqtFsQ&pid=ImgRaw&r=0"
+              }
+              alt={course.name}
+            />
+          </div>
+          <div className="course-details">
+            <div className="course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block">
+              {course.cateName}
+            </div>
+            <div className="course-head">
+              <h5>{course.name}</h5>
+            </div>
+            <div className="course-body">
+              <p className="course-para fs-18">{course.description}</p>
+              <div className="course-rating flex">
+                <span className="rating-star-val fw-8 fs-16">{4}</span>
+                <StarRating rating_star={4} />
+                <span className="rating-count fw-5 fs-14">({4})</span>
+                <span className="students-count fs-14">{10}</span>
+              </div>
+
+              <ul className="course-info">
+                <li>
+                  <span className="fs-14">
+                    Created by{" "}
+                    <span className="fw-6 opacity-08">
+                      {course.instructorName}
+                    </span>
+                  </span>
+                </li>
+                <li className="flex">
+                  <span>
+                    <MdInfo />
+                  </span>
+                  <span className="fs-14 course-info-txt fw-5">
+                    Last updated 20/11/2023
+                  </span>
+                </li>
+                <li className="flex">
+                  <span>
+                    <TbWorld />
+                  </span>
+                  <span className="fs-14 course-info-txt fw-5">English</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="course-foot">
+              <div className="course-price">
+                <span className="new-price fs-26 fw-8">${course.price}</span>
+              </div>
+            </div>
+
+            <div className="course-btn">
+              {!course.enrolled ? (
+                <PayPalScriptProvider options={scriptOptions}>
+                  <PayPalButtons
+                    createOrder={(data, actions) => {
+                      console.log("Creating order:", data);
+
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              value: price.current, // Set the payment amount here
+                            },
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={async (data, actions) => {
+                      // handleEnroll();
+                      const response = await api.post(
+                        `/api/learner/${account.learnerID}/course/${id}/enrollment`,
+                        {
+                          enrollmentID: 0,
+                          rate: 0,
+                          comment: "string",
+                          date: new Date().toISOString(),
+                          status: true,
+                        }
+                      );
+                      swal(
+                        "Good Job",
+                        "Successfully enroll to course",
+                        "success"
+                      );
+                    }}
+                  />
+                </PayPalScriptProvider>
+              ) : (
+                <Link
+                  to={`/learning/${id}`}
+                  className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+                  style={{
+                    backgroundColor: "var(--clr-orange)",
+                  }}
+                >
+                  <FaShoppingCart /> Learn
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div></div>
+      </RateCourseWrapper>
+
+      <Button type="primary" onClick={showModal}>
+        Open Modal
+      </Button>
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form onSubmit={handleSubmit}>
+          <div className="rating-box">
+            <Form.Item>
+              <header>How was your experience of this course?</header>
+              <div className="stars">
+                <FontAwesomeIcon
+                  icon={faStar}
+                  style={rating >= 1 ? activeStarStyle : starStyle}
+                  onClick={() => handleStarClick(1)}
+                />
+                <FontAwesomeIcon
+                  icon={faStar}
+                  style={rating >= 2 ? activeStarStyle : starStyle}
+                  onClick={() => handleStarClick(2)}
+                />
+                <FontAwesomeIcon
+                  icon={faStar}
+                  style={rating >= 3 ? activeStarStyle : starStyle}
+                  onClick={() => handleStarClick(3)}
+                />
+                <FontAwesomeIcon
+                  icon={faStar}
+                  style={rating >= 4 ? activeStarStyle : starStyle}
+                  onClick={() => handleStarClick(4)}
+                />
+                <FontAwesomeIcon
+                  icon={faStar}
+                  style={rating >= 5 ? activeStarStyle : starStyle}
+                  onClick={() => handleStarClick(5)}
+                />
+              </div>
+            </Form.Item>
+            <div>
+              <header>Write your comment</header>
+
+              <input
+                type="text"
+                id="comment"
+                name="comment"
+                value={rateEdit.comment}
+                onChange={(e) => handleEdit(e)}
               />
             </div>
-            <div className="course-details">
-              <div className="course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block">
-                {course.cateName}
-              </div>
-              <div className="course-head">
-                <h5>{course.name}</h5>
-              </div>
-              <div className="course-body">
-                <p className="course-para fs-18">{course.description}</p>
-                <div className="course-rating flex">
-                  <span className="rating-star-val fw-8 fs-16">{4}</span>
-                  <StarRating rating_star={4} />
-                  <span className="rating-count fw-5 fs-14">({4})</span>
-                  <span className="students-count fs-14">{10}</span>
-                </div>
-
-                <ul className="course-info">
-                  <li>
-                    <span className="fs-14">
-                      Created by{" "}
-                      <span className="fw-6 opacity-08">
-                        {course.instructorName}
-                      </span>
-                    </span>
-                  </li>
-                  <li className="flex">
-                    <span>
-                      <MdInfo />
-                    </span>
-                    <span className="fs-14 course-info-txt fw-5">
-                      Last updated 20/11/2023
-                    </span>
-                  </li>
-                  <li className="flex">
-                    <span>
-                      <TbWorld />
-                    </span>
-                    <span className="fs-14 course-info-txt fw-5">English</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="course-foot">
-                <div className="course-price">
-                  <span className="new-price fs-26 fw-8">${course.price}</span>
-                </div>
-              </div>
-
-              <div className="course-btn">
-                {!course.enrolled ? (
-                  <PayPalScriptProvider options={scriptOptions}>
-                    <PayPalButtons
-                      createOrder={(data, actions) => {
-                        console.log("Creating order:", data);
-
-                        return actions.order.create({
-                          purchase_units: [
-                            {
-                              amount: {
-                                value: price.current, // Set the payment amount here
-                              },
-                            },
-                          ],
-                        });
-                      }}
-                      onApprove={async (data, actions) => {
-                        // handleEnroll();
-                        const response = await api.post(
-                          `/api/learner/${account.learnerID}/course/${id}/enrollment`,
-                          {
-                            enrollmentID: 0,
-                            rate: 0,
-                            comment: "string",
-                            date: new Date().toISOString(),
-                            status: true,
-                          }
-                        );
-                        swal(
-                          "Good Job",
-                          "Successfully enroll to course",
-                          "success"
-                        );
-                      }}
-                    />
-                  </PayPalScriptProvider>
-                ) : (
-                  <Link
-                    to={`/learning/${id}`}
-                    className="add-to-cart-btn d-inline-block fw-7 bg-orange"
-                    style={{
-                      backgroundColor: "var(--clr-orange)",
-                    }}
-                  >
-                    <FaShoppingCart /> Learn
-                  </Link>
-                )}
-              </div>
-            </div>
           </div>
-
-          <div></div>
-        </RateCourseWrapper>
-        <div className="rating-box">
-          <header>How was your experience of this course?</header>
-          <div className="stars">
-            <FontAwesomeIcon
-              icon={faStar}
-              style={rating >= 1 ? activeStarStyle : starStyle}
-              onClick={() => handleStarClick(1)}
-            />
-            <FontAwesomeIcon
-              icon={faStar}
-              style={rating >= 2 ? activeStarStyle : starStyle}
-              onClick={() => handleStarClick(2)}
-            />
-            <FontAwesomeIcon
-              icon={faStar}
-              style={rating >= 3 ? activeStarStyle : starStyle}
-              onClick={() => handleStarClick(3)}
-            />
-            <FontAwesomeIcon
-              icon={faStar}
-              style={rating >= 4 ? activeStarStyle : starStyle}
-              onClick={() => handleStarClick(4)}
-            />
-            <FontAwesomeIcon
-              icon={faStar}
-              style={rating >= 5 ? activeStarStyle : starStyle}
-              onClick={() => handleStarClick(5)}
-            
-            />
-          </div>
-          <div>
-              <header>Write your description</header>
-              <input
-              type="text"
-              id="description"
-              name="desription"
-              value={rateEdit.description}
-              onChange={(e) => handleEdit(e)}
-            />
-          </div>
-          <button onClick={handleSubmit}>Submit</button>
-        </div>
-      </div>
-    );
-  };
+        </Form>
+      </Modal>
+    </div>
+  );
+};
 
 const RateCourseWrapper = styled.div`
   background: var(--clr-dark);

@@ -17,7 +17,6 @@ import {
 } from "react-icons/fa";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import swal from "sweetalert";
-
 const SingleCoursePage = () => {
   const { id } = useParams();
   const [course, setCourse] = useState([]);
@@ -26,6 +25,14 @@ const SingleCoursePage = () => {
   const [render, setRender] = useState(0);
   const account = JSON.parse(localStorage.getItem("accessToken"));
 
+  const [review,setReview] = useState([]);
+  const [enroll,setEnroll] = useState([]);
+  const fetchReview = () =>{
+    api.get(`api/enrollment/course/${id}`).then(res=>{
+      setReview(res.data)
+    })
+  }
+ 
   useEffect(() => {
     api
       .get(`/api/course/${id}/${account.learnerID ? account.learnerID : 0}`)
@@ -41,11 +48,18 @@ const SingleCoursePage = () => {
       console.log(response.data);
     });
   };
-
+  const fetchEnroll = () =>{
+    api.get(`/api/enrollment/course/${id}`).then((response)=>{
+      setEnroll(response.data);
+    })
+  }
+  
   useEffect(() => {
     fetchChapter();
+    fetchReview();
+    fetchEnroll();
   }, []);
-
+  console.log(enroll);  
   function formatDate(timestamp, format) {
     const date = new Date(timestamp);
 
@@ -229,6 +243,34 @@ const SingleCoursePage = () => {
               })}
           </ul>
         </div>
+        <div className="Table">
+
+        
+        <Table
+        pagination={false}
+        columns={[
+          {
+            title:"Learner's name",
+            dataIndex:"learnerName",
+            key:"learnerName"
+          },
+          {
+            title: "",
+            dataIndex: "rate",
+            key: "rate",
+            render: (rate) => <Rate disabled defaultValue={rate} />,
+          },
+          {
+            title: "Comment",
+            dataIndex:"comment",
+            key:"comment",
+          }
+        ]}
+        dataSource={review}
+        size="small"
+        style={{ tableLayout: 'fixed' }}
+      />
+      </div>
       </div>
     </SingleCourseWrapper>
   );
