@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 const Course = ({ course, type }) => {
   const account = JSON.parse(localStorage.getItem(`accessToken`));
   const [enroll, setEnroll] = useState(false);
-  const fetchEnroll = async() => {
+  const fetchEnroll = async () => {
     await api
       .get(`/api/course/${course.courseID}/${account.learnerID}`)
       .then((response) => {
@@ -18,7 +18,7 @@ const Course = ({ course, type }) => {
   };
 
   useEffect(() => {
-    fetchEnroll()
+    fetchEnroll();
   }, [course.courseID]);
 
   return (
@@ -51,7 +51,33 @@ const Course = ({ course, type }) => {
         </div>
       </div>
       <div className="item-btns flex">
-        <Link
+        {enroll.enrolled ? (
+          <Link
+            to={
+              // type === "mycourse" ?
+              `/learning/${course.courseID}`
+              // : `/courses/${course.courseID}`
+            }
+            className="item-btn see-details-btn"
+            style={{ margin: "0 auto" }}
+          >
+            Learn
+          </Link>
+        ) : (
+          <Link
+            to={
+              // type === "mycourse" ?
+              //   `/learning/${course.courseID}`
+              `/courses/${course.courseID}`
+            }
+            className="item-btn see-details-btn"
+            style={{ margin: "0 auto" }}
+          >
+            See details
+          </Link>
+        )}
+
+        {/* <Link
           to={
             type === "mycourse"
               ? `/learning/${course.courseID}`
@@ -61,20 +87,17 @@ const Course = ({ course, type }) => {
           style={{ margin: "0 auto" }}
         >
           See details
-        </Link>
+        </Link> */}
 
-          {account.learnerID && enroll.enrolled ? (
-            <Link
-              to={`/user/rate/${course.courseID}`}
-              className="item-btn see-details-btn"
-              style={{ margin: "0 auto" }}
-            >
-              Review this course
-            </Link>
-          ) : null}
-
-        {/* )} */}
-        {/* <Link to = "/cart" className='item-btn add-to-cart-btn' onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}>Add to cart</Link> */}
+        {account.learnerID && enroll.enrolled ? (
+          <Link
+            to={`/user/rate/${course.courseID}`}
+            className="item-btn see-details-btn"
+            style={{ margin: "0 auto" }}
+          >
+            Review this course
+          </Link>
+        ) : null}
       </div>
     </CourseCard>
   );

@@ -5,10 +5,10 @@ import StarRating from "../StarRating";
 import { MdInfo } from "react-icons/md";
 import { TbWorld } from "react-icons/tb";
 //import {FaShoppingCart} from "react-icons/fa";
-import { CheckOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
-import { Button, Form, Input, Table } from "antd";
-import { FaShoppingCart } from "react-icons/fa";
+import { Button, Form, Input, Table, message } from "antd";
+import { FaBookOpen } from "react-icons/fa";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import swal from "sweetalert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,7 +21,8 @@ const RateCoursePage = () => {
   const { id } = useParams();
   const [course, setCourse] = useState([]);
   const [chapter, setChapter] = useState([]);
-  const [description, setDescription] = useState("Tell us here!");
+  // const [description, setDescription] = useState("Tell us here!");
+
   let data = 0;
   const [enroll, setEnroll] = useState(0);
   const fetchEnroll = async () => {
@@ -80,26 +81,51 @@ const RateCoursePage = () => {
     color: "#ff9c1a",
     fontSize: "35px", // Keep the font size consistent with starStyle
   };
-  const handleDescriptionChange = () => {};
+
   const handleSubmit = async () => {
     await api.put(`/api/enrollment/${enroll}/update`, rateEdit);
     console.log(rateEdit);
-    window.alert("successful");
+    message.success('You reated successfully')
   };
   const [rateEdit, setRateEdit] = useState(
     {
       enrollmentID: 0,
       rate: 0,
       comment: " ",
-    },
-    []
+    },[]
   );
+
   const handleEdit = (e) => {
     setRateEdit({
       ...rateEdit,
       comment: e.target.value,
     });
   };
+
+  function formatDate(timestamp, format) {
+    const date = new Date(timestamp);
+
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    };
+
+    const formattedDate = date.toLocaleString("vi-VN", options);
+
+    const formatMapping = {
+      "dd/MM/yyyy": formattedDate,
+      "MM/dd/yyyy": formattedDate,
+      "yyyy-MM-dd": formattedDate,
+      "HH:mm:ss": formattedDate.slice(11),
+      // Add more formats if needed
+    };
+    return formatMapping[format] || "Invalid Format";
+  }
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -110,6 +136,7 @@ const RateCoursePage = () => {
   useEffect(() => {
     setRateEdit({ ...rateEdit, enrollmentID: enroll });
   }, [enroll]);
+
   const handleOk = () => {
     handleSubmit();
     setIsModalOpen(false);
@@ -162,7 +189,7 @@ const RateCoursePage = () => {
                     <MdInfo />
                   </span>
                   <span className="fs-14 course-info-txt fw-5">
-                    Last updated 20/11/2023
+                    Last updated {formatDate(course.upload_date, "dd/MM/yyyy")}
                   </span>
                 </li>
                 <li className="flex">
@@ -219,33 +246,33 @@ const RateCoursePage = () => {
                 </PayPalScriptProvider>
               ) : (
                 <Link
-                  to={`/learning/${id}`}
+                  // to={`/learning/${id}`}
+                  onClick={showModal}
                   className="add-to-cart-btn d-inline-block fw-7 bg-orange"
                   style={{
                     backgroundColor: "var(--clr-orange)",
                   }}
                 >
-                  <FaShoppingCart /> Learn
+                  <EditOutlined /> Review
                 </Link>
               )}
             </div>
           </div>
         </div>
-
-        <div></div>
       </RateCourseWrapper>
 
-      <Button type="primary" onClick={showModal}>
+      {/* <Button type="primary" className="mt-5" onClick={showModal}>
         Open Modal
-      </Button>
+      </Button> */}
+
       <Modal
-        title="Basic Modal"
+        title="Give me your feel about the course"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form onSubmit={handleSubmit}>
-          <div className="rating-box">
+        <Form labelCol={{span:24}} onSubmit={handleSubmit}>
+          {/* <div className="rating-box"> */}
             <Form.Item>
               <header>How was your experience of this course?</header>
               <div className="stars">
@@ -276,18 +303,22 @@ const RateCoursePage = () => {
                 />
               </div>
             </Form.Item>
-            <div>
-              <header>Write your comment</header>
-
+            <Form.Item 
+            label='Write your comment' name={"comment"}>
+                  <TextArea value={rateEdit.comment}
+                onChange={(e) => handleEdit(e)}/>
+            </Form.Item>
+            {/* <div> */}
+              {/* <header>Write your comment</header>
               <input
                 type="text"
                 id="comment"
                 name="comment"
                 value={rateEdit.comment}
                 onChange={(e) => handleEdit(e)}
-              />
-            </div>
-          </div>
+              /> */}
+            {/* </div> */}
+          {/* </div> */}
         </Form>
       </Modal>
     </div>

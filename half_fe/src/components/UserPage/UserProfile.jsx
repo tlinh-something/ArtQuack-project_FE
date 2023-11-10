@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../config/axios";
-import '../UserProfile.css'
+import "../UserProfile.css";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -17,8 +17,8 @@ const UserProfile = () => {
     name: "",
     email: "",
     password: "",
-    status:"",
-    role:"",
+    status: "",
+    role: "",
   });
 
   useEffect(() => {
@@ -27,31 +27,30 @@ const UserProfile = () => {
         const userData = res.data;
 
         setUserEdit({
-            learnerID:userData.learnerID,
+          learnerID: userData.learnerID,
           name: userData.name,
           email: userData.email,
           password: userData.password,
-        status:userData.status,
-        role:userData.role
+          status: userData.status,
+          role: userData.role,
         });
       });
     };
 
     fetchUser();
   }, [id]);
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(userEdit);
-   
-      const updateUser = async() => {
-        const res =await api.put(`/api/learner/${id}/updatelearner`, userEdit);
-        console.log(res);
-      };
 
-      updateUser();
-      window.alert("Update successful!");
-   
+    const updateUser = async () => {
+      const res = await api.put(`/api/learner/${id}/updatelearner`, userEdit);
+      console.log(res);
+    };
+
+    updateUser();
+    window.alert("Update successful!");
   };
 
   const handleEdit = (e) => {
@@ -87,17 +86,21 @@ const UserProfile = () => {
             Password:
             <input
               type={showPassword ? "text" : "password"}
-              name='password'
+              name="password"
               value={userEdit.password}
               onChange={(e) => handleEdit(e)}
-              
             />
-            <button type="button" onClick={() => setShowPassword(!showPassword)}>
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
               {showPassword ? "Hide" : "Show"} Password
             </button>
           </label>
-        <br></br>
-          <button type="submit" style={{margin: '0 auto'}}>Save</button>
+          <br></br>
+          <button type="submit" style={{ margin: "0 auto" }}>
+            Save
+          </button>
         </div>
       </form>
     </div>

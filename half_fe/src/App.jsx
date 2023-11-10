@@ -25,7 +25,7 @@ import UserHomePage from "./components/UserPage/UserHomePage";
 import UserCourse from "./components/UserPage/UserCourse";
 import NavBarNew from "./components/navbar/NewNav";
 // import AllCourse from "./components/UserPage/AllCourse";
-import AllCourse from "./components/UserPage/AllCourse";
+// import AllCourse from "./components/UserPage/AllCourse";
 import SubmissionPageNew from "./components/InstructorFunction/SubmissionPageNew";
 import SubmitPageDetail from "./components/InstructorFunction/SubmitPageDetail";
 import ViewSubmission from "./components/studentFunction/ViewSubmission";
@@ -33,6 +33,8 @@ import ViewSubmitDetail from "./components/studentFunction/ViewSubmitDetail";
 import InstructorPage from "./components/InstructorFunction/InstructorPage";
 import UserRate from "./components/UserPage/UserRate";
 import { ConfigProvider } from "antd";
+import LearningPageNew from "./components/studentFunction/learningPageNew";
+import LearningPageDetail from "./components/studentFunction/LearningPageDetails";
 
 function App() {
   return (
@@ -75,6 +77,9 @@ function App() {
         <Route path="/instructor/item/:id" element={<ViewItem />} />
         <Route path="/instructor/additem/:id" element={<AddItem />} />
         <Route path="/learning/:id" element={<LearningPage />} />
+        {/* <Route path="/learning/:id" element={<LearningPageNew />} >
+          <Route path=":itemID" element={<LearningPageDetail />}/>
+        </Route> */}
         <Route path="/enroll" element={<EnrollCourse />} />
         <Route path="/instructor/submission" element={<SubmissionPageNew />}>
           <Route path=":id" element={<SubmitPageDetail />} />

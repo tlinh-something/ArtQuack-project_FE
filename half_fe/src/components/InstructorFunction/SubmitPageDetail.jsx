@@ -107,6 +107,7 @@ const SubmitPageDetail = () => {
     const onChangeInput = (newValue) => {
       onChange(newValue);
     };
+    
     return (
       <Row>
         <Col span={12}>

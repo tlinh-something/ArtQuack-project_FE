@@ -60,6 +60,7 @@ const SingleCoursePage = () => {
     fetchEnroll();
   }, []);
   console.log(enroll);  
+  
   function formatDate(timestamp, format) {
     const date = new Date(timestamp);
 

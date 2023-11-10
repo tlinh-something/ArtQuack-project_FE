@@ -11,29 +11,13 @@ const ViewSubmitDetail = () => {
   const params = useParams();
   const [submit, setSubmit] = useState([]);
   const account = JSON.parse(localStorage.getItem('accessToken'))
-//   const [currentID, setCurrentID] = useState(null);
-//   const [current, setCurrent] = useState({});
-//   const [form] = useForm();
 
   const fetchSubmit = () => {
-    // api.get(`/api/Item/${params.id}/completes`).then((response) => {
     api.get(`/api/Learner/${account.learnerID}/Item/${params.id}/complete`).then((response) => {
       setSubmit(response.data);
       console.log(response.data);
     });
   };
-
-//   useEffect(() => {
-//     console.log(currentID);
-//     if (currentID && currentID !== 0) {
-//       api.get(`/api/complete/${currentID}`).then((response) => {
-//         form.setFieldsValue(response.data);
-//         setCurrent(response.data);
-//       });
-//     } else {
-//       setCurrent(null);
-//     }
-//   }, [currentID]);
 
   function formatDate(timestamp, format) {
     const date = new Date(timestamp);

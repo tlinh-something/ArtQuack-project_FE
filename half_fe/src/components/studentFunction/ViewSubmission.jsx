@@ -50,12 +50,12 @@ const ViewSubmission = () => {
               course.courseName,
               `course-${course.courseID}`,
               <PlusOutlined />,
-              course.chapters.map((chapter) => {
+              course.chapters.filter((item) => item.status).map((chapter) => {
                 return getItems(
                   chapter.chapterName,
                   `chapter-${chapter.chapterID}`,
                   <MinusOutlined />,
-                  chapter.items.map((item) => {
+                  chapter.items.filter((item) => item.status).map((item) => {
                     return getItems(
                       item.itemName,
                       `${item.itemID}`,
