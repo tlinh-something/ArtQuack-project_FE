@@ -28,7 +28,7 @@ function UserDropdown() {
         style={{
           border: "1px solid #000",
           padding: "0 10px",
-          width: "150px",
+          width: "180px",
           borderRadius: "30px",
         }}
       >
@@ -44,23 +44,20 @@ function UserDropdown() {
           
             {account.learnerID ? (
               <Link to={`/user/profile/${account.learnerID}`}>
-                Go to User Profile
+                My Profile
               </Link>
             ) : (
               <Link to={`/instructor/profile/${account.instructorID}`}>
-                Go to Instructor Profile
+                My Profile
               </Link>
             )}
           </div>
           <div style={{ fontSize: "18px" }} className="mb-2">
             Wallet:{" "}
             <span style={{ color: "orange", fontWeight: "600" }}>
-              {wallet.balance}
+              {wallet === null ? 0 : wallet.balance}
             </span>
           </div>
-          {/* <div>
-            Wallet: <span style={{ color: "orange" }}>{wallet.balance}</span>
-          </div> */}
           <div>
             <Button
               onClick={() => {

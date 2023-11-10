@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../config/axios";
-<<<<<<< HEAD
-import "../UserProfile.css";
-=======
 import './UserProfile.css'
->>>>>>> 4a2e7d45eb548a9192f083737915621a1e102b28
 
 const UserProfile = () => {
   const { id } = useParams();
