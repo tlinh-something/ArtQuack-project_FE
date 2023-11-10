@@ -1,241 +1,404 @@
-import  {useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useCoursesContext } from '../context/course_context';
-import StarRating from '../StarRating';
-import {MdInfo} from "react-icons/md";
-import {TbWorld} from "react-icons/tb";
+import StarRating from "../StarRating";
+import { MdInfo } from "react-icons/md";
+import { TbWorld } from "react-icons/tb";
 //import {FaShoppingCart} from "react-icons/fa";
-import {RiClosedCaptioningFill} from "react-icons/ri";
-import {BiCheck} from "react-icons/bi";
-import {Link} from "react-router-dom";
-import { useCartContext } from '../context/cart_context';
-
+import { CheckOutlined } from "@ant-design/icons";
+import api from "../../config/axios";
+import { Rate, Table } from "antd";
+import { MailOutlined } from "@ant-design/icons";
+import {
+  FaBook,
+  FaBookOpen,
+  FaBookReader,
+  FaShoppingCart,
+} from "react-icons/fa";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import swal from "sweetalert";
+import '../Test.css'
+import { response } from "express";
 const SingleCoursePage = () => {
-  const {id} = useParams();
-  const {fetchSingleCourse, single_course} = useCoursesContext();
-  const {addToCart} = useCartContext();
-
+  const { id } = useParams();
+  const [course, setCourse] = useState([]);
+  const [chapter, setChapter] = useState([]);
+  const price = useRef();
+  const [render, setRender] = useState(0);
+  const account = JSON.parse(localStorage.getItem("accessToken"));
+  const [review,setReview] = useState([]);
+  const [enroll,setEnroll] = useState([]);
+  const fetchReview = () =>{
+    api.get(`api/enrollment/course/${id}`).then(res=>{
+      setReview(res.data)
+    })
+  }
+ 
   useEffect(() => {
-    fetchSingleCourse(id);
-  }, []);
+    api
+      .get(`/api/course/${id}/${account.learnerID ? account.learnerID : 0}`)
+      .then((response) => {
+        setCourse(response.data);
+        price.current = response.data.price;
+      });
+  }, [id, render]);
 
-  const {id: courseID, category, image, course_name, description, rating_count, rating_star, students, creator, updated_date, lang, actual_price, discounted_price, what_you_will_learn: learnItems, content} = single_course;
+  const fetchChapter = () => {
+    api.get(`/api/course/${id}/chapters`).then((response) => {
+      setChapter(response.data);
+      console.log(response.data);
+    });
+  };
+  const fetchEnroll = () =>{
+    api.get(`/api/enrollment/course/${id}`).then((response)=>{
+      setEnroll(response.data);
+    })
+  }
+  
+  useEffect(() => {
+    fetchChapter();
+    fetchReview();
+    fetchEnroll();
+  }, []);
+  console.log(enroll);  
+  function formatDate(timestamp, format) {
+    const date = new Date(timestamp);
+
+    const options = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    };
+
+    const formattedDate = date.toLocaleString("vi-VN", options);
+
+    const formatMapping = {
+      "dd/MM/yyyy": formattedDate,
+      "MM/dd/yyyy": formattedDate,
+      "yyyy-MM-dd": formattedDate,
+      "HH:mm:ss": formattedDate.slice(11),
+      // Add more formats if needed
+    };
+    return formatMapping[format] || "Invalid Format";
+  }
+
+  const scriptOptions = {
+    clientId:
+      "AS_kGKyi8kMb-m3z7SZocpoPihQLS9MGjq7QaYTG3N9b64CRE6mgcFs7HzH16qwPTblmix3ivoSPf0ly",
+  };
 
   return (
     <SingleCourseWrapper>
-      <div className='course-intro mx-auto grid'>
-        <div className='course-img'>
-          <img src = {image} alt = {course_name} />
+      <div className="course-intro mx-auto grid">
+        <div className="course-img">
+          <img
+            src={
+              course.avatar ||
+              "https://th.bing.com/th/id/R.34852e2b6e117af5cbb1af009319e292?rik=uXyTqlmPFqtFsQ&pid=ImgRaw&r=0"
+            }
+            alt={course.name}
+          />
         </div>
-        <div className='course-details'>
-          <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{category}</div>
-          <div className='course-head'>
-            <h5>{course_name}</h5>
+        <div className="course-details">
+          <div className="course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block">
+            {course.cateName}
           </div>
-          <div className='course-body'>
-            <p className='course-para fs-18'>{description}</p>
-            <div className='course-rating flex'>
-              <span className='rating-star-val fw-8 fs-16'>{rating_star}</span>
-              <StarRating rating_star={rating_star} />
-              <span className='rating-count fw-5 fs-14'>({rating_count})</span>
-              <span className='students-count fs-14'>{students}</span>
+          <div className="course-head">
+            <h5>{course.name}</h5>
+          </div>
+          <div className="course-body">
+            <p className="course-para fs-18">{course.description}</p>
+            <div className="course-rating flex">
+              <span className="rating-star-val fw-8 fs-16">{4}</span>
+              <StarRating rating_star={4} />
+              <span className="rating-count fw-5 fs-14">({4})</span>
+              <span className="students-count fs-14">{10}</span>
             </div>
 
-            <ul className='course-info'>
+            <ul className="course-info">
               <li>
-                <span className='fs-14'>Created by <span className='fw-6 opacity-08'>{creator}</span></span>
+                <span className="fs-14">
+                  Created by{" "}
+                  <span className="fw-6 opacity-08">
+                    {course.instructorName}
+                  </span>
+                </span>
               </li>
-              <li className='flex'>
-                <span><MdInfo /></span>
-                <span className='fs-14 course-info-txt fw-5'>Last updated {updated_date}</span>
+              <li className="flex">
+                <span>
+                  <MdInfo />
+                </span>
+                <span className="fs-14 course-info-txt fw-5">
+                  Last updated {formatDate(course.upload_date, "dd/MM/yyyy")}
+                </span>
               </li>
-              <li className='flex'>
-                <span><TbWorld /></span>
-                <span className='fs-14 course-info-txt fw-5'>{lang}</span>
-              </li>
-              <li className='flex'>
-                <span><RiClosedCaptioningFill /></span>
-                <span className='fs-14 course-info-txt fw-5'>{lang} [Auto]</span>
+              <li className="flex">
+                <span>
+                  <TbWorld />
+                </span>
+                <span className="fs-14 course-info-txt fw-5">English</span>
               </li>
             </ul>
           </div>
 
-          <div className='course-foot'>
-            <div className='course-price'>
-              <span className='new-price fs-26 fw-8'>${discounted_price}</span>
-              <span className='old-price fs-26 fw-6'>${actual_price}</span>
+          <div className="course-foot">
+            <div className="course-price">
+              <span className="new-price fs-26 fw-8">${course.price}</span>
             </div>
           </div>
 
-          <div className='course-btn'>
-            {/* <Link to = "/cart" className='add-to-cart-btn d-inline-block fw-7 bg-purple' onClick={() => addToCart(courseID, image, course_name, creator, discounted_price, category)}>
-              <FaShoppingCart /> Add to cart
-            </Link> */}
-            <Link to="/enroll" className='add-to-cart-btn d-inline-block fw-7 bg-orange'
-            onClick={() => addToCart(courseID, image, course_name, creator, discounted_price, category)}>Enroll</Link>
+          <div className="course-btn">
+            {!course.enrolled && account.learnerID ? (
+              <PayPalScriptProvider options={scriptOptions}>
+                <PayPalButtons
+                  createOrder={(data, actions) => {
+                    console.log("Creating order:", data);
+
+                    return actions.order.create({
+                      purchase_units: [
+                        {
+                          amount: {
+                            value: price.current, // Set the payment amount here
+                          },
+                        },
+                      ],
+                    });
+                  }}
+                  onApprove={async (data, actions) => {
+                    // handleEnroll();
+                    const response = await api.post(
+                      `/api/learner/${account.learnerID}/course/${id}/enrollment`,
+                      {
+                        enrollmentID: 0,
+                        rate: 0,
+                        comment: "string",
+                        date: new Date().toISOString(),
+                        status: true,
+                      }
+                    );
+                    swal(
+                      "Good Job",
+                      "Successfully enroll to course",
+                      "success"
+                    );
+                    setRender(render + 1);
+                  }}
+                />
+              </PayPalScriptProvider>
+            ) : account.learnerID ? (
+              <Link
+                to={`/learning/${id}`}
+                className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+                style={{
+                  backgroundColor: "var(--clr-orange)",
+                }}
+              >
+                <FaBookOpen /> Learn
+              </Link>
+            ) : null}
           </div>
         </div>
       </div>
 
-      <div className='course-full bg-white text-dark'>
-        <div className='course-learn mx-auto'>
-          <div className='course-sc-title'>What you will learn</div>
-          <ul className='course-learn-list grid'>
-            {
-              learnItems && learnItems.map((learnItem, idx) => {
+      <div className="course-full bg-white text-dark">
+        <div className="course-learn mx-auto">
+          <div className="course-sc-title">What you will learn</div>
+          <ul className="course-learn-list grid">
+            <li>
+              <span>
+                <CheckOutlined />
+              </span>
+              <span className="fs-16 fw-5 opacity-09">
+                {course.description}
+              </span>
+            </li>
+
+            {/* {learnItems &&
+              learnItems.map((learnItem, idx) => {
                 return (
-                  <li key = {idx}>
-                    <span><BiCheck /></span>
-                    <span className='fs-14 fw-5 opacity-09'>{learnItem}</span>
+                  <li key={idx}>
+                    <span>
+                      <BiCheck />
+                    </span>
+                    <span className="fs-14 fw-5 opacity-09">{learnItem}</span>
                   </li>
-                )
-              })
-            }
+                );
+              })} */}
           </ul>
         </div>
 
-        <div className='course-content mx-auto'>
-          <div className='course-sc-title'>Course content</div>
-          <ul className='course-content-list'>
-            {
-              content && content.map((contentItem, idx) => {
+        <div className="course-content mx-auto">
+          <div className="course-sc-title">Course content</div>
+          <ul className="course-content-list">
+            {chapter &&
+              chapter.map((chapter) => {
                 return (
-                  <li key = {idx}>
-                    <span>{contentItem}</span>
+                  <li key={chapter.chapterID}>
+                    <span>{chapter.chapterName}</span>
                   </li>
-                )
-              })
-            }
+                );
+              })}
           </ul>
         </div>
+        <div className="Table">
+
+        
+        <Table
+        pagination={false}
+        columns={[
+          {
+            title:"Learner's name",
+            dataIndex:"learnerName",
+            key:"learnerName"
+          },
+          {
+            title: "",
+            dataIndex: "rate",
+            key: "rate",
+            render: (rate) => <Rate disabled defaultValue={rate} />,
+          },
+          {
+            title: "Comment",
+            dataIndex:"comment",
+            key:"comment",
+          }
+        ]}
+        dataSource={review}
+        size="small"
+        style={{ tableLayout: 'fixed' }}
+      />
+      </div>
       </div>
     </SingleCourseWrapper>
-  )
-}
+  );
+};
 
 const SingleCourseWrapper = styled.div`
   background: var(--clr-dark);
   color: var(--clr-white);
 
-  .course-intro{
+  .course-intro {
     padding: 40px 16px;
     max-width: 992px;
 
-    .course-details{
+    .course-details {
       padding-top: 20px;
     }
 
-    .course-category{
+    .course-category {
       padding: 0px 8px;
       border-radius: 6px;
     }
 
-    .course-head{
-      font-size: 38px;
+    .course-head {
+      font-size: 50px;
       line-height: 1.2;
       padding: 12px 0 0 0;
     }
-    .course-para{
+    .course-para {
       padding: 12px 0;
     }
-    .rating-star-val{
+    .rating-star-val {
       margin-right: 7px;
       padding-bottom: 5px;
       color: var(--clr-orange);
     }
-    .students-count{
+    .students-count {
       margin-left: 8px;
     }
-    .rating-count{
+    .rating-count {
       margin-left: 6px;
       color: #d097f6;
     }
-    .course-info{
-      li{
-        margin-bottom: 2px;
-        &:nth-child(2){
+    .course-info {
+      li {
+        &:nth-child(2) {
           margin-top: 10px;
         }
       }
-      .course-info-txt{
+      .course-info-txt {
         text-transform: capitalize;
         margin-left: 8px;
         margin-bottom: 4px;
       }
     }
-    .course-price{
-      margin-top: 12px;
-      .old-price{
+    .course-price {
+      .old-price {
         color: #eceb98;
         text-decoration: line-through;
         margin-left: 10px;
       }
     }
-    .course-btn{
+    .course-btn {
       margin-top: 16px;
-      .add-to-cart-btn{
+      .add-to-cart-btn {
         padding: 12px 28px;
-        span{
+        span {
           margin-left: 12px;
         }
       }
     }
 
-    @media screen and (min-width: 880px){
+    @media screen and (min-width: 880px) {
       grid-template-columns: repeat(2, 1fr);
       column-gap: 40px;
-      .course-details{
+      .course-details {
         padding-top: 0;
       }
-      .course-img{
+      .course-img {
         order: 2;
+        font-size: 20px;
       }
     }
 
-    @media screen and (min-width: 1400px){
+    @media screen and (min-width: 1400px) {
       grid-template-columns: 60% 40%;
     }
   }
 
-  .course-full{
+  .course-full {
     padding: 40px 16px;
-    .course-sc-title{
+    .course-sc-title {
       font-size: 22px;
       font-weight: 700;
       margin: 12px 0;
     }
-    .course-learn{
+    .course-learn {
       max-width: 992px;
       border: 1px solid rgba(0, 0, 0, 0.2);
       padding: 12px 28px 22px 28px;
 
-      .course-learn-list{
-        li{
+      .course-learn-list {
+        li {
           margin: 5px 0;
           display: flex;
-          span{
-            &:nth-child(1){
+          span {
+            &:nth-child(1) {
               opacity: 0.95;
+              display: flex;
               margin-right: 12px;
             }
           }
         }
 
-        @media screen and (min-width: 992px){
+        @media screen and (min-width: 992px) {
           grid-template-columns: repeat(2, 1fr);
         }
       }
     }
 
-    .course-content{
+    .course-content {
       max-width: 992px;
       margin-top: 30px;
       border: 1px solid rgba(0, 0, 0, 0.2);
       padding: 12px 28px 22px 28px;
 
-      .course-content-list{
-        li{
+      .course-content-list {
+        li {
           background-color: #f7f9fa;
           padding: 12px 18px;
           border: 1px solid rgba(0, 0, 0, 0.2);
@@ -246,7 +409,6 @@ const SingleCourseWrapper = styled.div`
       }
     }
   }
-
 `;
 
-export default SingleCoursePage
+export default SingleCoursePage;
