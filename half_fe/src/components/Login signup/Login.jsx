@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Input, Radio, notification } from "antd";
 import api from "../../config/axios";
-import "./LoginSignup.css";
+
 import { toast } from "react-toastify";
 function Login() {
   const navigate = useNavigate();
@@ -94,7 +94,7 @@ function Login() {
             },
           ]}
         >
-          <Input.Password className="flex flex-end" />
+          <Input.Password className="flex flex-start stretch" />
         </Form.Item>
 
         <Form.Item
@@ -121,8 +121,8 @@ function Login() {
             Create account
           </Link>
         </div>
-        <div>
-          <a href={"http://127.0.0.1:3030/login"}style={{ color: "#fc8f1a" }}>
+        <div className="mt-3" style={{paddingBottom: 20}}>
+          <a href={"http://localhost:3030/login"}style={{ color: "#fc8f1a" }}>
             Login as ADMIN
           </a>
         </div>

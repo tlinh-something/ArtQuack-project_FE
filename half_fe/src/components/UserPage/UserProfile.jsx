@@ -68,7 +68,7 @@ const UserProfile = () => {
               type="text"
               name="name"
               value={userEdit.name}
-              onChange={handleEdit}
+              onChange={(e)=>handleEdit(e)}
             />
           </label>
           <br />
@@ -78,7 +78,7 @@ const UserProfile = () => {
               type="email"
               name="email"
               value={userEdit.email}
-              onChange={handleEdit}
+              onChange={(e)=>handleEdit(e)}
             />
           </label>
           <br />
