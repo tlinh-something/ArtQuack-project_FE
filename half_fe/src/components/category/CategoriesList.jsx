@@ -1,50 +1,58 @@
-// import React from 'react';
-// import styled from "styled-components";
-import { categories_images } from "../utils/images";
-import Category from "./Category";
-import { useCoursesContext } from "../context/course_context";
-import "./Category.css";
-import api from "../../config/axios";
-import { useEffect, useState } from "react";
-import { Card, Col, Row } from "antd";
+import React, { useState, useEffect } from 'react';
+import { Card, Col, Row } from 'antd';
+import api from '../../config/axios';
+import '../Test.css';
 
 const CategoriesList = () => {
   const [category, setCategory] = useState([]);
-
-  // const fetchCategory = () => {
-  //   api.get(`/api/categories`)
-  //   .then(response => setCategory(response.data))
-  //}
+  const [showDetail, setShowDetail] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState(null);
 
   useEffect(() => {
-    api.get(`/api/categories`).then((response) => setCategory(response.data.slice(0, 6)));
+    api.get('/api/categories').then(response => {
+      setCategory(response.data.slice(0, 6));
+    });
   }, []);
 
-  // const { categories } = useCoursesContext();
+  const handleCardClick = () => {
+    setShowDetail(true);
+  };
+
+  const handleCardMouseEnter = (cateID) => {
+    setHoveredCard(cateID);
+  };
+
+  const handleCardMouseLeave = () => {
+    setHoveredCard(null);
+  };
+
   return (
     <div className="CategoriesListWrapper">
       <div className="container">
         <div className="categories-list-top">
           <h2>Top Categories</h2>
         </div>
-        {/* <div className="categories-list grid"> */}
-        
-        <Row gutter={16}>
-          {category.map(item => {
-            return  <Col span={8} key={item.cateID} className="mb-5">
-            <Card cover={<img src={item.picture} style={{height: '280px'}}/>}>{item.cateName}</Card>
+
+        <Row gutter={50}>
+          {category.map(item => (
+            <Col span={8} key={item.cateID} className="mb-5">
+              <Card
+                cover={
+                  <img
+                    src={item.picture}
+                    onClick={handleCardClick}
+                    style={{ height: '280px', transform: hoveredCard === item.cateID ? 'scale(1.1)' : 'scale(1)' }}
+                    className=""
+                    onMouseEnter={() => handleCardMouseEnter(item.cateID)}
+                    onMouseLeave={handleCardMouseLeave}
+                  />
+                }
+              >
+                <div style={{ fontSize: '20px', textAlign: 'center' }}>{item.cateName}</div>
+              </Card>
             </Col>
-          })}
+          ))}
         </Row>
-          {/* {
-            category.map((cateName) => {
-              // const categoryImage = categories_images[cateName]
-              return (
-                <Category category = {cateName} key = {cateName} />
-              )
-            })
-          } */}
-        {/* </div> */}
       </div>
     </div>
   );

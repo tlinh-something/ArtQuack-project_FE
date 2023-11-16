@@ -37,7 +37,6 @@ import { ConfigProvider } from "antd";
 import LearningPageNew from "./components/studentFunction/learningPageNew";
 import LearningPageDetail from "./components/studentFunction/LearningPageDetails";
 import InsProfile from "./components/InstructorFunction/InsProfile";
-
 function App() {
   return (
     <ConfigProvider
@@ -93,6 +92,7 @@ function App() {
         </Route>
       </Routes>
       <Footer />
+      
     </BrowserRouter>
   </ConfigProvider>
   );

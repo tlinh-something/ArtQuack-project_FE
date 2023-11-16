@@ -12,13 +12,16 @@ function UserHomePage() {
   const a = localStorage.getItem("ID");
   console.log(a);
   return (
+    
     <div>
+      {
       <div className="all-course">
         <h2 className="title" style={{ textAlign: "center", color: "orange" }}>
           Explore all courses
         </h2>
         <AllCourse />
       </div>
+}
     </div>
   );
 }
