@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./UserDropdown.css";
-import { Button } from "antd";
+import { Button, Menu } from "antd";
 import { Link } from "react-router-dom";
 function UserDropdown() {
   const userName = JSON.parse(localStorage.getItem("accessToken"))?.name;
@@ -40,12 +40,9 @@ function UserDropdown() {
           onMouseEnter={openDropdown}
           onMouseLeave={closeDropdown}
         >
-          <div>
-          
+          <div style={{ fontSize: "18px" }} className="mb-2">
             {account.learnerID ? (
-              <Link to={`/user/profile/${account.learnerID}`}>
-                My Profile
-              </Link>
+              <Link to={`/user/profile/${account.learnerID}`}>My Profile</Link>
             ) : (
               <Link to={`/instructor/profile/${account.instructorID}`}>
                 My Profile

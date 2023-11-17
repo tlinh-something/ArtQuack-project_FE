@@ -30,7 +30,7 @@ function AllCourse() {
     const response = await api.post(
       `/api/learner/${userID}/course/${isModalOpen}/enrollment`
     );
-    swal("Good Job", "Successfully enroll to course", "success");
+    swal("Success!", "Successfully enroll to course", "success");
     setIsModalOpen(null);
   };
   const handleCancel = () => {
@@ -41,7 +41,7 @@ function AllCourse() {
     const response = await api.get(
       `/api/courses-learner/${userID ? userID : 0}`
     );
-    setCourses(response.data);
+    setCourses(response.data.filter(c => c.status));
   };
   useEffect(() => {
     fetchCourse();

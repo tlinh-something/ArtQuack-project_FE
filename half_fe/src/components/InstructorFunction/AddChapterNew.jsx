@@ -12,6 +12,7 @@ import {
   Switch,
   Table,
   Typography,
+  Upload,
   message,
 } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -23,6 +24,7 @@ import ReactPlayer from "react-player";
 import { FaQuestionCircle } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import TextArea from "antd/es/input/TextArea";
+// import TextArea from "antd/es/input/TextArea";
 
 const AddChapterNew = () => {
   const params = useParams();
@@ -33,6 +35,8 @@ const AddChapterNew = () => {
   const [form] = useForm();
   const [render, setRender] = useState(0);
   const [course, setCourse] = useState();
+
+  const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
 
   const handleOk = () => {
     form.submit();
@@ -46,7 +50,7 @@ const AddChapterNew = () => {
       );
       console.log(response.data);
       form.resetFields();
-      swal("Good Job", "Create chapter success!", "success");
+      swal("Success!", "Create chapter success!", "success");
       handleCancel();
       setRender(render + 1);
     } else {
@@ -60,7 +64,7 @@ const AddChapterNew = () => {
       );
       console.log(response.data);
       form.resetFields();
-      swal("Good Job", "Update chapter success!", "success");
+      swal("Success!", "Update chapter success!", "success");
       handleCancel();
       setRender(render + 1);
     }
@@ -78,7 +82,7 @@ const AddChapterNew = () => {
     );
     form.resetFields();
     handleCancel();
-    swal("Good Job!", "You update course success!", "success");
+    swal("Success!", "You update course success!", "success");
     setRender(render + 1);
   };
 
@@ -142,16 +146,14 @@ const AddChapterNew = () => {
 
   const handleDeleteChapter = (chapterID) => {
     console.log(chapterID);
-    const response = api.delete(
-      `/api/deletechapter/${chapterID}`
-    );
-    message.success('Deleted chapter successfully')
+    const response = api.delete(`/api/deletechapter/${chapterID}`);
+    message.success("Deleted chapter successfully");
     setRender(render + 1);
-  }
-  
+  };
+
   const cancel = () => {
-    message.error('This chapter cancel to delete')
-  }
+    message.error("This chapter cancel to delete");
+  };
 
   return (
     <div style={{ padding: 30 }}>
@@ -193,25 +195,27 @@ const AddChapterNew = () => {
                   </Button>
 
                   <Popconfirm
-                  title="Delete the chapter"
-                  description="Are you sure to delete this chapter"
-                  onConfirm={() => {
-                    const response = api.delete(
-                      `/api/deletechapter/${record.chapterID}`
-                    );
-                    message.success('Deleted chapter successfully')
-                    setRender(render + 1);
-                  }
-                    // handleDeleteChapter(record.chapterID)
-                  }
-                  icon={
-                    <FaQuestionCircle
-                      style={{
-                        color: 'red',
-                      }}
-                    />
-                  }
-                  onCancel={cancel}>
+                    title="Delete the chapter"
+                    description="Are you sure to delete this chapter"
+                    onConfirm={
+                      () => {
+                        const response = api.delete(
+                          `/api/deletechapter/${record.chapterID}`
+                        );
+                        message.success("Deleted chapter successfully");
+                        setRender(render + 1);
+                      }
+                      // handleDeleteChapter(record.chapterID)
+                    }
+                    icon={
+                      <FaQuestionCircle
+                        style={{
+                          color: "red",
+                        }}
+                      />
+                    }
+                    onCancel={cancel}
+                  >
                     <Button danger>Delete</Button>
                   </Popconfirm>
                 </Space>
@@ -229,7 +233,8 @@ const AddChapterNew = () => {
       />
 
       <div className="navigate-link">
-      <ArrowLeftOutlined /><Link to='/instructor/mycourse'> Back</Link>
+        <ArrowLeftOutlined />
+        <Link to="/instructor"> Back</Link>
       </div>
 
       <Modal
@@ -251,8 +256,11 @@ const AddChapterNew = () => {
             rules={[
               {
                 required: true,
+                pattern: WORD_REGEX,
                 message: "Enter new chapter name",
-              },
+              },{
+                whitespace: true
+              }
             ]}
           >
             <Input />
@@ -271,7 +279,10 @@ const TableItem = ({ chapterID }) => {
   const [render, setRender] = useState(0);
   const [loading, setLoading] = useState(false);
   const [contentType, setContentType] = useState("file");
+  const [itemType, setItemType] = useState("normal");
 
+  const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
+  
   const handleOk = () => {
     form.submit();
   };
@@ -287,13 +298,14 @@ const TableItem = ({ chapterID }) => {
       content: contentType === "file" ? file : values.content,
     };
     if (!currentItemID) {
+      console.log(chapterID);
       // eslint-disable-next-line no-unused-vars
       const response = await api.post(
         `/api/chapter/${chapterID}/createitem`,
         data
       );
       form.resetFields();
-      swal("Good Job!", "Successfully create new item", "success");
+      swal("Success!", "Successfully create new item", "success");
       handleCancel();
       setRender(render + 1);
     } else {
@@ -303,7 +315,7 @@ const TableItem = ({ chapterID }) => {
         data
       );
       form.resetFields();
-      swal("Good Job!", "Successfully update item", "success");
+      swal("Success!", "Successfully update item", "success");
       handleCancel();
       setRender(render + 1);
     }
@@ -346,13 +358,15 @@ const TableItem = ({ chapterID }) => {
 
   const handleDelete = async (id) => {
     const response = await api.delete(`/api/deleteitem/${id}`);
-    message.success('Delete item successfully')
+    message.success("Delete item successfully");
     setRender(render + 1);
   };
 
   const cancel = () => {
-    message.error('This item cancel to delete')
-  }
+    message.error("This item cancel to delete");
+  };
+
+  const { TextArea } = Input;
 
   return (
     <div
@@ -421,17 +435,18 @@ const TableItem = ({ chapterID }) => {
                   </Button>
 
                   <Popconfirm
-                  title="Delete the chapter"
-                  description="Are you sure to delete this chapter"
-                  onConfirm={() => handleDelete(value)}
-                  icon={
-                    <FaQuestionCircle
-                      style={{
-                        color: 'red',
-                      }}
-                    />
-                  }
-                  onCancel={cancel}>
+                    title="Delete the chapter"
+                    description="Are you sure to delete this chapter"
+                    onConfirm={() => handleDelete(value)}
+                    icon={
+                      <FaQuestionCircle
+                        style={{
+                          color: "red",
+                        }}
+                      />
+                    }
+                    onCancel={cancel}
+                  >
                     <Button danger>Delete</Button>
                   </Popconfirm>
                 </Space>
@@ -455,18 +470,66 @@ const TableItem = ({ chapterID }) => {
           }}
           onFinish={handleFinish}
         >
+          <Switch
+            defaultChecked
+            checkedChildren="Item Normal"
+            unCheckedChildren="Peer Grade"
+            style={{ marginBottom: 10 }}
+            onChange={(value) => {
+              console.log(value);
+              if (value === false) {
+                form.setFieldValue("itemName", "Peer Graded");
+                setItemType("peer");
+              } else {
+                form.setFieldValue("itemName", "");
+                setItemType("normal");
+              }
+              console.log(itemType);
+            }}
+          />
+
           <Form.Item
-            label="Item name"
+            label="Item Name"
             name={"itemName"}
             rules={[
               {
                 required: true,
+                pattern: WORD_REGEX,
                 message: "Enter item name",
               },
             ]}
           >
-            <Input />
+            <Input disabled={itemType === "peer"} />
           </Form.Item>
+
+          {/* {itemType === "normal" ? (
+            <Form.Item
+              label="Item Name"
+              name={"itemName"}
+              rules={[
+                {
+                  required: true,
+                  message: "Enter item name",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          ) : (
+            <Form.Item
+              label="Item Name"
+              name={"itemName"}
+              rules={[
+                {
+                  required: true,
+                  message: "Enter item name",
+                },
+              ]}
+            >
+              <Input defaultValue="Peer Graded" />
+            </Form.Item>
+          )} */}
+
           <Switch
             defaultChecked
             checkedChildren="File"
@@ -487,11 +550,21 @@ const TableItem = ({ chapterID }) => {
               rules={[
                 {
                   required: true,
-                  message: "Enter link",
+                  message: "Enter video",
                 },
               ]}
             >
-              <Dragger {...props}>
+              <Upload.Dragger
+                name="file"
+                accept=".mp4"
+                beforeUpload={false}
+                // onChange={(info) => handleFileUpload(info.file)}
+              >
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+              </Upload.Dragger>
+              {/* <Dragger {...props}>
                 <p className="ant-upload-drag-icon"></p>
                 <p className="ant-upload-text">
                   Click or drag file to this area to upload
@@ -500,7 +573,7 @@ const TableItem = ({ chapterID }) => {
                   Support for a single or bulk upload. Strictly prohibited from
                   uploading company data or other banned files.
                 </p>
-              </Dragger>
+              </Dragger> */}
             </Form.Item>
           ) : (
             <Form.Item
@@ -509,11 +582,12 @@ const TableItem = ({ chapterID }) => {
               rules={[
                 {
                   required: true,
-                  message: "Enter link",
+                  pattern: WORD_REGEX,
+                  message: "Enter link video (such as youtube) or content",
                 },
               ]}
             >
-              <Input placeholder="Enter your content..." />
+              <TextArea placeholder="Enter your content..." />
             </Form.Item>
           )}
         </Form>

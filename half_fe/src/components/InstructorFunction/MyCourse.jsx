@@ -40,11 +40,12 @@ function MyCourse() {
   const [img, setImg] = useState(null);
   const [loading, setLoading] = useState();
 
-  const handleDelete = (courseID) => {
-    api.delete(`/api/deletecourse/${courseID}`);
-    message.success("Deleted course successfully");
-    setRender(render + 1);
-  };
+  const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
+  // const handleDelete = (courseID) => {
+  //   api.delete(`/api/deletecourse/${courseID}`);
+  //   message.success("Deleted course successfully");
+  //   setRender(render + 1);
+  // };
 
   useEffect(() => {});
 
@@ -157,13 +158,13 @@ function MyCourse() {
       setRender(render + 1);
       form.resetFields();
       handleCancel();
-      Swal("Good job!", "You create a new course success!", "success");
+      Swal("Success!", "You create a new course success!", "success");
     } else {
       // eslint-disable-next-line no-unused-vars
       const res = api.put(`/api/course/${selectCourse}/updatecourse`, data);
       form.resetFields();
       handleCancel();
-      Swal("Good Job!", "You update course success!", "success");
+      Swal("Success!", "You update course success!", "success");
       setRender(render + 1);
     }
   };
@@ -290,6 +291,7 @@ function MyCourse() {
             rules={[
               {
                 required: true,
+                pattern: WORD_REGEX,
                 message: "Enter name!",
               },
             ]}

@@ -1,22 +1,21 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import api from "../../config/axios";
 import { useEffect, useState } from "react";
-import {
-  Image,
-  Table,
-} from "antd";
+import { Image, Table } from "antd";
 // import { useForm } from "antd/es/form/Form";
 
 const ViewSubmitDetail = () => {
   const params = useParams();
   const [submit, setSubmit] = useState([]);
-  const account = JSON.parse(localStorage.getItem('accessToken'))
+  const account = JSON.parse(localStorage.getItem("accessToken"));
 
   const fetchSubmit = () => {
-    api.get(`/api/Learner/${account.learnerID}/Item/${params.id}/complete`).then((response) => {
-      setSubmit(response.data);
-      console.log(response.data);
-    });
+    api
+      .get(`/api/Learner/${account.learnerID}/Item/${params.id}/complete`)
+      .then((response) => {
+        setSubmit(response.data.filter((item) => item.status));
+        console.log(response.data);
+      });
   };
 
   function formatDate(timestamp, format) {
@@ -82,10 +81,11 @@ const ViewSubmitDetail = () => {
             title: "Comment",
             dataIndex: "comment",
             key: "comment",
-          },
+          }
         ]}
         dataSource={submit}
       />
+      <Link to='/user' className="link-back fw-5">Back to home</Link>
     </div>
   );
 };

@@ -1,16 +1,16 @@
 import "./Register.css";
 // import HomePage from "../pages/HomePage";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Input, Radio } from "antd";
+import { Button, Form, Input, Radio, message } from "antd";
 import { useState } from "react";
 import api from "../../config/axios";
 import Login from "../Login signup/Login";
 
-const EMAIL_REGEX = /^[\w-]+@[\w-]+\.[a-z]{2,3}/;
-const PWD_REGEX = /^(?=(.*[0-9]))(?=(.*[A-Z]))(?=(.*[a-z])).{8,24}$/;
+const NAME_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
+const EMAIL_REGEX = /^[\w-]+@[\w-]+\.[a-z]{3}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$/;
 
 function Register() {
-  const [success, setSuccess] = useState(false);
 
   const navigate = useNavigate();
   const handleSubmit = (values) => {
@@ -21,15 +21,15 @@ function Register() {
       role: values.role,
       status: true,
     };
+    console.log(data);
     api
       .post(`/api/register/role/${values.role}`, data)
       .then((response) => {
-        alert("Registration Successfully");
+        message.success("Registration Successfully");
         navigate('/login/v2')
         // toast.success("Registration Successfully");
       })
       .catch((error) => console.log(error));
-    setSuccess(true);
   };
 
   return (
@@ -56,9 +56,17 @@ function Register() {
             rules={[
               {
                 required: true,
+                pattern: NAME_REGEX,
                 message: "This field can not empty!!!",
               },
+              {
+                min: 5
+              },
+              {
+                whitespace: true
+              }
             ]}
+            hasFeedback
           >
             <Input />
           </Form.Item>
@@ -75,7 +83,14 @@ function Register() {
                 message:
                   "Email must include @. Letters, numbers, special characters allowed.",
               },
+              {
+                min: 5
+              },
+              {
+                type: 'email'
+              }
             ]}
+            hasFeedback
           >
             <Input />
           </Form.Item>
@@ -89,11 +104,39 @@ function Register() {
                 required: true,
                 pattern: PWD_REGEX,
                 message:
-                  "8 to 24 characters. Must include uppercase and lowercase letters, a number.",
+                  "Must be 6 to 15 characters, include at least one lowercase letter, one uppercase letter and at least one number.",
               },
             ]}
+            hasFeedback
           >
             <Input.Password className="flex flex-end"/>
+          </Form.Item>
+          
+
+          <Form.Item
+            className="w-50 mx-auto"
+            label="Confirm Password"
+            name="confirmpassword"
+            dependencies={["password"]}
+            rules={[
+              {
+                required: true,
+                pattern: PWD_REGEX,
+                message:
+                  "Please enter this field to confirm your password.",
+              },
+              ({getFieldValue}) => ({
+                validator(_, value){
+                  if(!value || getFieldValue('password') === value){
+                    return Promise.resolve()
+                  }
+                  return Promise.reject('This confirm password is not match with password above!')
+                }
+              })
+            ]}
+            hasFeedback
+          >
+            <Input.Password />
           </Form.Item>
 
           <Form.Item

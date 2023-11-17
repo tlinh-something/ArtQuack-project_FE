@@ -39,7 +39,7 @@ const ViewSubmission = () => {
     const account = JSON.parse(localStorage.getItem("accessToken"));
     console.log(account.learnerID);
     api.get(`/api/submit-of-learner/${account.learnerID}`).then((response) => {
-      const courses = response.data.courses;
+      const courses = response.data.courses.filter((item) => item.status);
       console.log(courses);
 
       setItems(
@@ -50,20 +50,24 @@ const ViewSubmission = () => {
               course.courseName,
               `course-${course.courseID}`,
               <PlusOutlined />,
-              course.chapters.filter((item) => item.status).map((chapter) => {
-                return getItems(
-                  chapter.chapterName,
-                  `chapter-${chapter.chapterID}`,
-                  <MinusOutlined />,
-                  chapter.items.filter((item) => item.status).map((item) => {
-                    return getItems(
-                      item.itemName,
-                      `${item.itemID}`,
-                      // <MailOutlined />
-                    );
-                  })
-                );
-              })
+              course.chapters
+                .filter((item) => item.status)
+                .map((chapter) => {
+                  return getItems(
+                    chapter.chapterName,
+                    `chapter-${chapter.chapterID}`,
+                    <MinusOutlined />,
+                    chapter.items
+                      .filter((item) => item.status)
+                      .map((item) => {
+                        return getItems(
+                          item.itemName,
+                          `/user/submission/${item.itemID}`
+                          // <MailOutlined />
+                        );
+                      })
+                  );
+                })
             );
           })
       );
@@ -79,9 +83,9 @@ const ViewSubmission = () => {
       <Menu
         onClick={onClick}
         style={{
-          width: 400,
+          width: 350,
           marginTop: 20,
-          minHeight: "42vh",
+          minHeight: "70vh",
           height: "42vh",
           maxHeight: "42vh",
           overflow: "auto",

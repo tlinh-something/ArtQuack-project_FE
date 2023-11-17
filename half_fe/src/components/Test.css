@@ -67,6 +67,7 @@ body {
   display: flex;
   align-items: center;
   text-align: center;
+  justify-content: flex-start;
 }
 .nav-item {
   margin-left: 30px;
@@ -113,7 +114,7 @@ p {
   margin-top: 10px;
 }
 .learner-name,
-.p-2 ul a {
+.p-2 ul {
   display: flex;
   align-items: center;
   justify-content: center;

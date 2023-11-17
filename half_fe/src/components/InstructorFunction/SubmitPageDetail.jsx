@@ -38,6 +38,7 @@ const SubmitPageDetail = () => {
       api.get(`/api/complete/${currentID}`).then((response) => {
         form.setFieldsValue(response.data);
         setCurrent(response.data);
+        console.log(response.data);
       });
     } else {
       setCurrent(null);
@@ -66,7 +67,7 @@ const SubmitPageDetail = () => {
     api.put(`/api/complete/${currentID}/updatecomplete`, data);
     form.resetFields();
     handleCancel();
-    swal("Good Job!", "You update course success!", "success");
+    swal("Success!", "You graded successfully!", "success");
     setRender(render + 1);
   };
 

@@ -32,7 +32,7 @@ function Login() {
         localStorage.getItem("accessToken") &&
         JSON.parse(localStorage.getItem("accessToken")).role === "instructor"
       ) {
-        window.location = "/instructor/mycourse";
+        window.location = "/instructor";
       } else if (
         localStorage.getItem("accessToken") &&
         JSON.parse(localStorage.getItem("accessToken")).role === "admin"
@@ -44,7 +44,6 @@ function Login() {
       noti.error({
         message: e.response.data,
       });
-      // toast.error(e.response.data);
     }
   };
 
@@ -78,7 +77,11 @@ function Login() {
               required: true,
               message: "The email should not empty",
             },
+            {
+              type: "email",
+            },
           ]}
+          hasFeedback
         >
           <Input />
         </Form.Item>
@@ -92,7 +95,11 @@ function Login() {
               required: true,
               message: "The password should not empty",
             },
+            {
+              whitespace: true,
+            },
           ]}
+          hasFeedback
         >
           <Input.Password className="flex flex-end" />
         </Form.Item>
@@ -122,7 +129,7 @@ function Login() {
           </Link>
         </div>
         <div>
-          <a href={"http://127.0.0.1:3030/login"}style={{ color: "#fc8f1a" }}>
+          <a href={"http://localhost:3030/login"} style={{ color: "#fc8f1a" }}>
             Login as ADMIN
           </a>
         </div>

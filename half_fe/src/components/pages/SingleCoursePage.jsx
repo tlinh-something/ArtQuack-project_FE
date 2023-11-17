@@ -182,7 +182,7 @@ const SingleCoursePage = () => {
                       }
                     );
                     swal(
-                      "Good Job",
+                      "Success!",
                       "Successfully enroll to course",
                       "success"
                     );

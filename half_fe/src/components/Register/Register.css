@@ -107,18 +107,6 @@ a:hover{
   color:  rgba(0, 0, 0, 0.6);
 }
 
-input #fullname, #username, #password, #confirm_pwd{
-  border: 1px solis #000;
-  margin-right: 5px;
-  width: 65%;
-}
-
-
-p #usernote, #pwdnote, #confirmnote ::before{
-  font-size: 12px;
-  content: \a;
-}
-
 .chooserole{
   margin-left: 20px;  
 }

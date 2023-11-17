@@ -368,9 +368,8 @@ select {
 
 .all-course {
   padding: 20px;
-  margin-top: 20px;
+  margin-top: 5px;
 }
-
 
 .ant-menu .ant-menu-submenu-arrow {
   top: 23% !important;
@@ -418,4 +417,18 @@ select {
 .ant-image-preview-root .ant-image-preview-img {
   max-width: none !important;
   max-height: none !important;
+}
+
+.ant-tabs-nav-list {
+  width: 100%;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.ant-select-selector {
+  width: 500px;
+}
+
+.link-back:hover {
+  color: #fd9644;
 }

@@ -37,30 +37,35 @@ const SubmissionPageNew = () => {
     const account = JSON.parse(localStorage.getItem("accessToken"));
     api.get(`/api/submit/${account.instructorID}`).then((response) => {
       const courses = response.data.courses;
+      console.log(courses);
 
       setItems(
         courses
-          .filter((item) => item.status)
+          .filter((course) => course.status)
           .map((course) => {
             return getItem(
               course.courseName,
               `course-${course.courseID}`,
               <PlusOutlined />,
-              course.chapters.map((chapter) => {
-                return getItem(
-                  chapter.chapterName,
-                  `chapter-${chapter.chapterID}`,
-                  <MinusOutlined />,
-                  chapter.items.filter(item => item.status).map((item) => {
-                    console.log(chapter.items);
-                    return getItem(
-                      item.itemName,
-                      `${item.itemID}`,
-                      // <MailOutlined />
-                    );
-                  })
-                );
-              })
+              course.chapters
+                .filter((chapter) => chapter.status)
+                .map((chapter) => {
+                  return getItem(
+                    chapter.chapterName,
+                    `chapter-${chapter.chapterID}`,
+                    <MinusOutlined />,
+                    chapter.items
+                      .filter((item) => item.status)
+                      .map((item) => {
+                        console.log(chapter.items);
+                        return getItem(
+                          item.itemName,
+                          `/instructor/submission/${item.itemID}`
+                          // <MailOutlined />
+                        );
+                      })
+                  );
+                })
             );
           })
       );

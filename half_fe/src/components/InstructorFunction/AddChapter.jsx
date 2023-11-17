@@ -27,7 +27,7 @@ function AddChapter() {
       .post(`/api/course/${courseId}/chapter`, ...input)
       .then((response) => {
         console.log(response.data);
-        swal("Good job!", "Add Chapter Successfully", "success");
+        swal("Success!", "Add Chapter Successfully", "success");
         navigate("/instructor/mycourse");
       })
       .catch((error) => {
@@ -81,7 +81,7 @@ function AddChapter() {
       </form>
       <button onClick={add}>More chapter</button>
       <button onClick={handleSubmit}>Save</button>
-      <Link to={"/instructor/mycourse"}>Back</Link>
+      <Link to={"/instructor"}>Back</Link>
     </Form.Group>
   );
 }

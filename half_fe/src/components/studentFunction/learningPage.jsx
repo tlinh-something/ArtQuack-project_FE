@@ -182,7 +182,7 @@ function LearningPage() {
                     <Form.Item label="Upload File">
                       <Upload.Dragger
                         name="file"
-                        accept=".pdf,.png, .jpg"
+                        accept=".png,.jpg"
                         beforeUpload={false}
                         onChange={(info) => handleFileUpload(info.file)}
                       >
@@ -192,7 +192,7 @@ function LearningPage() {
                       </Upload.Dragger>
                     </Form.Item>
 
-                    {image && <Image src={image} style={{height: '400px'}}/>}
+                    {image && <Image src={image} style={{ height: "400px" }} />}
                     <Form.Item>
                       <Button type="primary" onClick={handleSubmit}>
                         Submit
@@ -206,7 +206,11 @@ function LearningPage() {
             <Typography.Text>This chapter has no content yet.</Typography.Text>
           )}
 
-          <Button type="primary" className="mt-4" onClick={() => navigate("/user/mycourse")}>
+          <Button
+            type="primary"
+            className="mt-4"
+            onClick={() => navigate("/user/mycourse")}
+          >
             Back to Home
           </Button>
         </Content>
