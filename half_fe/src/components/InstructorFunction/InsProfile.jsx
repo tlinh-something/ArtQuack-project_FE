@@ -1,105 +1,66 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { Form, Input, Button } from "antd";
 import api from "../../config/axios";
-import '../UserPage/UserProfile.css'
+import "../UserPage/UserProfile.css";
 
 const InsProfile = () => {
   const { id } = useParams();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const [userEdit, setUserEdit] = useState({
-    instructorID: "",
-    name: "",
-    email: "",
-    password: "",
-    status:"",
-    role:"",
-  });
+
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    const fetchUser = () => {
-      api.get(`/api/instructor/${id}`).then((res) => {
+    const fetchUser = async () => {
+      try {
+        const res = await api.get(`/api/instructor/${id}`);
         const userData = res.data;
-
-        setUserEdit({
-            instructorID:userData. instructorID,
-          name: userData.name,
-          email: userData.email,
-          password: userData.password,
-        status:userData.status,
-        role:userData.role
-        });
-      });
+        form.setFieldsValue(userData);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     fetchUser();
-  }, [id]);
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(userEdit);
-   
-      const updateUser = async() => {
-        const res =await api.put(`/api/learner/${id}/updatelearner`, userEdit);
-        console.log(res);
-      };
+  }, [form, id]);
 
-      updateUser();
+  const handleSubmit = async (values) => {
+    try {
+      const res = await api.put(`/api/instructor/${id}/updateinstructor`, values);
+      console.log(res);
       window.alert("Update successful!");
-   
-  };
-
-  const handleEdit = (e) => {
-    setUserEdit({ ...userEdit, [e.target.name]: e.target.value });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div className="edit-profile">
       <h1>Edit Profile</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="container-profile">
-          <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={userEdit.name}
-              onChange={handleEdit}
-            />
-          </label>
-          <br />
-          <label>
-            Email:
-            <input
-              type="email"
-              name="email"
-              value={userEdit.email}
-              onChange={handleEdit}
-            />
-          </label>
-          <br />
-          <label>
-            Password:
-            <input
-              type={showPassword ? "text" : "password"}
-              name='password'
-              value={userEdit.password}
-              onChange={(e) => handleEdit(e)}
-              
-            />
-            <button type="button" onClick={() => setShowPassword(!showPassword)}>
-              {showPassword ? "Hide" : "Show"} Password
-            </button>
-          </label>
-        <br></br>
-          <button type="submit" style={{margin: '0 auto'}}>Save</button>
-        </div>
-      </form>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        className="container-profile"
+
+      >
+        <Form.Item style={{margin:"0 auto"}} label="Name" name="name" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item style={{margin:"0 auto"}} label="Email" name="email" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item style={{margin:"0 auto"}} label="Password" name="password" rules={[{ required: true }]}>
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item style={{margin:"0 auto"}}>
+          <Button type="primary" htmlType="submit" style={{ margin: "0 auto" }}>
+            Save
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

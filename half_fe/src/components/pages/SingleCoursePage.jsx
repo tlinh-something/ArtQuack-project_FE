@@ -17,23 +17,33 @@ import {
 } from "react-icons/fa";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import swal from "sweetalert";
-import '../Test.css'
+import "../Test.css";
 const SingleCoursePage = () => {
   const { id } = useParams();
   const [course, setCourse] = useState([]);
   const [chapter, setChapter] = useState([]);
+  const [rate, setRate] = useState([]);
   const price = useRef();
   const [render, setRender] = useState(0);
   const account = JSON.parse(localStorage.getItem("accessToken"));
 
-  const [review,setReview] = useState([]);
-  const [enroll,setEnroll] = useState([]);
-  const fetchReview = () =>{
-    api.get(`api/enrollment/course/${id}`).then(res=>{
-      setReview(res.data)
-    })
-  }
- 
+  const [review, setReview] = useState([]);
+  const [enroll, setEnroll] = useState([]);
+  const fetchReview = () => {
+    api.get(`api/enrollment/course/${id}`).then((res) => {
+      setReview(res.data);
+    });
+  };
+  // Assuming you have fetched the enrollments and stored them in a variable called 'enrollments'
+
+  // Step 1: Create an array to store the rates
+  const rates = review.map((review) => review.rate);
+
+  // Step 2: Calculate the sum of all rate values
+  const sumOfRates = rates.reduce((accumulator, rate) => accumulator + rate, 0);
+
+  // Step 3: Calculate the average rate
+  const averageRate = sumOfRates / rates.length;
   useEffect(() => {
     api
       .get(`/api/course/${id}/${account.learnerID ? account.learnerID : 0}`)
@@ -49,19 +59,19 @@ const SingleCoursePage = () => {
       console.log(response.data);
     });
   };
-  const fetchEnroll = () =>{
-    api.get(`/api/enrollment/course/${id}`).then((response)=>{
+  const fetchEnroll = () => {
+    api.get(`/api/enrollment/course/${id}`).then((response) => {
       setEnroll(response.data);
-    })
-  }
-  
+    });
+  };
+
   useEffect(() => {
     fetchChapter();
     fetchReview();
     fetchEnroll();
   }, []);
-  console.log(enroll);  
-  
+  console.log(enroll);
+
   function formatDate(timestamp, format) {
     const date = new Date(timestamp);
 
@@ -114,10 +124,10 @@ const SingleCoursePage = () => {
           <div className="course-body">
             <p className="course-para fs-18">{course.description}</p>
             <div className="course-rating flex">
-              <span className="rating-star-val fw-8 fs-16">{4}</span>
-              <StarRating rating_star={4} />
-              <span className="rating-count fw-5 fs-14">({4})</span>
-              <span className="students-count fs-14">{10}</span>
+              <span className="rating-star-val fw-8 fs-16" style={{marginTop:"5px"}} >Rating: </span>
+              <StarRating rating_star={averageRate} />
+              <span className="rating-count">(  {rates.length} rated )</span>
+              <span className="students-count fs-14">{enroll.length}</span>
             </div>
 
             <ul className="course-info">
@@ -246,33 +256,32 @@ const SingleCoursePage = () => {
           </ul>
         </div>
         <div className="Table">
-              
-        <h3>Reviews</h3>
-        <Table
-        pagination={false}
-        columns={[
-          {
-            title:"Learner's name",
-            dataIndex:"learnerName",
-            key:"learnerName"
-          },
-          {
-            title: "",
-            dataIndex: "rate",
-            key: "rate",
-            render: (rate) => <Rate disabled defaultValue={rate} />,
-          },
-          {
-            title: "Comment",
-            dataIndex:"comment",
-            key:"comment",
-          }
-        ]}
-        dataSource={review}
-        size="small"
-        style={{ tableLayout: 'fixed' }}
-      />
-      </div>
+          <h3>Reviews</h3>
+          <Table
+            pagination={false}
+            columns={[
+              {
+                title: "Learner's name",
+                dataIndex: "learnerName",
+                key: "learnerName",
+              },
+              {
+                title: "",
+                dataIndex: "rate",
+                key: "rate",
+                render: (rate) => <Rate disabled defaultValue={rate} />,
+              },
+              {
+                title: "Comment",
+                dataIndex: "comment",
+                key: "comment",
+              },
+            ]}
+            dataSource={review}
+            size="small"
+            style={{ tableLayout: "fixed" }}
+          />
+        </div>
       </div>
     </SingleCourseWrapper>
   );

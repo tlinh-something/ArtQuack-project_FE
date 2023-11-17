@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Input, Radio, notification } from "antd";
 import api from "../../config/axios";
-import "./LoginSignup.css";
+
 import { toast } from "react-toastify";
 function Login() {
   const navigate = useNavigate();
@@ -101,7 +101,7 @@ function Login() {
           ]}
           hasFeedback
         >
-          <Input.Password className="flex flex-end" />
+          <Input.Password className="flex flex-start stretch" />
         </Form.Item>
 
         <Form.Item

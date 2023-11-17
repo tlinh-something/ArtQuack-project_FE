@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 const Course = ({ course, type }) => {
   const account = JSON.parse(localStorage.getItem(`accessToken`));
   const [enroll, setEnroll] = useState(false);
+  const [review, setReview] = useState([]);
+  
   const fetchEnroll = async () => {
     await api
       .get(`/api/course/${course.courseID}/${account.learnerID}`)
@@ -16,11 +18,22 @@ const Course = ({ course, type }) => {
         console.log(response.data);
       });
   };
-
+  const fetchReview = () => {
+    api.get(`api/enrollment/course/${course.courseID}`).then((res) => {
+      setReview(res.data);
+    });
+  };
   useEffect(() => {
     fetchEnroll();
+    fetchReview();
   }, [course.courseID]);
+  const rates = review.map((review) => review.rate);
 
+  // Step 2: Calculate the sum of all rate values
+  const sumOfRates = rates.reduce((accumulator, rate) => accumulator + rate, 0);
+
+  // Step 3: Calculate the average rate
+  const averageRate = sumOfRates / rates.length;
   return (
     <CourseCard>
       <div className="item-img">
@@ -43,8 +56,8 @@ const Course = ({ course, type }) => {
         <span className="item-creator">{course.instructorName}</span>
         <div className="item-rating flex">
           <span className="rating-star-val">{4}</span>
-          <StarRating rating_star={4} />
-          <span className="rating-count">({4})</span>
+          <StarRating rating_star={averageRate} />
+          <span className="rating-count">(  {rates.length} rated )</span>
         </div>
         <div className="item-price">
           <span className="item-price-new">${course.price}</span>
