@@ -38,7 +38,6 @@ const ViewSubmitDetail = () => {
       "MM/dd/yyyy": formattedDate,
       "yyyy-MM-dd": formattedDate,
       "HH:mm:ss": formattedDate.slice(11),
-      // Add more formats if needed
     };
     return formatMapping[format] || "Invalid Format";
   }

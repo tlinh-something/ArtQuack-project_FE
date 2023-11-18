@@ -11,7 +11,6 @@ const EMAIL_REGEX = /^[\w-]+@[\w-]+\.[a-z]{3}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$/;
 
 function Register() {
-
   const navigate = useNavigate();
   const handleSubmit = (values) => {
     const data = {
@@ -26,7 +25,7 @@ function Register() {
       .post(`/api/register/role/${values.role}`, data)
       .then((response) => {
         message.success("Registration Successfully");
-        navigate('/login/v2')
+        navigate("/login/v2");
         // toast.success("Registration Successfully");
       })
       .catch((error) => console.log(error));
@@ -34,8 +33,7 @@ function Register() {
 
   return (
     <>
-      
-        <div className="login-form">
+      <div className="login-form">
         <Form
           onFinish={handleSubmit}
           className="text-center w-100"
@@ -60,11 +58,11 @@ function Register() {
                 message: "This field can not empty!!!",
               },
               {
-                min: 5
+                min: 5,
               },
               {
-                whitespace: true
-              }
+                whitespace: true,
+              },
             ]}
             hasFeedback
           >
@@ -84,11 +82,11 @@ function Register() {
                   "Email must include @. Letters, numbers, special characters allowed.",
               },
               {
-                min: 5
+                min: 5,
               },
               {
-                type: 'email'
-              }
+                type: "email",
+              },
             ]}
             hasFeedback
           >
@@ -109,9 +107,8 @@ function Register() {
             ]}
             hasFeedback
           >
-            <Input.Password className="flex flex-end"/>
+            <Input.Password className="flex flex-end" />
           </Form.Item>
-          
 
           <Form.Item
             className="w-50 mx-auto"
@@ -122,17 +119,18 @@ function Register() {
               {
                 required: true,
                 pattern: PWD_REGEX,
-                message:
-                  "Please enter this field to confirm your password.",
+                message: "Please enter this field to confirm your password.",
               },
-              ({getFieldValue}) => ({
-                validator(_, value){
-                  if(!value || getFieldValue('password') === value){
-                    return Promise.resolve()
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
                   }
-                  return Promise.reject('This confirm password is not match with password above!')
-                }
-              })
+                  return Promise.reject(
+                    "This confirm password is not match with password above!"
+                  );
+                },
+              }),
             ]}
             hasFeedback
           >
@@ -146,7 +144,7 @@ function Register() {
             initialValue={"learner"}
             rules={[{ required: true, message: "Choose role to identify" }]}
           >
-            <Radio.Group >
+            <Radio.Group>
               <Radio value="learner">Learner</Radio>
               <Radio value="instructor">Instructor</Radio>
             </Radio.Group>
@@ -167,7 +165,7 @@ function Register() {
             </p>
           </div>
         </Form>
-        </div>
+      </div>
     </>
   );
 }

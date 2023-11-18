@@ -164,7 +164,7 @@ const SingleCoursePage = () => {
 
           <div className="course-btn">
             {!course.enrolled && account.learnerID ? (
-              <PayPalScriptProvider options={scriptOptions}>
+              <PayPalScriptProvider >
                 <PayPalButtons
                   createOrder={(data, actions) => {
                     console.log("Creating order:", data);

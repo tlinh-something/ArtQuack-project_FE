@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Form, Input, Button } from "antd";
 import api from "../../config/axios";
@@ -9,6 +9,7 @@ const UserProfile = () => {
 
   const [form] = Form.useForm();
 
+  const NAME_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -24,8 +25,18 @@ const UserProfile = () => {
   }, [form, id]);
 
   const handleSubmit = async (values) => {
+    console.log(values);
     try {
-      const res = await api.put(`/api/learner/${id}/updatelearner`, values);
+      const updatedValues = {
+        ...values,
+        learnerID: id,
+        role: "learner",
+        status: true,
+      };
+      const res = await api.put(
+        `/api/learner/${id}/updatelearner`,
+        updatedValues
+      );
       console.log(res);
       window.alert("Update successful!");
     } catch (error) {
@@ -38,25 +49,78 @@ const UserProfile = () => {
       <h1>Edit Profile</h1>
       <Form
         form={form}
-        layout="vertical"
-        onFinish={handleSubmit}
         className="container-profile"
-        style={{margin:"0 auto"}}
+        onFinish={handleSubmit}
+        labelCol={{
+          span: 24,
+        }}
+        wrapperCol={{
+          span: 24,
+        }}
+        style={{
+          maxWidth: 900,
+        }}
       >
-        <Form.Item style={{margin:"0 auto"}} label="Name" name="name" rules={[{ required: true }]}>
+        <Form.Item
+          className="w-50 mx-auto"
+          label="Name"
+          name="name"
+          rules={[
+            {
+              required: true,
+              pattern: NAME_REGEX,
+              message: "This field can not empty!!!",
+            },
+            {
+              min: 5,
+            },
+            {
+              whitespace: true,
+            },
+          ]}
+          hasFeedback
+        >
           <Input />
         </Form.Item>
 
-        <Form.Item style={{margin:"0 auto"}} label="Email" name="email" rules={[{ required: true }]}>
+        <Form.Item
+          className="w-50 mx-auto"
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "The email should not empty",
+            },
+            {
+              type: "email",
+            },
+          ]}
+          hasFeedback
+        >
           <Input />
         </Form.Item>
 
-        <Form.Item style={{margin:"0 auto"}} label="Password" name="password" rules={[{ required: true }]}>
-          <Input.Password />
+        <Form.Item
+          className="w-50 mx-auto"
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "The password should not empty",
+            },
+            {
+              whitespace: true,
+            },
+          ]}
+          hasFeedback
+        >
+          <Input.Password className="flex flex-start stretch" />
         </Form.Item>
 
-        <Form.Item style={{margin:"0 auto"}}>
-          <Button  type="primary" htmlType="submit" style={{ margin: "0 auto" }}>
+        <Form.Item style={{ margin: "0 auto" }}>
+          <Button type="primary" htmlType="submit" style={{ display: 'block', margin: '0 auto' }}>
             Save
           </Button>
         </Form.Item>

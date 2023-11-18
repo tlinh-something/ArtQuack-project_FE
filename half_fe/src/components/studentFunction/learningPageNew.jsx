@@ -115,7 +115,7 @@ const LearningPageNew = () => {
           minHeight: "70vh",
           height: "42vh",
           maxHeight: "42vh",
-          // overflow: "auto",
+          overflow: "auto",
         }}
         // selectedKey={defaultSelected}
         // openKeys={openKey}

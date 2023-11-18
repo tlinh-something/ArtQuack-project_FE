@@ -9,7 +9,7 @@ const Course = ({ course, type }) => {
   const account = JSON.parse(localStorage.getItem(`accessToken`));
   const [enroll, setEnroll] = useState(false);
   const [review, setReview] = useState([]);
-  
+
   const fetchEnroll = async () => {
     await api
       .get(`/api/course/${course.courseID}/${account.learnerID}`)
@@ -55,9 +55,9 @@ const Course = ({ course, type }) => {
         </h5>
         <span className="item-creator">{course.instructorName}</span>
         <div className="item-rating flex">
-          <span className="rating-star-val">{4}</span>
+          <span className="rating-star-val">Rating:</span>
           <StarRating rating_star={averageRate} />
-          <span className="rating-count">(  {rates.length} rated )</span>
+          <span className="rating-count">( {rates.length} rated )</span>
         </div>
         <div className="item-price">
           <span className="item-price-new">${course.price}</span>

@@ -432,3 +432,9 @@ select {
 .link-back:hover {
   color: #fd9644;
 }
+
+/* .ant-form-item-control-input-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */

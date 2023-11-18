@@ -98,6 +98,7 @@ function LearningPageDetail() {
 
   return (
     <>
+      
       <Card
         title={
           <div
