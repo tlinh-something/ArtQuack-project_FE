@@ -1,87 +1,114 @@
-//import React from 'react';
-import styled from "styled-components";
-// import Tabs from "../components/Tab";
-// import { useCoursesContext } from "./context/course_context";
+import React, { useEffect, useState } from "react";
+import { Card, Col, Row, Button } from "antd";
+import { useNavigate } from "react-router-dom";
 import api from "../config/axios";
-import { useEffect, useState } from "react";
-import { Card, Col, Row } from "antd";
-import Course from "./Course";
+import styled from "styled-components";
+import './Test.css'
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+
 const CourseList = () => {
-  // const { courses } = useCoursesContext();
-  const [count, setCount] = useState("");
-  const [course, setCourse] = useState([]);
-  const [showDetail, setShowDetail] = useState(false);
+  const [courses, setCourses] = useState([]);
   const [hoveredCard, setHoveredCard] = useState(null);
-  const fetchCount = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+
+  const fetchCourses = () => {
     api.get("/api/courses").then((res) => {
-      setCount(res.data.length);
-      setCourse(res.data.slice(0, 6));
-      console.log(res.data);
+      setCourses(res.data);
     });
   };
+
   useEffect(() => {
-    fetchCount();
+    fetchCourses();
   }, []);
+
+  const handleCardClick = (courseID) => {
+    navigate(`/guest/courses/${courseID}`);
+  };
+
+  const handleCardMouseEnter = (courseID) => {
+    setHoveredCard(courseID);
+  };
+
+  const handleCardMouseLeave = () => {
+    setHoveredCard(null);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  const renderCourses = () => {
+    const cardsPerPage = 3;
+    const startIndex = (currentPage - 1) * cardsPerPage;
+    const endIndex = startIndex + cardsPerPage;
+    const visibleCourses = courses.slice(startIndex, endIndex);
+
+    return visibleCourses.map((item) => (
+      <Col xs={24} sm={12} md={8} key={item.courseID} style={{height:"410px"}}>
+        <Card
+          cover={<img src={item.avatar} style={{ height: "300px" }} />}
+          onClick={() => handleCardClick(item.courseID)}
+          onMouseEnter={() => handleCardMouseEnter(item.courseID)}
+          onMouseLeave={handleCardMouseLeave}
+          style={{
+            transform:
+              hoveredCard === item.courseID ? "scale(1.1)" : "scale(1)",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "20px",
+              textAlign: "center",
+              fontWeight: hoveredCard === item.courseID ? "bold" : "normal",
+            }}
+          >
+            {item.name}
+          </div>
+        </Card>
+      </Col>
+    ));
+  };
+
+  const totalPages = Math.ceil(courses.length / 3);
+
   return (
     <CoursesListWrapper>
       <div className="container">
         <div className="courses-list-top" style={{ textAlign: "center" }}>
           <h1>A broad selection of courses</h1>
-          <p>
-            We have {count} online video courses with new additions published
-            every month
-          </p>
+          <p>We have {courses.length} online video courses available</p>
         </div>
 
-        {/* <div className="displayAllCourse">
-      <div className="courses-grid">
-        {course.map((cours) => (
-          <Course course={cours} key={cours.courseID} />
-        ))}
-      </div></div> */}
-        <h2>Top courses</h2>
-        <Row gutter={50}>
-  {course.map(item => {
-    const handleCardClick = () => {
-      setShowDetail(true);
-    };
+        <div className="top-course-title">
+          <h2>All Courses</h2>
+        </div>
 
-    const handleCardMouseEnter = () => {
-      setHoveredCard(item.courseID);
-    };
+        <Row gutter={[16, 16]}>{renderCourses()}</Row>
 
-    const handleCardMouseLeave = () => {
-      setHoveredCard(null);
-    };
-
-    const isCardHovered = item.courseID === hoveredCard;
-
-    return (
-      <Col span={8} key={item.courseID} className="mb-5">
-        <Card
-          cover={<img src={item.avatar} style={{ height: '300px' }} />}
-          onClick={handleCardClick}
-          onMouseEnter={handleCardMouseEnter}
-          onMouseLeave={handleCardMouseLeave}
-          style={{ transform: isCardHovered ? 'scale(1.1)' : 'scale(1)' }}
-        >
-          <div style={{ fontSize: '20px', textAlign: 'center', fontWeight: isCardHovered ? 'bold' : 'normal' }}>
-            {item.name}
-          </div>
-        </Card>
-      </Col>
-    );
-  })}
-</Row>
-
-        {showDetail && (
-          <div style={{textAlign:"center",fontStyle:"italic"} }>
-            <h1>Want to see in detail? Sign up and get started.</h1>
-            {/* Place your sign-up component or link here */}
-          </div>
-        )}
-
-        {/* <Tabs courses={courses} /> */}
+        <div className="carousel-buttons">
+          <Button
+            type="primary"
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            style={{paddingBottom:"30px",marginRight:"20px"}}
+            
+          >
+            <LeftOutlined/>
+          </Button>
+          <Button
+            type="primary"
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            style={{paddingBottom:"30px",marginLeft:"20px"}}  
+          >
+            <RightOutlined/>
+          </Button>
+        </div>
       </div>
     </CoursesListWrapper>
   );
@@ -91,6 +118,14 @@ const CoursesListWrapper = styled.div`
   padding: 40px 0;
   .courses-list-top p {
     font-size: 1.8rem;
+  }
+  .carousel-buttons {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  .carousel-buttons button {
+    margin: 0 8px;
   }
 `;
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import StarRating from "../StarRating";
 import { MdInfo } from "react-icons/md";
@@ -9,6 +9,8 @@ import { CheckOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
 import { Rate, Table } from "antd";
 import { MailOutlined } from "@ant-design/icons";
+import { Button, Modal } from 'antd';
+
 import {
   FaBook,
   FaBookOpen,
@@ -18,7 +20,7 @@ import {
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import swal from "sweetalert";
 import "../Test.css";
-const SingleCoursePage = () => {
+const GuestCoursePage = () => {
   const { id } = useParams();
   const [course, setCourse] = useState([]);
   const [chapter, setChapter] = useState([]);
@@ -29,6 +31,21 @@ const SingleCoursePage = () => {
 
   const [review, setReview] = useState([]);
   const [enroll, setEnroll] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+    navigate('/login/v2')
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const fetchReview = () => {
     api.get(`api/enrollment/course/${id}`).then((res) => {
       setReview(res.data);
@@ -45,12 +62,10 @@ const SingleCoursePage = () => {
   // Step 3: Calculate the average rate
   const averageRate = sumOfRates / rates.length;
   useEffect(() => {
-    api
-      .get(`/api/course/${id}/${account.learnerID ? account.learnerID : 0}`)
-      .then((response) => {
-        setCourse(response.data);
-        price.current = response.data.price;
-      });
+    api.get(`/api/course/${id} `).then((response) => {
+      setCourse(response.data);
+      price.current = response.data.price;
+    });
   }, [id, render]);
 
   const fetchChapter = () => {
@@ -71,7 +86,11 @@ const SingleCoursePage = () => {
     fetchEnroll();
   }, []);
   console.log(enroll);
-
+  const navigate = useNavigate();
+  const handleClick = () => {
+    swal("You must have an account to pay and learn");
+    navigate("/login/v2");
+  };
   function formatDate(timestamp, format) {
     const date = new Date(timestamp);
 
@@ -124,9 +143,14 @@ const SingleCoursePage = () => {
           <div className="course-body">
             <p className="course-para fs-18">{course.description}</p>
             <div className="course-rating flex">
-              <span className="rating-star-val fw-8 fs-16" style={{marginTop:"5px"}} >Rating: </span>
+              <span
+                className="rating-star-val fw-8 fs-16"
+                style={{ marginTop: "5px" }}
+              >
+                Rating:{" "}
+              </span>
               <StarRating rating_star={averageRate} />
-              <span className="rating-count">(  {rates.length} rated )</span>
+              <span className="rating-count">( {rates.length} rated )</span>
               <span className="students-count fs-14">{enroll.length}</span>
             </div>
 
@@ -163,8 +187,7 @@ const SingleCoursePage = () => {
           </div>
 
           <div className="course-btn">
-            {!course.enrolled && account.learnerID ? (
-              <PayPalScriptProvider options={scriptOptions}>
+            {/* <PayPalScriptProvider options={scriptOptions}>
                 <PayPalButtons
                   createOrder={(data, actions) => {
                     console.log("Creating order:", data);
@@ -199,18 +222,29 @@ const SingleCoursePage = () => {
                     setRender(render + 1);
                   }}
                 />
-              </PayPalScriptProvider>
-            ) : account.learnerID ? (
-              <Link
-                to={`/learning/${id}`}
-                className="add-to-cart-btn d-inline-block fw-7 bg-orange"
-                style={{
-                  backgroundColor: "var(--clr-orange)",
-                }}
-              >
-                <FaBookOpen /> Learn
-              </Link>
-            ) : null}
+              </PayPalScriptProvider> */}
+
+            <button
+              href={`/login/v2`}
+              className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+              style={{
+                backgroundColor: "var(--clr-orange)",
+              }}
+              onClick={showModal}
+            >
+              <FaBookOpen /> Learn
+            </button>
+            {/* <Button type="primary" onClick={showModal}>
+              Open Modal
+            </Button> */}
+            <Modal
+              title="Warning"
+              open={isModalOpen}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <p>You must have an account to Pay and Learn</p>
+            </Modal>
           </div>
         </div>
       </div>
@@ -421,4 +455,4 @@ const SingleCourseWrapper = styled.div`
   }
 `;
 
-export default SingleCoursePage;
+export default GuestCoursePage;

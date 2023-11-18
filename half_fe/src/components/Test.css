@@ -159,3 +159,17 @@ p {
   transform: scale(1.1);
   transition: transform 0.3s ease;
 }
+.top-course-title {
+  margin-bottom: 50px;
+}
+.course-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.course-card {
+  flex: 0 0 calc(33.33% - 16px);
+  max-width: calc(33.33% - 16px);
+  margin-bottom: 16px;
+}

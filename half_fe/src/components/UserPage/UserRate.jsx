@@ -22,6 +22,7 @@ const RateCoursePage = () => {
   const [course, setCourse] = useState([]);
   const [chapter, setChapter] = useState([]);
   // const [description, setDescription] = useState("Tell us here!");
+  const [review, setReview] = useState([]);
 
   let data = 0;
   const [enroll, setEnroll] = useState(0);
@@ -56,6 +57,7 @@ const RateCoursePage = () => {
   useEffect(() => {
     fetchChapter();
     fetchEnroll();
+    fetchReview();
   }, []);
 
   const scriptOptions = {
@@ -101,7 +103,18 @@ const RateCoursePage = () => {
       comment: e.target.value,
     });
   };
+  const rates = review.map((review) => review.rate);
 
+  // Step 2: Calculate the sum of all rate values
+  const sumOfRates = rates.reduce((accumulator, rate) => accumulator + rate, 0);
+
+  // Step 3: Calculate the average rate
+  const averageRate = sumOfRates / rates.length;
+  const fetchReview = () => {
+    api.get(`api/enrollment/course/${id}`).then((res) => {
+      setReview(res.data);
+    });
+  };
   function formatDate(timestamp, format) {
     const date = new Date(timestamp);
 

@@ -9,8 +9,6 @@ const UpdateCourse = () => {
     name: "",
     description: "",
     upload_date: "",
-    viewer: "",
-    rate: "",
   });
 
   useEffect(() => {
@@ -86,26 +84,7 @@ const UpdateCourse = () => {
             onChange={(e) => handleEdit(e)}
           />
         </div>
-        <div>
-          <label htmlFor="viewer">Course Viewer:</label>
-          <input
-            type="text"
-            id="viewer"
-            name="viewer"
-            value={courseEdit.viewer}
-            onChange={(e) => handleEdit(e)}
-          />
-        </div>
-        <div>
-          <label htmlFor="rate">Course Rate:</label>
-          <input
-            type="text"
-            id="rate"
-            name="rate"
-            value={courseEdit.rate}
-            onChange={(e) => handleEdit(e)}
-          />
-        </div>
+        
         <button type="submit">Update</button>
       </form>
     </div>
