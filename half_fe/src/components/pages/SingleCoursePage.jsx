@@ -8,7 +8,7 @@ import { TbWorld } from "react-icons/tb";
 import { CheckOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
 import { Rate, Table } from "antd";
-import { MailOutlined } from "@ant-design/icons";
+import { formatDistanceToNow } from "date-fns";
 import {
   FaBook,
   FaBookOpen,
@@ -29,6 +29,8 @@ const SingleCoursePage = () => {
 
   const [review, setReview] = useState([]);
   const [enroll, setEnroll] = useState([]);
+
+  let count = 0;
   const fetchReview = () => {
     api.get(`api/enrollment/course/${id}`).then((res) => {
       setReview(res.data);
@@ -37,13 +39,25 @@ const SingleCoursePage = () => {
   // Assuming you have fetched the enrollments and stored them in a variable called 'enrollments'
 
   // Step 1: Create an array to store the rates
-  const rates = review.map((review) => review.rate);
+  const rates = review
+    .filter((item) => item.rate >= 1)
+    .map((item) => {
+      return item.rate;
+    });
+  count = rates.length;
 
   // Step 2: Calculate the sum of all rate values
-  const sumOfRates = rates.reduce((accumulator, rate) => accumulator + rate, 0);
+  const sumOfRates = rates.reduce((accumulator, rate) => {
+    console.log(accumulator);
+    console.log(rate);
+    return accumulator + rate;
+  }, 0);
 
   // Step 3: Calculate the average rate
-  const averageRate = sumOfRates / rates.length;
+  // const averageRate = sumOfRates / rates.length;
+  const averageRate = sumOfRates / count;
+  let num = averageRate;
+
   useEffect(() => {
     api
       .get(`/api/course/${id}/${account.learnerID ? account.learnerID : 0}`)
@@ -72,30 +86,30 @@ const SingleCoursePage = () => {
   }, []);
   console.log(enroll);
 
-  function formatDate(timestamp, format) {
-    const date = new Date(timestamp);
+  // function formatDate(timestamp, format) {
+  //   const date = new Date(timestamp);
 
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    };
+  //   const options = {
+  //     year: "numeric",
+  //     month: "2-digit",
+  //     day: "2-digit",
+  //     hour: "2-digit",
+  //     minute: "2-digit",
+  //     second: "2-digit",
+  //     hour12: false,
+  //   };
 
-    const formattedDate = date.toLocaleString("vi-VN", options);
+  //   const formattedDate = date.toLocaleString("vi-VN", options);
 
-    const formatMapping = {
-      "dd/MM/yyyy": formattedDate,
-      "MM/dd/yyyy": formattedDate,
-      "yyyy-MM-dd": formattedDate,
-      "HH:mm:ss": formattedDate.slice(11),
-      // Add more formats if needed
-    };
-    return formatMapping[format] || "Invalid Format";
-  }
+  //   const formatMapping = {
+  //     "dd/MM/yyyy": formattedDate,
+  //     "MM/dd/yyyy": formattedDate,
+  //     "yyyy-MM-dd": formattedDate,
+  //     "HH:mm:ss": formattedDate.slice(11),
+  //     // Add more formats if needed
+  //   };
+  //   return formatMapping[format] || "Invalid Format";
+  // }
 
   const scriptOptions = {
     clientId:
@@ -124,10 +138,18 @@ const SingleCoursePage = () => {
           <div className="course-body">
             <p className="course-para fs-18">{course.description}</p>
             <div className="course-rating flex">
-              <span className="rating-star-val fw-8 fs-16" style={{marginTop:"5px"}} >Rating: </span>
+              <span
+                className="rating-star-val fw-8 fs-16"
+                style={{ marginTop: "5px" }}
+              >
+                {num.toFixed(1)}
+                {/* Rating:{" "}  */}
+              </span>
               <StarRating rating_star={averageRate} />
-              <span className="rating-count">(  {rates.length} rated )</span>
-              <span className="students-count fs-14">{enroll.length}</span>
+              <span className="rating-count">( {count} ratings )</span>
+              <span className="students-count fs-14">
+                {enroll.length} students
+              </span>
             </div>
 
             <ul className="course-info">
@@ -144,7 +166,12 @@ const SingleCoursePage = () => {
                   <MdInfo />
                 </span>
                 <span className="fs-14 course-info-txt fw-5">
-                  Last updated {formatDate(course.upload_date, "dd/MM/yyyy")}
+                  Last updated{" "}
+                  {course.upload_date &&
+                    formatDistanceToNow(new Date(course.upload_date), {
+                      addSuffix: true,
+                    })}
+                  {/* Last updated {""} */}
                 </span>
               </li>
               <li className="flex">
@@ -266,7 +293,7 @@ const SingleCoursePage = () => {
                 key: "learnerName",
               },
               {
-                title: "",
+                title: "Rating",
                 dataIndex: "rate",
                 key: "rate",
                 render: (rate) => <Rate disabled defaultValue={rate} />,
@@ -276,8 +303,21 @@ const SingleCoursePage = () => {
                 dataIndex: "comment",
                 key: "comment",
               },
+              {
+                title: "Date",
+                dataIndex: "date",
+                key: "date",
+                render: (date) => {
+                  return (
+                    date &&
+                    formatDistanceToNow(new Date(date), {
+                      addSuffix: true,
+                    })
+                  );
+                },
+              },
             ]}
-            dataSource={review}
+            dataSource={review.filter((item) => item.rate >= 1)}
             size="small"
             style={{ tableLayout: "fixed" }}
           />

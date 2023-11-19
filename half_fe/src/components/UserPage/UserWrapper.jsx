@@ -4,11 +4,11 @@ import UserCourse from "./UserCourse";
 import ViewSubmission from "../studentFunction/ViewSubmission";
 
 const UserWrapper = () => {
-    // const account = JSON.parse(localStorage.getItem('accessToken'))
+  // const account = JSON.parse(localStorage.getItem('accessToken'))
   const items = [
     {
       key: "1",
-      label: "All Course",
+      label: "All Courses",
       children: <UserHomePage />,
     },
     {
@@ -18,7 +18,7 @@ const UserWrapper = () => {
     },
     {
       key: "3",
-      label: "Submission",
+      label: "Submissions",
       children: <ViewSubmission />,
     },
   ];

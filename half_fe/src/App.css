@@ -433,6 +433,12 @@ select {
   color: #fd9644;
 }
 
+.ant-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* .ant-form-item-control-input-content {
   display: flex;
   align-items: center;

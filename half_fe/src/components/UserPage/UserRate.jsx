@@ -16,11 +16,13 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { Modal } from "antd";
 import "../Test.css";
 import TextArea from "antd/es/input/TextArea";
+import { useForm } from "antd/es/form/Form";
 
 const RateCoursePage = () => {
   const { id } = useParams();
   const [course, setCourse] = useState([]);
   const [chapter, setChapter] = useState([]);
+  const [form] = useForm();
   // const [description, setDescription] = useState("Tell us here!");
   const [review, setReview] = useState([]);
 
@@ -70,6 +72,7 @@ const RateCoursePage = () => {
     setRating(selectedRating);
     setRateEdit({ ...rateEdit, rate: selectedRating });
     console.log("Selected rating:", selectedRating);
+    form.setFieldValue("star", selectedRating);
   };
 
   const starStyle = {
@@ -84,17 +87,25 @@ const RateCoursePage = () => {
     fontSize: "35px", // Keep the font size consistent with starStyle
   };
 
-  const handleSubmit = async () => {
-    await api.put(`/api/enrollment/${enroll}/update`, rateEdit);
+  const handleSubmit = async (values) => {
+    await api.put(`/api/enrollment/${enroll}/update`, {
+      enrollmentID: enroll,
+      rate: values.star,
+      comment: values.comment,
+      date: new Date().toISOString(),
+    });
     console.log(rateEdit);
-    message.success('You reated successfully')
+    message.success("You reated successfully");
+    setIsModalOpen(false);
   };
+
   const [rateEdit, setRateEdit] = useState(
     {
       enrollmentID: 0,
       rate: 0,
       comment: " ",
-    },[]
+    },
+    []
   );
 
   const handleEdit = (e) => {
@@ -151,8 +162,9 @@ const RateCoursePage = () => {
   }, [enroll]);
 
   const handleOk = () => {
-    handleSubmit();
-    setIsModalOpen(false);
+    // handleSubmit();
+    // setIsModalOpen(false);
+    form.submit();
   };
 
   const handleCancel = () => {
@@ -284,45 +296,66 @@ const RateCoursePage = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form labelCol={{span:24}} onSubmit={handleSubmit}>
+        <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
           {/* <div className="rating-box"> */}
-            <Form.Item>
-              <header>How was your experience of this course?</header>
-              <div className="stars">
-                <FontAwesomeIcon
-                  icon={faStar}
-                  style={rating >= 1 ? activeStarStyle : starStyle}
-                  onClick={() => handleStarClick(1)}
-                />
-                <FontAwesomeIcon
-                  icon={faStar}
-                  style={rating >= 2 ? activeStarStyle : starStyle}
-                  onClick={() => handleStarClick(2)}
-                />
-                <FontAwesomeIcon
-                  icon={faStar}
-                  style={rating >= 3 ? activeStarStyle : starStyle}
-                  onClick={() => handleStarClick(3)}
-                />
-                <FontAwesomeIcon
-                  icon={faStar}
-                  style={rating >= 4 ? activeStarStyle : starStyle}
-                  onClick={() => handleStarClick(4)}
-                />
-                <FontAwesomeIcon
-                  icon={faStar}
-                  style={rating >= 5 ? activeStarStyle : starStyle}
-                  onClick={() => handleStarClick(5)}
-                />
-              </div>
-            </Form.Item>
-            <Form.Item 
-            label='Write your comment' name={"comment"}>
-                  <TextArea value={rateEdit.comment}
-                onChange={(e) => handleEdit(e)}/>
-            </Form.Item>
-            {/* <div> */}
-              {/* <header>Write your comment</header>
+          <Form.Item
+            label="How was your experience of this course?"
+            name={"star"}
+            rules={[
+              {
+                required: true,
+                message: "Let rating",
+              },
+            ]}
+          >
+            {/* <header>How was your experience of this course?</header> */}
+            <div className="stars">
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 1 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(1)}
+              />
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 2 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(2)}
+              />
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 3 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(3)}
+              />
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 4 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(4)}
+              />
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 5 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(5)}
+              />
+            </div>
+            {/* <Input /> */}
+          </Form.Item>
+          <Form.Item
+            label="Write your comment"
+            name={"comment"}
+            rules={[
+              {
+                required: true,
+                message:
+                  "Give the feedback for this course to instructor then they can improve it",
+              },
+            ]}
+          >
+            <TextArea
+              value={rateEdit.comment}
+              onChange={(e) => handleEdit(e)}
+            />
+          </Form.Item>
+          {/* <div> */}
+          {/* <header>Write your comment</header>
               <input
                 type="text"
                 id="comment"
@@ -330,7 +363,7 @@ const RateCoursePage = () => {
                 value={rateEdit.comment}
                 onChange={(e) => handleEdit(e)}
               /> */}
-            {/* </div> */}
+          {/* </div> */}
           {/* </div> */}
         </Form>
       </Modal>

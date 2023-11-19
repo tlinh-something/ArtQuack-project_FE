@@ -8,6 +8,7 @@ import Login from "../Login signup/Login";
 
 const NAME_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
 const EMAIL_REGEX = /^[\w-]+@[\w-]+\.[a-z]{3}$/;
+// const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{6,15}$/;
 
 function Register() {
