@@ -4,11 +4,11 @@ import MyCourse from "./MyCourse";
 import SubmissionPageNew from "./SubmissionPageNew";
 
 const InstructorWrapper = () => {
-    // const account = JSON.parse(localStorage.getItem('accessToken'))
+  // const account = JSON.parse(localStorage.getItem('accessToken'))
   const items = [
     {
       key: "1",
-      label: "All Course",
+      label: "All Courses",
       children: <InstructorPage />,
     },
     {
@@ -18,7 +18,7 @@ const InstructorWrapper = () => {
     },
     {
       key: "3",
-      label: "Submission",
+      label: "Submissions",
       children: <SubmissionPageNew />,
     },
   ];
