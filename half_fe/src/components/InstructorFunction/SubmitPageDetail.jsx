@@ -12,6 +12,7 @@ import {
   Row,
   Slider,
   Table,
+  Typography,
 } from "antd";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
@@ -65,10 +66,10 @@ const SubmitPageDetail = () => {
     };
 
     api.put(`/api/complete/${currentID}/updatecomplete`, data);
+    setRender(render + 1);
     form.resetFields();
     handleCancel();
     swal("Success!", "You graded successfully!", "success");
-    setRender(render + 1);
   };
 
   useEffect(() => {
@@ -105,17 +106,18 @@ const SubmitPageDetail = () => {
   }, [params.id, render]);
 
   const IntegerStep = ({ value, onChange }) => {
-    const onChangeInput = (newValue) => {
-      onChange(newValue);
-    };
-    
+    // const onChangeInput = (newValue) => {
+    //   onChange(newValue);
+    // };
+
     return (
       <Row>
-        <Col span={12}>
-          <Slider min={1} max={10} onChange={onChange} value={value} />
+        <Col span={18}>
+          <Slider min={0} max={10} onChange={onChange} value={value} />
         </Col>
         <Col span={4}>
-          <InputNumber
+          <Typography className="fw-5 fs-4">{value}</Typography>
+          {/* <InputNumber
             min={1}
             max={10}
             style={{
@@ -123,7 +125,8 @@ const SubmitPageDetail = () => {
             }}
             value={value}
             onChange={onChangeInput}
-          />
+            // disabled
+          /> */}
         </Col>
       </Row>
     );
@@ -131,6 +134,7 @@ const SubmitPageDetail = () => {
 
   return (
     <div>
+      
       <Table
         columns={[
           {
@@ -170,7 +174,7 @@ const SubmitPageDetail = () => {
             dataIndex: "completeID",
             render: (value) => {
               return (
-                <Button type="primary" onClick={() => showModal(value)} >
+                <Button type="primary" onClick={() => showModal(value)}>
                   Grade
                 </Button>
               );
@@ -192,7 +196,6 @@ const SubmitPageDetail = () => {
             span: 24,
           }}
           onFinish={handleGarde}
-          
         >
           <Form.Item
             label="Grade"
@@ -211,7 +214,16 @@ const SubmitPageDetail = () => {
             />
           </Form.Item>
 
-          <Form.Item label="Comment" name={"comment"}>
+          <Form.Item
+            label="Comment"
+            name={"comment"}
+            rules={[
+              {
+                required: true,
+                message: "Please give feedback for this artwork",
+              },
+            ]}
+          >
             <TextArea />
           </Form.Item>
         </Form>

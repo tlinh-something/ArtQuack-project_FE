@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./UserDropdown.css";
 import { Button, Menu } from "antd";
 import { Link } from "react-router-dom";
+import convertToCurrencyFormat from "../../components/utils/currencyUtil";
 function UserDropdown() {
   const userName = JSON.parse(localStorage.getItem("accessToken"))?.name;
   // const navigate = useNavigate();
@@ -52,7 +53,9 @@ function UserDropdown() {
           <div style={{ fontSize: "18px" }} className="mb-2">
             Wallet:{" "}
             <span style={{ color: "orange", fontWeight: "600" }}>
-              {wallet === null ? 0 : wallet.balance}
+              {wallet === null
+                ? 0
+                : convertToCurrencyFormat(wallet.balance.toFixed(1))}
             </span>
           </div>
           <div>

@@ -1,13 +1,21 @@
 import { Link, useParams } from "react-router-dom";
 import api from "../../config/axios";
 import { useEffect, useState } from "react";
-import { Image, Table } from "antd";
+import { Button, Form, Image, Space, Table, Upload } from "antd";
+import { Modal } from "antd";
+import uploadImage from "../../hooks/useUploadImage";
+import { useForm } from "antd/es/form/Form";
+import swal from "sweetalert";
 // import { useForm } from "antd/es/form/Form";
 
 const ViewSubmitDetail = () => {
   const params = useParams();
   const [submit, setSubmit] = useState([]);
   const account = JSON.parse(localStorage.getItem("accessToken"));
+  const [image, setImage] = useState("");
+  const [current, setCurrent] = useState(null);
+  const [render, setRender] = useState(0);
+  const [form] = useForm();
 
   const fetchSubmit = () => {
     api
@@ -42,9 +50,42 @@ const ViewSubmitDetail = () => {
     return formatMapping[format] || "Invalid Format";
   }
 
+  const updateGrade = async (values) => {
+    const data = {
+      grade: null,
+      comment: null,
+      date: new Date().toISOString(),
+      completeID: current,
+      homework: image,
+      status: true
+    };
+
+    console.log(data);
+    console.log(current);
+    api.put(`/api/complete/${current}/updatecomplete`, data);
+    form.resetFields();
+    setRender(render + 1);
+    swal("Success!", "Re-submit artwork success!", "success");
+    handleCancel();
+  };
+
+  const handleOk = () => {
+    form.submit();
+    console.log(current);
+  };
+  const handleCancel = () => {
+    setCurrent(null);
+  };
+
+  const handleFileUpload = async (file) => {
+    console.log(file);
+    setImage(await uploadImage(file.originFileObj));
+  };
+
   useEffect(() => {
     fetchSubmit();
-  }, [params.id]);
+  }, [params.id, render]);
+
 
   return (
     <div>
@@ -80,11 +121,69 @@ const ViewSubmitDetail = () => {
             title: "Comment",
             dataIndex: "comment",
             key: "comment",
-          }
+          },
+          {
+            title: "Action",
+            key: "action",
+            align: "center",
+            render: (record) => {
+              return (
+                <Space>
+                  <Button
+                    onClick={() => {
+                      setCurrent(record.completeID);
+                    }}
+                    type="primary"
+                  >
+                    Re-submit
+                  </Button>
+                </Space>
+              );
+            },
+          },
         ]}
         dataSource={submit}
       />
-      <Link to='/user' className="link-back fw-5">Back to home</Link>
+      <Link to="/user" className="link-back fw-5">
+        Back to home
+      </Link>
+
+      <Modal
+        title="Re-submit peer grade"
+        open={current !== null}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form
+          title="Re-submit peer grade"
+          labelCol={{ span: 24 }}
+          form={form}
+          onFinish={updateGrade}
+        >
+          <Form.Item label="Upload File">
+            <Upload.Dragger
+              name="file"
+              accept=".png, .jpg"
+              beforeUpload={false}
+              onChange={(info) => {
+                console.log(info);
+                if (info.fileList.length > 0) {
+                  handleFileUpload(info.file);
+                }
+              }}
+              onRemove={() => {
+                console.log("a");
+                setImage(null);
+              }}
+            >
+              <p className="ant-upload-text">
+                Click or drag file to this area to upload
+              </p>
+            </Upload.Dragger>
+          </Form.Item>
+          {image && <Image src={image} style={{ height: "200px" }} />}
+        </Form>
+      </Modal>
     </div>
   );
 };
