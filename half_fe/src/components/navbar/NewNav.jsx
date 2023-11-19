@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import NavbarUser from "../UserPage/NavbarUser";
 import Navbar from "./NarbarIns";
-import Navbar2 from "./Navbar";
 import NavbarSearch from "./NavbarSearch";
 import { Tabs } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +36,7 @@ const NavBarNew = () => {
     // return <Navbar />;
     return <NavbarSearch />;
   } else {
-    return <Navbar2 />;
+    return <NavbarSearch />;
   }
 };
 

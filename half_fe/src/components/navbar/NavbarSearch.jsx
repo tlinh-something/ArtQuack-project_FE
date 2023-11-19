@@ -5,6 +5,7 @@ import { AutoComplete, Input } from "antd";
 import api from "../../config/axios";
 import UserDropdown from "../UserPage/UserDropdown";
 import Search from "antd/es/input/Search";
+import { Dropdown, Space } from "antd";
 
 const NavbarSearch = () => {
   const [course, setCourse] = useState([]);
@@ -13,6 +14,23 @@ const NavbarSearch = () => {
 
   const account = JSON.parse(localStorage.getItem("accessToken"));
   const navigate = useNavigate();
+
+  const [cate, setCate] = useState([]);
+
+  useEffect(() => {
+    api.get("/api/categories").then((response) => {
+      setCate(response.data);
+      console.log(response.data);
+    });
+  }, []);
+
+  const cates = cate.map((c) => {
+    return {
+      key: c.cateID,
+      // label: c.cateName,
+      label: <a href={`/courses/category/${c.cateID}`}>{c.cateName}</a>,
+    };
+  });
 
   const handleSearch = (value) => {
     if (value) {
@@ -56,12 +74,24 @@ const NavbarSearch = () => {
             <div className="p-2 row">
               <ul>
                 <Link
-                  to={`${account.learnerID ? `/user` : `/instructor`}`}
+                  to={`${
+                    !account
+                      ? "/"
+                      : account?.learnerID
+                      ? `/user`
+                      : `/instructor`
+                  }`}
                   className="navbar-brand text-uppercase ls-1 fw-8"
                   onClick={loadValue}
                 >
                   <span className="topic">A</span>rtquack
                 </Link>
+
+                <li>
+                  <Dropdown menu={{ items: cates }}>
+                    <a className="nav-cate">Categories</a>
+                  </Dropdown>
+                </li>
 
                 <AutoComplete
                   // popupMatchSelectWidth={252}
@@ -90,14 +120,19 @@ const NavbarSearch = () => {
                 {localStorage.getItem("accessToken") &&
                 JSON.parse(localStorage.getItem("accessToken")).role ? (
                   <>
-                    <li className="col-md-4 offset-md-4">
+                    <li className="col-md-4 offset-md-2">
                       <UserDropdown />
                     </li>
                   </>
                 ) : (
-                  <li>
-                    <Link to="/login/v2">Login</Link>
-                  </li>
+                  <>
+                    <li>
+                      <Link to="/login/v2">Login</Link>
+                    </li>
+                    <li>
+                      <Link to="/register">Sign up</Link>
+                    </li>
+                  </>
                 )}
               </ul>
             </div>

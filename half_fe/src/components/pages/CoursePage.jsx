@@ -2,29 +2,29 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Course from "../Course";
-import { useCoursesContext } from "../context/course_context";
+// import { useCoursesContext } from "../context/course_context";
 import { useEffect, useState } from "react";
 import api from "../../config/axios";
 
 const CoursesPage = () => {
-  const { category } = useParams();
-  const [course, setCourse ]= useState([]);
+  const { id } = useParams();
+  const [course, setCourse] = useState([]);
   const fetchCourse = async () => {
-    await api.get(`/api/category/${category}/courses`).then((res) => {
+    await api.get(`/api/category/${id}/courses`).then((res) => {
       setCourse(res.data);
+      console.log(res.data);
     });
   };
   useEffect(() => {
     fetchCourse();
   }, []);
+
   return (
     <CoursesPageWrapper>
       <div className="container">
-        
         <div className="category-based-list">
           {course &&
             course.map((course) => (
-              
               <Course key={course.courseID} course={course} />
             ))}
         </div>

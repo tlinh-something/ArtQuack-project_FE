@@ -68,3 +68,11 @@ button:focus-visible {
   }
 }
 
+.course-card-new {
+  transition: 0.3s all;
+}
+
+.course-card-new:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}

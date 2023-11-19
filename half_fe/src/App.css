@@ -439,8 +439,15 @@ select {
   justify-content: space-between;
 }
 
+.nav-cate:hover{
+  color: #ff6e01
+}
+
 /* .ant-form-item-control-input-content {
   display: flex;
   align-items: center;
   justify-content: center;
 } */
+.course-intro .course-btn .add-to-cart-btn span{
+  margin-left: 0 !important;
+}

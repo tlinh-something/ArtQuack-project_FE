@@ -9,29 +9,41 @@ import "../Test.css";
 import { Nav, NavDropdown } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import api from "../../config/axios";
+import { Dropdown, Space } from "antd";
+import NavbarSearch from "./NavbarSearch";
 //import { useCoursesContext } from "../context/course_context";
 // import Nav from 'react-bootstrap/Nav';
 //import { Stack } from "react-bootstrap";
 
 const Navbar = () => {
+  const [searchCourse, setSearchCourse] = useState();
   //const {total_items} = useCartContext();
   // const {openSidebar} = useSidebarContext();
   const handleSearch = (query) => {
     // Replace this with your actual search logic
     alert(`Searching for: ${query}`);
+    api.get(`/api/courses/${query}`).then((response) => {
+      setSearchCourse(response.data);
+      console.log(response.data);
+    });
   };
 
-  const [category, setCategory] = useState([]);
+  const [cate, setCate] = useState([]);
 
   useEffect(() => {
     api.get("/api/categories").then((response) => {
-      setCategory(response.data);
+      setCate(response.data);
       console.log(response.data);
     });
   }, []);
 
-  //const {categories} = useCoursesContext();
-  console.log(category);
+  const cates = cate.map((c) => {
+    return {
+      key: c.cateID,
+      label: c.cateName,
+    };
+  });
+
   return (
     <div className="container w-100">
       <div className="header">
@@ -40,21 +52,14 @@ const Navbar = () => {
             <a className="navbar-brand fw-8 text-uppercase" href="/">
               <span>A</span>rtQuack
             </a>
-            
-              <Nav>
 
-              
-              {category.map((data, i) => {
-                <NavDropdown key={i} title="cateName">
-                  <NavDropdown.Item>{data.cateName}</NavDropdown.Item>
-                </NavDropdown>;
-              })}
+            <Nav>
               {/* { categories.map((category, index) => {
                     <NavDropdown key={index} type='hide'></NavDropdown>
                     <NavDropdown.Item href={`category/${category}`} value={`${category}`} >{category}</NavDropdown.Item>
                 })} */}
-              </Nav>
-            
+            </Nav>
+
             <button
               className="navbar-toggler"
               type="button"
@@ -66,9 +71,20 @@ const Navbar = () => {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            {/* <SearchBar className="SearchBar" onSearch={handleSearch} /> */}
             <div className="collapse navbar-collapse flex">
               <ul className="navbar-nav">
+                <Dropdown menu={{ items: cates }}>
+                  <Space>Categories</Space>
+                </Dropdown>
+                <NavbarSearch />
+            {/* <SearchBar className="SearchBar" onSearch={handleSearch} /> */}
+                {/* <li> */}
+                {/* <Dropdown menu={cates }>
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>Categories
+                      </Space></a>
+                  </Dropdown> */}
+                {/* </li> */}
                 <li className="nav-item">
                   <a className="nav-link" href="/register">
                     Teach on ArtQuack

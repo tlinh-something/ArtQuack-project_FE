@@ -161,7 +161,7 @@ p {
   transition: transform 0.3s ease;
 }
 .top-course-title {
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 }
 .course-row {
   display: flex;

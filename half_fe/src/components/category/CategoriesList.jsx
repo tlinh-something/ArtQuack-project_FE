@@ -10,7 +10,7 @@ const CategoriesList = () => {
 
   useEffect(() => {
     api.get('/api/categories').then(response => {
-      setCategory(response.data.slice(0, 6));
+      setCategory(response.data.slice(0, 8));
     });
   }, []);
 
@@ -29,19 +29,19 @@ const CategoriesList = () => {
   return (
     <div className="CategoriesListWrapper">
       <div className="container">
-        <div className="categories-list-top">
-          <h2>Top Categories</h2>
+        <div className="categories-list-top mb-4">
+          <h2>Categories</h2>
         </div>
 
-        <Row gutter={50}>
+        <Row gutter={35}>
           {category.map(item => (
-            <Col span={8} key={item.cateID} className="mb-5">
+            <Col span={6} key={item.cateID} className="mb-5">
               <Card
                 cover={
                   <img
                     src={item.picture}
                     onClick={handleCardClick}
-                    style={{ height: '280px', transform: hoveredCard === item.cateID ? 'scale(1.1)' : 'scale(1)' }}
+                    style={{ height: '240px', transform: hoveredCard === item.cateID ? 'scale(1.1)' : 'scale(1)' }}
                     className=""
                     onMouseEnter={() => handleCardMouseEnter(item.cateID)}
                     onMouseLeave={handleCardMouseLeave}

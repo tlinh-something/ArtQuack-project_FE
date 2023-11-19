@@ -12,7 +12,11 @@ const Course = ({ course, type }) => {
 
   const fetchEnroll = async () => {
     await api
-      .get(`/api/course/${course.courseID}/${account.learnerID}`)
+      .get(
+        `/api/course/${course.courseID}/${
+          account.learnerID ? account.learnerID : 0
+        }`
+      )
       .then((response) => {
         setEnroll(response.data);
         console.log(response.data);
@@ -102,9 +106,9 @@ const Course = ({ course, type }) => {
           See details
         </Link> */}
 
-        {account.learnerID && enroll.enrolled ? (
+        {account?.learnerID && enroll.enrolled ? (
           <Link
-            to={`/user/rate/${course.courseID}`}
+            to={`/courses/${course.courseID}`}
             className="item-btn see-details-btn"
             style={{ margin: "0 auto" }}
           >

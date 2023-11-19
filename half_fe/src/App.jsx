@@ -41,6 +41,7 @@ import UserWrapper from "./components/UserPage/UserWrapper";
 import InstructorWrapper from "./components/InstructorFunction/InstructorWrapper";
 
 import GuestCoursePage from "./components/pages/GuestCoursePage";
+import CoursesPage from "./components/pages/CoursePage";
 function App() {
   return (
     <ConfigProvider
@@ -61,13 +62,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/courses/:id" element={<SingleCourse />} />
-        <Route path="/guest/courses/:id" element={<GuestCoursePage/>}/>
-        <Route path="/category/:category" element={<Courses />} />
+        <Route path="/guest/courses/:id" element={<SingleCourse/>}/>
+        {/* <Route path="/guest/courses/:id" element={<GuestCoursePage/>}/> */}
+        {/* <Route path="/category/:category" element={<Courses />} /> */}
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/:postID" element={<BlogDetails />} />
         <Route path="/login" element={<LoginSignup />} />
         <Route path="/login/v2" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/courses/category/:id" element={<CoursesPage />} />
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
         <Route path="/user" element={<UserWrapper/>} />
         <Route path="/user/mycourse" element={<UserCourse />} />

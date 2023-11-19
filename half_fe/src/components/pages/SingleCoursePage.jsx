@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import StarRating from "../StarRating";
 import { MdInfo } from "react-icons/md";
 import { TbWorld } from "react-icons/tb";
 //import {FaShoppingCart} from "react-icons/fa";
-import { CheckOutlined } from "@ant-design/icons";
+import { CheckOutlined, EditOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
-import { Rate, Table } from "antd";
+import { Rate, Table, Modal, Form, message } from "antd";
 import { formatDistanceToNow } from "date-fns";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import {
   FaBook,
   FaBookOpen,
@@ -18,6 +20,9 @@ import {
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import swal from "sweetalert";
 import "../Test.css";
+import { useForm } from "antd/es/form/Form";
+import TextArea from "antd/es/input/TextArea";
+
 const SingleCoursePage = () => {
   const { id } = useParams();
   const [course, setCourse] = useState([]);
@@ -30,6 +35,8 @@ const SingleCoursePage = () => {
   const [review, setReview] = useState([]);
   const [enroll, setEnroll] = useState([]);
 
+  const [form] = useForm();
+  const navigate = useNavigate();
   let count = 0;
   const fetchReview = () => {
     api.get(`api/enrollment/course/${id}`).then((res) => {
@@ -60,7 +67,7 @@ const SingleCoursePage = () => {
 
   useEffect(() => {
     api
-      .get(`/api/course/${id}/${account.learnerID ? account.learnerID : 0}`)
+      .get(`/api/course/${id}/${account?.learnerID ? account.learnerID : 0}`)
       .then((response) => {
         setCourse(response.data);
         price.current = response.data.price;
@@ -86,6 +93,72 @@ const SingleCoursePage = () => {
   }, []);
   console.log(enroll);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modal, setModal] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    form.submit();
+    // setIsModalOpen(false);
+    // navigate("/login/v2");
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSubmit = async (values) => {
+    const id = enroll.filter((item) => item.learnerID === account.learnerID)[0]
+      .enrollmentID;
+    await api.put(`/api/enrollment/${id}/update`, {
+      enrollmentID: id,
+      rate: values.star,
+      comment: values.comment,
+      date: new Date().toISOString(),
+    });
+    console.log(rateEdit);
+    message.success("You reated successfully");
+    setIsModalOpen(false);
+  };
+
+  const [rateEdit, setRateEdit] = useState(
+    {
+      enrollmentID: 0,
+      rate: 0,
+      comment: " ",
+    },
+    []
+  );
+
+  const handleEdit = (e) => {
+    setRateEdit({
+      ...rateEdit,
+      comment: e.target.value,
+    });
+  };
+
+  const [rating, setRating] = useState(0);
+  const handleStarClick = (selectedRating) => {
+    setRating(selectedRating);
+    setRateEdit({ ...rateEdit, rate: selectedRating });
+    console.log("Selected rating:", selectedRating);
+    form.setFieldValue("star", selectedRating);
+  };
+
+  const starStyle = {
+    color: "#e6e6e6",
+    fontSize: "35px",
+    cursor: "pointer",
+    transition: "color 0.2s ease",
+  };
+
+  const activeStarStyle = {
+    color: "#ff9c1a",
+    fontSize: "35px", // Keep the font size consistent with starStyle
+  };
   // function formatDate(timestamp, format) {
   //   const date = new Date(timestamp);
 
@@ -142,7 +215,7 @@ const SingleCoursePage = () => {
                 className="rating-star-val fw-8 fs-16"
                 style={{ marginTop: "5px" }}
               >
-                {num.toFixed(1)}
+                {num ? num.toFixed(1) : 0}
                 {/* Rating:{" "}  */}
               </span>
               <StarRating rating_star={averageRate} />
@@ -190,7 +263,7 @@ const SingleCoursePage = () => {
           </div>
 
           <div className="course-btn">
-            {!course.enrolled && account.learnerID ? (
+            {!course.enrolled && account?.learnerID ? (
               <PayPalScriptProvider options={scriptOptions}>
                 <PayPalButtons
                   createOrder={(data, actions) => {
@@ -219,7 +292,7 @@ const SingleCoursePage = () => {
                       }
                     );
                     swal(
-                      "Good Job",
+                      "Success!",
                       "Successfully enroll to course",
                       "success"
                     );
@@ -227,20 +300,146 @@ const SingleCoursePage = () => {
                   }}
                 />
               </PayPalScriptProvider>
-            ) : account.learnerID ? (
-              <Link
-                to={`/learning/${id}`}
+            ) : // ) : account?.learnerID ? (
+            account ? (
+              account.learnerID ? (
+                <>
+                  <Link
+                    to={`/learning/${id}`}
+                    className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+                    style={{
+                      backgroundColor: "var(--clr-orange)",
+                    }}
+                  >
+                    <FaBookOpen /> Learn
+                  </Link>
+                  <Link
+                    onClick={() => {
+                      if (account.learnerID) {
+                        showModal();
+                      } else {
+                        setModal(true);
+                      }
+                    }}
+                    className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+                    style={{
+                      backgroundColor: "var(--clr-orange)",
+                      marginLeft: 20,
+                    }}
+                  >
+                    <EditOutlined /> Review
+                  </Link>
+                </>
+              ) : null
+            ) : (
+              // ) : null}
+              <button
+                href={`/login/v2`}
                 className="add-to-cart-btn d-inline-block fw-7 bg-orange"
                 style={{
                   backgroundColor: "var(--clr-orange)",
                 }}
+                onClick={() => {
+                  setModal(true);
+                }}
               >
                 <FaBookOpen /> Learn
-              </Link>
-            ) : null}
+              </button>
+            )}
           </div>
         </div>
       </div>
+
+      <Modal
+        title="Give me your feel about the course"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
+          {/* <div className="rating-box"> */}
+          <Form.Item
+            label="How was your experience of this course?"
+            name={"star"}
+            rules={[
+              {
+                required: true,
+                message: "Let rating",
+              },
+            ]}
+          >
+            {/* <header>How was your experience of this course?</header> */}
+            <div className="stars">
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 1 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(1)}
+              />
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 2 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(2)}
+              />
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 3 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(3)}
+              />
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 4 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(4)}
+              />
+              <FontAwesomeIcon
+                icon={faStar}
+                style={rating >= 5 ? activeStarStyle : starStyle}
+                onClick={() => handleStarClick(5)}
+              />
+            </div>
+            {/* <Input /> */}
+          </Form.Item>
+          <Form.Item
+            label="Write your comment"
+            name={"comment"}
+            rules={[
+              {
+                required: true,
+                message:
+                  "Give the feedback for this course to instructor then they can improve it",
+              },
+            ]}
+          >
+            <TextArea
+              value={rateEdit.comment}
+              onChange={(e) => handleEdit(e)}
+            />
+          </Form.Item>
+          {/* <div> */}
+          {/* <header>Write your comment</header>
+              <input
+                type="text"
+                id="comment"
+                name="comment"
+                value={rateEdit.comment}
+                onChange={(e) => handleEdit(e)}
+              /> */}
+          {/* </div> */}
+          {/* </div> */}
+        </Form>
+      </Modal>
+
+      <Modal
+        title="Warning"
+        open={modal}
+        onOk={() => {
+          navigate(`/login/v2`);
+        }}
+        onCancel={() => {
+          setModal(false);
+        }}
+      >
+        <p>You must have an account to Pay and Learn</p>
+      </Modal>
 
       <div className="course-full bg-white text-dark">
         <div className="course-learn mx-auto">
@@ -254,18 +453,6 @@ const SingleCoursePage = () => {
                 {course.description}
               </span>
             </li>
-
-            {/* {learnItems &&
-              learnItems.map((learnItem, idx) => {
-                return (
-                  <li key={idx}>
-                    <span>
-                      <BiCheck />
-                    </span>
-                    <span className="fs-14 fw-5 opacity-09">{learnItem}</span>
-                  </li>
-                );
-              })} */}
           </ul>
         </div>
 
@@ -309,10 +496,17 @@ const SingleCoursePage = () => {
                 key: "date",
                 render: (date) => {
                   return (
-                    date &&
-                    formatDistanceToNow(new Date(date), {
-                      addSuffix: true,
-                    })
+                    date && (
+                      <span
+                        style={{
+                          color: "pink",
+                        }}
+                      >
+                        {formatDistanceToNow(new Date(date), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    )
                   );
                 },
               },
