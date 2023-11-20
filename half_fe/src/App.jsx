@@ -42,6 +42,7 @@ import InstructorWrapper from "./components/InstructorFunction/InstructorWrapper
 
 import GuestCoursePage from "./components/pages/GuestCoursePage";
 import CoursesPage from "./components/pages/CoursePage";
+import SearchPage from "./components/pages/SearchPage";
 function App() {
   return (
     <ConfigProvider
@@ -71,6 +72,7 @@ function App() {
         <Route path="/login/v2" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/courses/category/:id" element={<CoursesPage />} />
+        <Route path="/search/:id" element={<SearchPage/>}/>
         {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
         <Route path="/user" element={<UserWrapper/>} />
         <Route path="/user/mycourse" element={<UserCourse />} />

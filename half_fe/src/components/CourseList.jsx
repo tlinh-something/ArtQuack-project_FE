@@ -5,6 +5,7 @@ import api from "../config/axios";
 import styled from "styled-components";
 import "./Test.css";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import Course from "./Course";
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
@@ -42,48 +43,34 @@ const CourseList = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
+
   const renderCourses = () => {
-    const cardsPerPage = 4;
+    const cardsPerPage = 3;
     const startIndex = (currentPage - 1) * cardsPerPage;
     const endIndex = startIndex + cardsPerPage;
     const visibleCourses = courses.slice(startIndex, endIndex);
-    console.log(startIndex);
-    console.log(endIndex);
-    console.log(visibleCourses);
 
-    return visibleCourses.map((item) => (
-      <Col
-        xs={24}
-        sm={12}
-        md={6}
-        span={6}
-        key={item.courseID}
-        style={{ height: "410px" }}
-      >
-        <Card
-          cover={<img src={item.avatar} style={{ height: "300px" }} />}
-          onClick={() => handleCardClick(item.courseID)}
-          onMouseEnter={() => handleCardMouseEnter(item.courseID)}
-          onMouseLeave={handleCardMouseLeave}
-          style={{
-            transition: "all .3s",
-            transform:
-              hoveredCard === item.courseID ? "scale(1.1)" : "scale(1)",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "20px",
-              textAlign: "center",
-              fontWeight: hoveredCard === item.courseID ? "bold" : "normal",
-              height: 70,
-            }}
-          >
-            {item.name}
+    return (
+      <div className="row-wrapper">
+        {visibleCourses.map((item) => (
+          <div className="card-wrapper" key={item.courseID}>
+            <Card
+              onMouseEnter={() => handleCardMouseEnter(item.courseID)}
+              onMouseLeave={handleCardMouseLeave}
+              style={{
+                transition: "all .3s",
+                transform:
+                  hoveredCard === item.courseID ? "scale(1.1)" : "scale(1)",
+              }}
+            >
+              <div className="card-content">
+                <Course course={item} key={item.courseID} />
+              </div>
+            </Card>
           </div>
-        </Card>
-      </Col>
-    ));
+        ))}
+      </div>
+    );
   };
 
   const totalPages = Math.ceil(courses.length / 4);
@@ -138,6 +125,23 @@ const CoursesListWrapper = styled.div`
   .carousel-buttons button {
     margin: 0 8px;
   }
+  .row-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card-wrapper {
+    flex: 0 0 calc(33.3333% - 24px);
+    margin: 12px;
+  }
+  .card-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
+
 
 export default CourseList;
