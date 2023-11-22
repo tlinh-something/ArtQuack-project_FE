@@ -90,6 +90,7 @@ const ViewSubmitDetail = () => {
   return (
     <div>
       <Table
+      pagination={{ pageSize: 3 }}
         columns={[
           {
             title: "Instructor Name",
@@ -101,7 +102,7 @@ const ViewSubmitDetail = () => {
             dataIndex: "homework",
             key: "homework",
             render: (value) => {
-              return <Image width={200} src={value} />;
+              return <Image width={200} height={125} src={value} />;
             },
           },
           {
@@ -111,6 +112,8 @@ const ViewSubmitDetail = () => {
             render: (value) => {
               return formatDate(value, "dd/MM/yyyy");
             },
+            defaultSortOrder: "descend",
+            sorter: (a, b) => a.date - b.date,
           },
           {
             title: "Grade",

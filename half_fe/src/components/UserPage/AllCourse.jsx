@@ -39,7 +39,8 @@ function AllCourse() {
   const [courses, setCourses] = useState([]);
   const fetchCourse = async () => {
     const response = await api.get(
-      `/api/courses-learner/${userID ? userID : 0}`
+      // `/api/courses-learner/${userID ? userID : 0}`
+      `/api/courses`
     );
     setCourses(response.data.filter(c => c.status));
   };

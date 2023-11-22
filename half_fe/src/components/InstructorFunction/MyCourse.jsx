@@ -13,6 +13,7 @@ import {
   Row,
   Select,
   Space,
+  Switch,
   Table,
   Upload,
   message,
@@ -24,13 +25,14 @@ import { useForm } from "antd/es/form/Form";
 import Swal from "sweetalert";
 import uploadImage from "../../hooks/useUploadImage";
 import { FaQuestionCircle } from "react-icons/fa";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 
 function MyCourse() {
   const [course, setCourse] = useState([]);
   const [selectCourse, setSelectCourse] = useState(null);
   const [categories, setCategories] = useState([]);
   const [levels, setLevels] = useState([]);
-  const [render, setRender] = useState();
+  const [render, setRender] = useState(0);
   const [price, setPrice] = useState(0);
   const [form] = useForm();
   // const [form2] = useForm();
@@ -39,6 +41,7 @@ function MyCourse() {
   // eslint-disable-next-line no-unused-vars
   const [img, setImg] = useState(null);
   const [loading, setLoading] = useState();
+  const [active, setActive] = useState("ACTIVE");
 
   const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
   // const handleDelete = (courseID) => {
@@ -47,11 +50,11 @@ function MyCourse() {
   //   setRender(render + 1);
   // };
 
-  useEffect(() => {});
+  // useEffect(() => {});
 
-  const cancel = () => {
-    message.error("This course cancel to delete");
-  };
+  // const cancel = () => {
+  //   message.error("This course cancel to delete");
+  // };
 
   const columns = [
     {
@@ -87,6 +90,20 @@ function MyCourse() {
       ),
     },
     {
+      title: "Active",
+      dataIndex: "courseStatus",
+      key: "courseStatus",
+      render: (_, record) => {
+        return (
+          <ActiveButton
+            courseID={record.courseID}
+            fetch={fetch}
+            status={record.courseStatus}
+          />
+        );
+      },
+    },
+    {
       title: "Action",
       key: "action",
       align: "center",
@@ -109,7 +126,7 @@ function MyCourse() {
               Update
             </Button>
 
-            <Popconfirm
+            {/* <Popconfirm
               title="Delete the course"
               description="Are you sure to delete this course"
               onConfirm={() => {
@@ -128,7 +145,7 @@ function MyCourse() {
               onCancel={cancel}
             >
               <Button danger>Delete</Button>
-            </Popconfirm>
+            </Popconfirm> */}
           </Space>
         );
       },
@@ -148,6 +165,7 @@ function MyCourse() {
       avatar: img,
       price: price,
     };
+
     if (!selectCourse) {
       const account = JSON.parse(localStorage.getItem(`accessToken`));
       // eslint-disable-next-line no-unused-vars
@@ -189,6 +207,13 @@ function MyCourse() {
     console.log(response.data);
   };
 
+  const fetchActive = () => {
+    api.patch(`/api/${selectCourse}/change-course-status?state=${active}`);
+    console.log(active);
+    // message.success("This course state changed succesfully");
+    // setRender(render + 1);
+  };
+
   const fetch = () => {
     const account = JSON.parse(localStorage.getItem(`accessToken`));
     api
@@ -214,6 +239,7 @@ function MyCourse() {
     fetch();
     fetchCategory();
     fetchLevel();
+    fetchActive();
   }, []);
 
   const handleUploadCourseImg = async (file) => {
@@ -401,3 +427,29 @@ function MyCourse() {
 }
 
 export default MyCourse;
+
+const ActiveButton = ({ status, courseID, fetch }) => {
+  const [active, setActive] = useState(status === "ACTIVE");
+  return (
+    <Switch
+      checked={active}
+      checkedChildren={<CheckOutlined />}
+      unCheckedChildren={<CloseOutlined />}
+      onChange={async (value) => {
+        setActive(value);
+        console.log(value);
+        if (value === false) {
+          await api.patch(
+            `/api/${courseID}/change-course-status?state=DEACTIVE`
+          );
+        } else {
+          await api.patch(`/api/${courseID}/change-course-status?state=ACTIVE`);
+        }
+        // fetch();
+      }}
+      // checkedChildren="Active"
+      // unCheckedChildren="Deactive"
+      defaultChecked
+    />
+  );
+};

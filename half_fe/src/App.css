@@ -383,6 +383,9 @@ select {
 
 .item-rating div {
   transform: translateY(-5px);
+  height: 30px;
+  display: flex;
+  align-items: center;
 }
 
 .rating-star-val,
@@ -433,14 +436,14 @@ select {
   color: #fd9644;
 }
 
-.ant-row{
+.ant-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.nav-cate:hover{
-  color: #ff6e01
+.nav-cate:hover {
+  color: #ff6e01;
 }
 
 /* .ant-form-item-control-input-content {
@@ -448,6 +451,24 @@ select {
   align-items: center;
   justify-content: center;
 } */
-.course-intro .course-btn .add-to-cart-btn span{
+.course-intro .course-btn .add-to-cart-btn span {
   margin-left: 0 !important;
+}
+
+.link-report {
+  font-weight: 600;
+  color: #ff6e01;
+  height: 40px;
+  border: none;
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.link-report:hover {
+  border: none;
+  background-color: rgba(255, 110, 1, 0.1);
+  height: 40px;
+  display: flex;
+  align-items: center;
 }

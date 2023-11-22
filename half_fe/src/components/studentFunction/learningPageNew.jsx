@@ -56,7 +56,7 @@ const LearningPageNew = () => {
     api.get(`/api/all-of-course/${id}`).then((response) => {
       setChapters(response.data);
       console.log(chapters);
-      const listChapter = response.data
+      const listChapter = response.data;
 
       setItems(
         listChapter.map((chapter, index) => {
@@ -71,8 +71,8 @@ const LearningPageNew = () => {
             chapter.items
               .filter((i) => i.status)
               .map((item) => {
-                // if (defaultSelected === 0 && index === 0)
-                //   setDefault(item.itemID);
+                if (defaultSelected === 0 && index === 0)
+                  setDefault(item.itemID);
                 return getItem(item.itemName, `${item.itemID}`, null);
               })
           );
@@ -83,7 +83,7 @@ const LearningPageNew = () => {
 
   const onClick = (e) => {
     console.log(e.key);
-    setDefault(e.key)
+    setDefault(e.key);
   };
 
   return (
@@ -94,14 +94,18 @@ const LearningPageNew = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginTop: '5px'
+            marginTop: "5px",
+            maxWidth: "300px",
+            marginLeft: "20px",
+            fontFamily:
+              "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'",
           }}
         >
           {chapters.map((item) => item.courseName).slice(0, 1)}
         </h3>
         <Menu
           onTitleClick={() => {
-            console.log("ok")
+            console.log("ok");
           }}
           onClick={onClick}
           style={{
@@ -114,7 +118,6 @@ const LearningPageNew = () => {
           }}
           selectedKeys={defaultSelected}
           openKeys={openKey}
-          // defaultOpenKeys={openKey}
           // defaultSelectedKeys={"1"}
           // defaultOpenKeys={["sub1"]}
           mode="inline"
