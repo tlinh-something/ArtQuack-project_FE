@@ -27,7 +27,7 @@ function Footer(){
                 <Col><a href='#'>Cookie settings</a></Col>
             </Row>
 
-            <Row className='signed'>
+            <Row className='signed fw-7'>
                 <Col>ArtQuack</Col>
             </Row>
         </Container>

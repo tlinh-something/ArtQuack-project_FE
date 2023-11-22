@@ -42,6 +42,8 @@ import InstructorWrapper from "./components/InstructorFunction/InstructorWrapper
 
 import GuestCoursePage from "./components/pages/GuestCoursePage";
 import CoursesPage from "./components/pages/CoursePage";
+import ReportPage from "./components/InstructorFunction/InstructorReportPage";
+import ReportDetails from "./components/InstructorFunction/ReportPageDetails";
 function App() {
   return (
     <ConfigProvider
@@ -87,10 +89,13 @@ function App() {
         <Route path="/instructor/chapter/:id" element={<AddChapterNew />} />
         <Route path="/instructor/item/:id" element={<ViewItem />} />
         <Route path="/instructor/additem/:id" element={<AddItem />} />
-        <Route path="/learning/:id" element={<LearningPage />} />
-        {/* <Route path="/learning/:id" element={<LearningPageNew />} >
+        <Route path="/instructor/report" element={<ReportPage />} >
+          <Route path=":id" element={<ReportDetails />}/>
+        </Route>
+        {/* <Route path="/learning/:id" element={<LearningPage />} /> */}
+        <Route path="/learning/:id" element={<LearningPageNew />} >
           <Route path=":itemID" element={<LearningPageDetail />}/>
-        </Route> */}
+        </Route>
         <Route path="/enroll" element={<EnrollCourse />} />
         <Route path="/instructor/submission" element={<SubmissionPageNew />}>
           <Route path=":id" element={<SubmitPageDetail />} />

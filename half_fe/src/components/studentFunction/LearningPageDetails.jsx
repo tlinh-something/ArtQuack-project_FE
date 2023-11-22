@@ -4,6 +4,8 @@ import {
   Form,
   Image,
   Modal,
+  Radio,
+  Space,
   Table,
   Typography,
   Upload,
@@ -14,6 +16,9 @@ import api from "../../config/axios";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import uploadImage from "../../hooks/useUploadImage";
+import { LuFlagTriangleRight } from "react-icons/lu";
+import { useForm } from "antd/es/form/Form";
+import TextArea from "antd/es/input/TextArea";
 
 function LearningPageDetail() {
   const params = useParams();
@@ -98,17 +103,19 @@ function LearningPageDetail() {
 
   return (
     <>
-      
       <Card
         title={
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
-              fontSize: '18px'
+              fontSize: "18px",
             }}
           >
-            {content.itemName} <Link to='/user' className="link-back">Back to home</Link> 
+            {content.itemName}{" "}
+            <Link to="/user" className="link-back">
+              Back to home
+            </Link>
             {/* <NextOrPrevButton list={listChapter} /> */}
           </div>
         }
@@ -142,7 +149,12 @@ function LearningPageDetail() {
               </Form>
             </Card>
           )}
-          
+
+        {/* <hr className="mt-5" />
+        <Button className="link-report" onClick={() => setModal(true)}>
+          <LuFlagTriangleRight />
+          <span style={{ fontSize: "16px" }}>{""}Report an issue</span>
+        </Button> */}
       </Card>
 
       <Modal
@@ -174,7 +186,7 @@ export default LearningPageDetail;
 //       list.forEach((element, index) => {
 //         console.log(chapterID);
 //         if (Number(chapterID) === element.chapterID) {
-          
+
 //           element.items.forEach((item, index) => {
 //             if (item.itemID === Number(itemId) && element.items[index + 1]) {
 //               console.log(element.items[index + 1].itemID);

@@ -14,7 +14,7 @@ const Course = ({ course, type }) => {
     await api
       .get(
         `/api/course/${course.courseID}/${
-          account.learnerID ? account.learnerID : 0
+          account?.learnerID ? account.learnerID : 0
         }`
       )
       .then((response) => {
@@ -31,13 +31,15 @@ const Course = ({ course, type }) => {
     fetchEnroll();
     fetchReview();
   }, [course.courseID]);
-  const rates = review.map((review) => review.rate);
+
+  const rates = review.filter((rw) => rw.rate > 0).map((review) => review.rate);
 
   // Step 2: Calculate the sum of all rate values
   const sumOfRates = rates.reduce((accumulator, rate) => accumulator + rate, 0);
 
   // Step 3: Calculate the average rate
   const averageRate = sumOfRates / rates.length;
+  let count = averageRate;
   return (
     <CourseCard>
       <div className="item-img">
@@ -59,9 +61,9 @@ const Course = ({ course, type }) => {
         </h5>
         <span className="item-creator">{course.instructorName}</span>
         <div className="item-rating flex">
-          <span className="rating-star-val">Rating:</span>
+          <span className="rating-star-val">{count ? count.toFixed(1) : 0}</span>
           <StarRating rating_star={averageRate} />
-          <span className="rating-count">( {rates.length} rated )</span>
+          <span className="rating-count">({rates.length})</span>
         </div>
         <div className="item-price">
           <span className="item-price-new">${course.price}</span>
@@ -152,6 +154,9 @@ const CourseCard = styled.div`
       margin-left: 3px;
       font-weight: 500;
       opacity: 0.8;
+      height: 31px;
+      display: flex;
+      align-items: flex-start;
     }
     .item-price-new {
       font-weight: 700;

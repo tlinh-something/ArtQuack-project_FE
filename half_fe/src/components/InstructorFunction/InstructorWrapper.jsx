@@ -2,6 +2,7 @@ import { Tabs } from "antd";
 import InstructorPage from "./InstructorPage";
 import MyCourse from "./MyCourse";
 import SubmissionPageNew from "./SubmissionPageNew";
+import ReportPage from "./InstructorReportPage";
 
 const InstructorWrapper = () => {
   // const account = JSON.parse(localStorage.getItem('accessToken'))
@@ -20,6 +21,11 @@ const InstructorWrapper = () => {
       key: "3",
       label: "Submissions",
       children: <SubmissionPageNew />,
+    },
+    {
+      key: "4",
+      label: "Report",
+      children: <ReportPage />,
     },
   ];
   return (
