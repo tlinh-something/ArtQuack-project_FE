@@ -36,6 +36,7 @@ const SingleCoursePage = () => {
   const [enroll, setEnroll] = useState([]);
 
   const [form] = useForm();
+  const [reportForm] = useForm();
   const navigate = useNavigate();
   let count = 0;
   const fetchReview = () => {
@@ -95,11 +96,21 @@ const SingleCoursePage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modal, setModal] = useState(false);
-
+  const [report, setReport] = useState(false);
+  const [editReport, setEditReport] = useState(
+    {
+      enrollmentID: 0,
+      typeOfReport: " ",
+      report: " ",
+    },
+    []
+  );
   const showModal = () => {
     setIsModalOpen(true);
   };
-
+  const showReport = () => {
+    setReport(true);
+  };
   const handleOk = () => {
     form.submit();
     // setIsModalOpen(false);
@@ -109,7 +120,15 @@ const SingleCoursePage = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const handleReportOk = () => {
+    reportForm.submit();
+    // setIsModalOpen(false);
+    // navigate("/login/v2");
+  };
 
+  const handleReportCancel = () => {
+    setReport(false);
+  };
   const handleSubmit = async (values) => {
     const id = enroll.filter((item) => item.learnerID === account.learnerID)[0]
       .enrollmentID;
@@ -132,7 +151,22 @@ const SingleCoursePage = () => {
     },
     []
   );
-
+  const handleReportDetail = (e) => {
+    setEditReport({
+      ...editReport,
+      typeOfReport: e.target.value,
+      report: e.target.value,
+    });
+  };
+  const handleReport = async (e) => {
+    const id = enroll.filter((item) => item.learnerID === account.learnerID)[0]
+      .enrollmentID;
+    await api.put(`/api/enrollment/${id}/update-of-report`, {
+      enrollmentID: id,
+      report: e.report,
+      typeOfReport: e.typeOfReport,
+    });
+  };
   const handleEdit = (e) => {
     setRateEdit({
       ...rateEdit,
@@ -200,6 +234,7 @@ const SingleCoursePage = () => {
             }
             alt={course.name}
           />
+          <div style={{ marginLeft: "100" }}>ádasd</div>
         </div>
         <div className="course-details">
           <div className="course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block">
@@ -329,6 +364,16 @@ const SingleCoursePage = () => {
                   >
                     <EditOutlined /> Review
                   </Link>
+                  <Link
+                    onClick={showReport}
+                    className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+                    style={{
+                      backgroundColor: "var(--clr-orange)",
+                      marginLeft: 20,
+                    }}
+                  >
+                    <EditOutlined /> Report
+                  </Link>
                 </>
               ) : null
             ) : (
@@ -349,7 +394,45 @@ const SingleCoursePage = () => {
           </div>
         </div>
       </div>
-
+      <Modal
+        title="Report description"
+        open={report}
+        onOk={handleReportOk}
+        onCancel={handleReportCancel}
+      >
+        <Form form={reportForm} labelCol={{ span: 24 }} onFinish={handleReport}>
+          <Form.Item
+            label="State your problem"
+            name={"typeOfReport"}
+            rules={[
+              {
+                required: true,
+                message: "Can not be empty",
+              },
+            ]}
+          >
+            <TextArea
+              value={editReport.typeOfReport}
+              onChange={(e) => handleReportDetail(e)}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Tell us in detail"
+            name={"report"}
+            rules={[
+              {
+                required: true,
+                message: "Can not be empty",
+              },
+            ]}
+          >
+            <TextArea
+              value={editReport.report}
+              onChange={(e) => handleReportDetail(e)}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
       <Modal
         title="Give me your feel about the course"
         open={isModalOpen}

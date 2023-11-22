@@ -2,9 +2,10 @@ import React from "react";
 import api from "../config/axios";
 import { useState,useEffect } from "react";
 import StarRating from "../components/StarRating";
+import { useNavigate } from "react-router-dom";
 import './Test.css'
 const SearchCourse = ({course,type}) => {
-
+  const navigate = useNavigate();
   const [review, setReview] = useState([]);
   const rates = review.map((review) => review.rate);
 
@@ -35,14 +36,17 @@ const SearchCourse = ({course,type}) => {
     fetchReview();
 
   }, [course.courseID]);
+  const handleClick=()=>{
+    navigate(`/courses/${course.courseID}`)
+  }
   return (
-    <div className="search-course-container" style={{marginBottom:"30px"}}>
+    <div className="search-course-container" style={{marginBottom:"30px"}} onClick={handleClick}>
       <div className="item-img">
         <img
           style={{
             height: 200,
-            objectFit: "cover",
-            width:"100%"
+            
+            width:300
           }}
           src={
             course.avatar ||
@@ -55,10 +59,14 @@ const SearchCourse = ({course,type}) => {
         <h5 className="item-name">
           {course.name} - {course.cateName}
         </h5>
+        <div className="item-description" style={{fontStyle:"italic"}}>{course.description}</div>
         <span className="item-creator">{course.instructorName}</span>
         <div className="item-rating flex">
           <span className="rating-star-val">Rating:</span>
+          <div style={{marginTop:"18px",marginLeft:"5px",marginRight:"5px"}}>
+
           <StarRating rating_star={averageRate} />
+          </div>
           <span className="rating-count">( {rates.length} rated )</span>
         </div>
         <div className="item-price">

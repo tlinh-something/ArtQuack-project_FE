@@ -81,8 +81,8 @@ const SearchPage = () => {
       <Row style={{
         alignItems: 'normal'
       }}>
-        <Col span={6}>
-          <Menu
+        <Col span={2}>
+          {/* <Menu
             onClick={onClick}
             style={{
               width: 256,
@@ -91,9 +91,9 @@ const SearchPage = () => {
             defaultOpenKeys={["sub1"]}
             mode="inline"
             items={items}
-          />
+          /> */}
         </Col>
-        <Col span={18}>
+        <Col span={22}>
           <div>
             {courses.map((course) => (
               <SearchCourse course={course} key={course.courseID} />

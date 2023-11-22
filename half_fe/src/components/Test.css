@@ -189,3 +189,15 @@ p {
   flex-direction: column;
   gap: 5px;
 }
+.search-course-container {
+  /* Add a transition effect to smoothly animate the changes */
+  transition: filter 0.3s, cursor 0.3s;
+}
+
+.search-course-container:hover {
+  /* Apply a darker filter to the image */
+  filter: brightness(70%);
+  
+  /* Change the mouse cursor to a pointer */
+  cursor: pointer;
+}
