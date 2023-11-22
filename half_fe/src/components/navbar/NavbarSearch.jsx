@@ -35,6 +35,7 @@ const NavbarSearch = () => {
   const handleSearch = (value) => {
     if (value) {
       fetchCourseByKey(value);
+      
     } else {
       setOptions([]);
     }
@@ -45,20 +46,29 @@ const NavbarSearch = () => {
   const fetchCourseByKey = (key) => {
     api.get(`/api/courses/${key}`).then((response) => {
       setCourse(response.data);
-      setOptions(
-        response.data.map((course) => ({
-          value: course.name,
-          key: course.courseID,
-        }))
+      const searchOptions = response.data.map((course) => ({
+        value: course.name,
+        key: course.courseID,
+      }));
+  
+      const exactMatchIndex = searchOptions.findIndex(
+        (option) => option.value.toLowerCase() === key.toLowerCase()
       );
-      console.log(response.data);
+  
+      if (exactMatchIndex === -1) {
+        searchOptions.unshift({ value: key, key: "search-value" });
+      }
+  
+      setOptions(searchOptions);
     });
   };
-
   const onSelect = (value) => {
+    console.log(value);
     const selectedCourse = course.find((c) => c.name === value);
     if (selectedCourse) {
       navigate(`/courses/${selectedCourse.courseID}`);
+    }else{
+      navigate(`/search/${value}`)
     }
   };
 
@@ -109,6 +119,7 @@ const NavbarSearch = () => {
                     size="large"
                     enterButton
                     value={searchValue}
+                    onSearch={handleSearch}
                     style={{
                       width: 500,
                       paddingLeft: 50,

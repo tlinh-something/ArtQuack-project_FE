@@ -18,6 +18,7 @@ import ReactPlayer from "react-player";
 const { Sider, Content } = Layout;
 
 function LearningPage() {
+  
   const [chapters, setChapters] = useState([]);
   const [items, setItems] = useState([]);
   const [selectedChapterId, setSelectedChapterId] = useState(null);
@@ -153,7 +154,12 @@ function LearningPage() {
       return <Typography.Text>{content}</Typography.Text>;
     }
   };
-
+  useEffect(() => {
+    if (items.length > 0) {
+      setSelectedChapterId(items[0]?.chapterID);
+      setSelectedItemId(items[0]?.itemID);
+    }
+  }, [items]);
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider theme="light" width={300}>

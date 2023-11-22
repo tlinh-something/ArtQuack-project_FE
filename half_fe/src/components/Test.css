@@ -174,3 +174,30 @@ p {
   max-width: calc(33.33% - 16px);
   margin-bottom: 16px;
 }
+.search-course-container{
+  display: flex;
+}
+.item-img {
+  width: 300px;
+  height: 200px;
+}
+.item-img img{
+  width: 100%;
+}
+.item-body{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.search-course-container {
+  /* Add a transition effect to smoothly animate the changes */
+  transition: filter 0.3s, cursor 0.3s;
+}
+
+.search-course-container:hover {
+  /* Apply a darker filter to the image */
+  filter: brightness(70%);
+  
+  /* Change the mouse cursor to a pointer */
+  cursor: pointer;
+}

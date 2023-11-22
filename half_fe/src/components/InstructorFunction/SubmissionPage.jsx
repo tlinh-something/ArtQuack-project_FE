@@ -55,35 +55,37 @@ const SubmissionPage = () => {
         };
       }
       
-    const data = [
-      courses.map((course) => { 
-        getData(course.name, course.courseID, null, [
-          chapters.map((chapter) => {
-            getData(chapter.chapterName, chapter.chapterID, null, [
-              item.map((itm) => {
-                getData(itm.itemName, itm.itemID)
-              })
-            ], 'group') 
-          })
-        ]) 
-      })
-        // getData({courses.name}, `${courses.courseID}`,[
-        //     getData(`${chapters.chapterName}`, `${chapters.chapterID}`, null, [getData(`${items.itemName}`, `${items.itemID}`)])
-        // ])
-    ]
-
-    const MenuSider = () => {
+      const data = courses.map((course) => ({
+        key: course.courseID,
+        label: course.name,
+        type: "group",
+        children: chapters
+          .filter((chapter) => chapter.courseID === course.courseID)
+          .map((chapter) => ({
+            key: chapter.chapterID,
+            label: chapter.chapterName,
+            type: "group",
+            children: item
+              .filter((itm) => itm.chapterID === chapter.chapterID)
+              .map((itm) => ({
+                key: itm.itemID,
+                label: itm.itemName,
+                type: "item",
+              })),
+          })),
+      }));
+      
+      const MenuSider = () => (
         <Menu
-        style={{
-            width:256
-        }}
-        defaultSelectedKeys={`${item.itemID}`}
-        defaultOpenKeys={`${courses.courseID}`}
-        mode="inline"
-        items={data}>
-
-        </Menu>
-    }
+          style={{
+            width: 256,
+          }}
+          defaultSelectedKeys={item.length > 0 ? [item[0].itemID.toString()] : []}
+          defaultOpenKeys={courses.length > 0 ? [courses[0].courseID.toString()] : []}
+          mode="inline"
+          items={data}
+        />
+      );
 
     return(
         <Layout style={{ minHeight: "100vh" }}>

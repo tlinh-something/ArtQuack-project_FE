@@ -354,6 +354,16 @@ const RateCoursePage = () => {
               onChange={(e) => handleEdit(e)}
             />
           </Form.Item>
+          <Form.Item
+            label="How was your experience of this course?"
+            name={"star"}
+            rules={[
+              {
+                required: true,
+                message: "Let rating",
+              },
+            ]}
+          ></Form.Item> 
           {/* <div> */}
           {/* <header>Write your comment</header>
               <input
