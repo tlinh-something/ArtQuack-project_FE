@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 const StarRating = ({ rating_star }) => {
   const stars = Array.from({ length: 5 }, (_, idx) => {
-    console.log(idx);
     const val = idx + 0.5;
     return (
       <Star key={idx}>

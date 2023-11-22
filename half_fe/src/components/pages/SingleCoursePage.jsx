@@ -7,7 +7,7 @@ import { TbWorld } from "react-icons/tb";
 //import {FaShoppingCart} from "react-icons/fa";
 import { CheckOutlined, EditOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
-import { Rate, Table, Modal, Form, message } from "antd";
+import { Rate, Table, Modal, Form, message, Radio, Space } from "antd";
 import { formatDistanceToNow } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +22,7 @@ import swal from "sweetalert";
 import "../Test.css";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
+import { LuFlagTriangleRight } from "react-icons/lu";
 
 const SingleCoursePage = () => {
   const { id } = useParams();
@@ -37,8 +38,12 @@ const SingleCoursePage = () => {
 
   const [form] = useForm();
   const [reportForm] = useForm();
+
+  const [form2] = useForm();
   const navigate = useNavigate();
   let count = 0;
+
+  const REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
   const fetchReview = () => {
     api.get(`api/enrollment/course/${id}`).then((res) => {
       setReview(res.data);
@@ -56,8 +61,6 @@ const SingleCoursePage = () => {
 
   // Step 2: Calculate the sum of all rate values
   const sumOfRates = rates.reduce((accumulator, rate) => {
-    console.log(accumulator);
-    console.log(rate);
     return accumulator + rate;
   }, 0);
 
@@ -91,11 +94,12 @@ const SingleCoursePage = () => {
     fetchChapter();
     fetchReview();
     fetchEnroll();
-  }, []);
+  }, [render]);
   console.log(enroll);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modal, setModal] = useState(false);
+
   const [report, setReport] = useState(false);
   const [editReport, setEditReport] = useState(
     {
@@ -105,6 +109,10 @@ const SingleCoursePage = () => {
     },
     []
   );
+
+  const [modal2, setModal2] = useState(false);
+
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -140,6 +148,7 @@ const SingleCoursePage = () => {
     });
     console.log(rateEdit);
     message.success("You reated successfully");
+    setRender(render + 1);
     setIsModalOpen(false);
   };
 
@@ -221,6 +230,24 @@ const SingleCoursePage = () => {
   const scriptOptions = {
     clientId:
       "AS_kGKyi8kMb-m3z7SZocpoPihQLS9MGjq7QaYTG3N9b64CRE6mgcFs7HzH16qwPTblmix3ivoSPf0ly",
+  };
+
+  const handleReport = (values) => {
+    const data = {
+      typeOfReport: values.reportTitle,
+      report: values.reportDetails,
+      enrollmentID: id,
+    };
+    api.put(`/api/enrollment/${id}/update-of-report`, data);
+    message.success("You report successfully");
+    setRender(render + 1);
+    setModal2(false);
+    console.log(values.reportTitle);
+    console.log(values.reportDetails);
+  };
+
+  const handleOk2 = () => {
+    form2.submit();
   };
 
   return (
@@ -348,6 +375,7 @@ const SingleCoursePage = () => {
                   >
                     <FaBookOpen /> Learn
                   </Link>
+
                   <Link
                     onClick={() => {
                       if (account.learnerID) {
@@ -365,14 +393,16 @@ const SingleCoursePage = () => {
                     <EditOutlined /> Review
                   </Link>
                   <Link
-                    onClick={showReport}
+                    onClick={() => {
+                      setModal2(true);
+                    }}
                     className="add-to-cart-btn d-inline-block fw-7 bg-orange"
                     style={{
                       backgroundColor: "var(--clr-orange)",
                       marginLeft: 20,
                     }}
                   >
-                    <EditOutlined /> Report
+                    <LuFlagTriangleRight /> Report
                   </Link>
                 </>
               ) : null
@@ -497,17 +527,6 @@ const SingleCoursePage = () => {
               onChange={(e) => handleEdit(e)}
             />
           </Form.Item>
-          {/* <div> */}
-          {/* <header>Write your comment</header>
-              <input
-                type="text"
-                id="comment"
-                name="comment"
-                value={rateEdit.comment}
-                onChange={(e) => handleEdit(e)}
-              /> */}
-          {/* </div> */}
-          {/* </div> */}
         </Form>
       </Modal>
 
@@ -522,6 +541,52 @@ const SingleCoursePage = () => {
         }}
       >
         <p>You must have an account to Pay and Learn</p>
+      </Modal>
+
+      <Modal
+        title="Report an issue"
+        onOk={handleOk2}
+        open={modal2}
+        onCancel={() => setModal2(false)}
+      >
+        <Form form={form2} labelCol={{ span: 24 }} onFinish={handleReport}>
+          <Form.Item
+            label="Select issue you'd like to report"
+            name="reportTitle"
+            rules={[
+              {
+                required: true,
+                message: "Select issue to know what type issue you want report",
+              },
+            ]}
+          >
+            <Radio.Group>
+              <Space direction="vertical">
+                <Radio value="Content Improvement"> Content improvement</Radio>
+                <Radio value="Video Issues"> Video issues</Radio>
+                <Radio value="Audio Issues"> Audio issues</Radio>
+                <Radio value="Offensive Content"> Offensive content</Radio>
+                <Radio value="Spammy Content"> Spammy content</Radio>
+                <Radio value="Other"> Other</Radio>
+              </Space>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
+            label="Describe the issue"
+            name={"reportDetails"}
+            rules={[
+              {
+                pattern: REGEX,
+                whitespace: true,
+                message:
+                  "This description do not include space and special characters",
+              },
+            ]}
+          >
+            <TextArea rows={3} />
+          </Form.Item>
+        </Form>
       </Modal>
 
       <div className="course-full bg-white text-dark">

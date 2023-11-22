@@ -44,8 +44,8 @@ const CourseList = () => {
   };
 
 
+  const cardsPerPage = 4;
   const renderCourses = () => {
-    const cardsPerPage = 3;
     const startIndex = (currentPage - 1) * cardsPerPage;
     const endIndex = startIndex + cardsPerPage;
     const visibleCourses = courses.slice(startIndex, endIndex);
@@ -73,7 +73,9 @@ const CourseList = () => {
     );
   };
 
-  const totalPages = Math.ceil(courses.length / 4);
+  let count = cardsPerPage
+
+  const totalPages = Math.ceil(courses.length / count);
 
   return (
     <CoursesListWrapper>
