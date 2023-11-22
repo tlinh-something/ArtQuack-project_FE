@@ -167,15 +167,15 @@ const SingleCoursePage = () => {
       report: e.target.value,
     });
   };
-  const handleReport = async (e) => {
-    const id = enroll.filter((item) => item.learnerID === account.learnerID)[0]
-      .enrollmentID;
-    await api.put(`/api/enrollment/${id}/update-of-report`, {
-      enrollmentID: id,
-      report: e.report,
-      typeOfReport: e.typeOfReport,
-    });
-  };
+  // const handleReport = async (e) => {
+  //   const id = enroll.filter((item) => item.learnerID === account.learnerID)[0]
+  //     .enrollmentID;
+  //   await api.put(`/api/enrollment/${id}/update-of-report`, {
+  //     enrollmentID: id,
+  //     report: e.report,
+  //     typeOfReport: e.typeOfReport,
+  //   });
+  // };
   const handleEdit = (e) => {
     setRateEdit({
       ...rateEdit,
