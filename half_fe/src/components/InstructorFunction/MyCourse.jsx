@@ -15,6 +15,7 @@ import {
   Space,
   Switch,
   Table,
+  Tag,
   Upload,
   message,
 } from "antd";
@@ -35,6 +36,7 @@ function MyCourse() {
   const [render, setRender] = useState(0);
   const [price, setPrice] = useState(0);
   const [form] = useForm();
+  const [file, setFile] = useState([]);
   // const [form2] = useForm();
   const navigate = useNavigate();
 
@@ -57,11 +59,11 @@ function MyCourse() {
   // };
 
   const columns = [
-    {
-      title: "ID",
-      dataIndex: "courseID",
-      key: "courseID",
-    },
+    // {
+    //   title: "ID",
+    //   dataIndex: "courseID",
+    //   key: "courseID",
+    // },
     {
       title: "Image",
       dataIndex: "avatar",
@@ -93,8 +95,32 @@ function MyCourse() {
       title: "Active",
       dataIndex: "courseStatus",
       key: "courseStatus",
+      align: "center",
+      filters: [
+        {
+          text: "Active",
+          value: "ACTIVE",
+        },
+        {
+          text: "Deactive",
+          value: "DEACTIVE",
+        },
+        {
+          text: "Reject",
+          value: "REJECT",
+        },
+      ],
+      filterMode: "tree",
+      filterSearch: true,
+      onFilter: (value, record) => record?.courseStatus.startsWith(value),
       render: (_, record) => {
-        return (
+        return record.courseStatus === "VERIFY" ? (
+          <Tag color="warning">Verifying</Tag>
+        ) : record.courseStatus === "UPDATING" ? (
+          <Tag color="blue">Updating</Tag>
+        ) : record.courseStatus === "REJECT" ? (
+          <Tag color="red">Reject</Tag>
+        ) : (
           <ActiveButton
             courseID={record.courseID}
             fetch={fetch}
@@ -154,7 +180,7 @@ function MyCourse() {
 
   const onFinish = async (values) => {
     const data = {
-      courseID: 0,
+      courseID: selectCourse,
       name: values.name,
       description: values.description,
       upload_date: new Date().toISOString(),
@@ -207,17 +233,11 @@ function MyCourse() {
     console.log(response.data);
   };
 
-  const fetchActive = () => {
-    api.patch(`/api/${selectCourse}/change-course-status?state=${active}`);
-    console.log(active);
-    // message.success("This course state changed succesfully");
-    // setRender(render + 1);
-  };
-
   const fetch = () => {
     const account = JSON.parse(localStorage.getItem(`accessToken`));
     api
-      .get(`/api/instructor/${account.instructorID}/coursesOfInstructor`)
+      .get(`/api/instructor/${account.instructorID}/courses-chapters-items`)
+      // .get(`/api/instructor/${account.instructorID}/coursesOfInstructor`)
       .then((response) => {
         setCourse(
           response.data.map((item, index) => {
@@ -239,7 +259,6 @@ function MyCourse() {
     fetch();
     fetchCategory();
     fetchLevel();
-    fetchActive();
   }, []);
 
   const handleUploadCourseImg = async (file) => {
@@ -247,6 +266,13 @@ function MyCourse() {
     setLoading(true);
     const url = await uploadImage(file.originFileObj);
     setImg(url);
+    setFile([
+      {
+        status: "done",
+        url: url,
+        name: file.name,
+      },
+    ]);
     setLoading(false);
   };
 
@@ -265,9 +291,24 @@ function MyCourse() {
   useEffect(() => {
     if (selectCourse && selectCourse !== 0) {
       api.get(`/api/course/${selectCourse}`).then((response) => {
-        form.setFieldsValue(response.data);
+        console.log(response.data);
+        form.setFieldsValue({
+          ...response.data,
+          level: response.data.levelID,
+          category: response.data.cateID,
+        });
+        setImg(response.data.avatar);
+
+        setFile([
+          {
+            status: "done",
+            url: response.data.avatar,
+            name: "Old Image",
+          },
+        ]);
       });
     } else {
+      setImg(null);
       form.resetFields();
     }
   }, [selectCourse]);
@@ -413,6 +454,7 @@ function MyCourse() {
             <Upload.Dragger
               name="picture"
               accept=".png, .jpg"
+              fileList={file}
               onChange={(info) => handleUploadCourseImg(info.file)}
             >
               <p className="ant-upload-text">

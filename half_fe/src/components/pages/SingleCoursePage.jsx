@@ -7,7 +7,18 @@ import { TbWorld } from "react-icons/tb";
 //import {FaShoppingCart} from "react-icons/fa";
 import { CheckOutlined, EditOutlined } from "@ant-design/icons";
 import api from "../../config/axios";
-import { Rate, Table, Modal, Form, message, Radio, Space } from "antd";
+import {
+  Rate,
+  Table,
+  Modal,
+  Form,
+  message,
+  Radio,
+  Space,
+  Collapse,
+  Typography,
+  Button,
+} from "antd";
 import { formatDistanceToNow } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -23,12 +34,14 @@ import "../Test.css";
 import { useForm } from "antd/es/form/Form";
 import TextArea from "antd/es/input/TextArea";
 import { LuFlagTriangleRight } from "react-icons/lu";
+import { LockOutlined, PlayCircleOutlined } from "@ant-design/icons";
+import ReactPlayer from "react-player";
 
 const SingleCoursePage = () => {
   const { id } = useParams();
   const [course, setCourse] = useState([]);
   const [chapter, setChapter] = useState([]);
-  const [rate, setRate] = useState([]);
+  const [accountEnrollment, setAccountEnrollment] = useState(null);
   const price = useRef();
   const [render, setRender] = useState(0);
   const account = JSON.parse(localStorage.getItem("accessToken"));
@@ -43,7 +56,7 @@ const SingleCoursePage = () => {
   const navigate = useNavigate();
   let count = 0;
 
-  const REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
+  const REGEX = /^[a-zA-Z]+(([a-z A-Z,.!?])?[a-zA-Z]*)*$/;
   const fetchReview = () => {
     api.get(`api/enrollment/course/${id}`).then((res) => {
       setReview(res.data);
@@ -53,9 +66,9 @@ const SingleCoursePage = () => {
 
   // Step 1: Create an array to store the rates
   const rates = review
-    .filter((item) => item.rate >= 1)
+    .filter((item) => item.rateCourse >= 1)
     .map((item) => {
-      return item.rate;
+      return item.rateCourse;
     });
   count = rates.length;
 
@@ -87,6 +100,13 @@ const SingleCoursePage = () => {
   const fetchEnroll = () => {
     api.get(`/api/enrollment/course/${id}`).then((response) => {
       setEnroll(response.data);
+      console.log(response.data);
+      const enrollment = response.data.filter(
+        (item) => item?.learnerID === account?.learnerID
+      )[0];
+      console.log(enrollment?.enrollmentID);
+      setAccountEnrollment(enrollment);
+      setCurrentID(enrollment?.enrollmentID);
     });
   };
 
@@ -99,6 +119,9 @@ const SingleCoursePage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modal, setModal] = useState(false);
+  const [viewReview, setViewReview] = useState(false);
+  const [currentID, setCurrentID] = useState(null);
+  const [chapterTrial, setChapterTrial] = useState([]);
 
   const [report, setReport] = useState(false);
   const [editReport, setEditReport] = useState(
@@ -111,18 +134,25 @@ const SingleCoursePage = () => {
   );
 
   const [modal2, setModal2] = useState(false);
-
+  const [modalReport, setModalReport] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
-  const showReport = () => {
-    setReport(true);
+
+  const fetchMenuTrial = () => {
+    api.get(`/api/course/${id}/chapters-items`).then((response) => {
+      setChapterTrial(response.data);
+      console.log(response.data);
+    });
   };
+
+  useEffect(() => {
+    fetchMenuTrial();
+  }, []);
+
   const handleOk = () => {
     form.submit();
-    // setIsModalOpen(false);
-    // navigate("/login/v2");
   };
 
   const handleCancel = () => {
@@ -130,8 +160,6 @@ const SingleCoursePage = () => {
   };
   const handleReportOk = () => {
     reportForm.submit();
-    // setIsModalOpen(false);
-    // navigate("/login/v2");
   };
 
   const handleReportCancel = () => {
@@ -142,7 +170,7 @@ const SingleCoursePage = () => {
       .enrollmentID;
     await api.put(`/api/enrollment/${id}/update`, {
       enrollmentID: id,
-      rate: values.star,
+      rateCourse: values.star,
       comment: values.comment,
       date: new Date().toISOString(),
     });
@@ -152,6 +180,33 @@ const SingleCoursePage = () => {
     setIsModalOpen(false);
   };
 
+  const handleView = async () => {
+    const id = enroll.filter((item) => item.learnerID === account.learnerID)[0]
+      .enrollmentID;
+    console.log(id);
+    await api.get(`/api/enrollment/${id}`);
+    // console.log(rateEdit);
+    // message.success("You reated successfully");
+    // setRender(render + 1);
+    setViewReview(false);
+    setModalReport(false);
+  };
+
+  useEffect(() => {
+    console.log(accountEnrollment);
+    if (accountEnrollment) {
+      console.log(accountEnrollment);
+      form.setFieldsValue({
+        stars: accountEnrollment.rateCourse,
+        comment: accountEnrollment.comment,
+        reportDetails: accountEnrollment.report,
+        reportTitle: accountEnrollment.typeOfReport,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [accountEnrollment]);
+
   const [rateEdit, setRateEdit] = useState(
     {
       enrollmentID: 0,
@@ -160,6 +215,7 @@ const SingleCoursePage = () => {
     },
     []
   );
+
   const handleReportDetail = (e) => {
     setEditReport({
       ...editReport,
@@ -167,15 +223,7 @@ const SingleCoursePage = () => {
       report: e.target.value,
     });
   };
-  // const handleReport = async (e) => {
-  //   const id = enroll.filter((item) => item.learnerID === account.learnerID)[0]
-  //     .enrollmentID;
-  //   await api.put(`/api/enrollment/${id}/update-of-report`, {
-  //     enrollmentID: id,
-  //     report: e.report,
-  //     typeOfReport: e.typeOfReport,
-  //   });
-  // };
+
   const handleEdit = (e) => {
     setRateEdit({
       ...rateEdit,
@@ -236,10 +284,14 @@ const SingleCoursePage = () => {
     const data = {
       typeOfReport: values.reportTitle,
       report: values.reportDetails,
-      enrollmentID: id,
+      enrollmentID: Number(accountEnrollment?.enrollmentID),
     };
-    api.put(`/api/enrollment/${id}/update-of-report`, data);
+    api.put(
+      `/api/enrollment/${accountEnrollment?.enrollmentID}/update-of-report`,
+      data
+    );
     message.success("You report successfully");
+    fetchEnroll();
     setRender(render + 1);
     setModal2(false);
     console.log(values.reportTitle);
@@ -249,6 +301,19 @@ const SingleCoursePage = () => {
   const handleOk2 = () => {
     form2.submit();
   };
+
+  // const items = [
+  //   {
+  //     key: "1",
+  //     label: "This is panel header 1",
+  //     children: <p>hihi</p>,
+  //   },
+  //   {
+  //     key: "2",
+  //     label: "This is panel header 2",
+  //     children: <p>haha</p>,
+  //   },
+  // ];
 
   return (
     <SingleCourseWrapper>
@@ -261,7 +326,6 @@ const SingleCoursePage = () => {
             }
             alt={course.name}
           />
-          <div style={{ marginLeft: "100" }}>ádasd</div>
         </div>
         <div className="course-details">
           <div className="course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block">
@@ -379,10 +443,12 @@ const SingleCoursePage = () => {
                   <Link
                     onClick={() => {
                       if (account.learnerID) {
+                        handleStarClick(accountEnrollment.rateCourse);
                         showModal();
-                      } else {
-                        setModal(true);
                       }
+                      // else {
+                      //   setModal(true);
+                      // }
                     }}
                     className="add-to-cart-btn d-inline-block fw-7 bg-orange"
                     style={{
@@ -392,18 +458,35 @@ const SingleCoursePage = () => {
                   >
                     <EditOutlined /> Review
                   </Link>
-                  <Link
-                    onClick={() => {
-                      setModal2(true);
-                    }}
-                    className="add-to-cart-btn d-inline-block fw-7 bg-orange"
-                    style={{
-                      backgroundColor: "var(--clr-orange)",
-                      marginLeft: 20,
-                    }}
-                  >
-                    <LuFlagTriangleRight /> Report
-                  </Link>
+
+                  {accountEnrollment?.report !== null &&
+                  accountEnrollment?.typeOfReport !== null ? (
+                    <Link
+                      onClick={() => {
+                        setModalReport(true);
+                      }}
+                      className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+                      style={{
+                        backgroundColor: "var(--clr-orange)",
+                        marginLeft: 20,
+                      }}
+                    >
+                      <LuFlagTriangleRight /> View Report
+                    </Link>
+                  ) : (
+                    <Link
+                      onClick={() => {
+                        setModal2(true);
+                      }}
+                      className="add-to-cart-btn d-inline-block fw-7 bg-orange"
+                      style={{
+                        backgroundColor: "var(--clr-orange)",
+                        marginLeft: 20,
+                      }}
+                    >
+                      <LuFlagTriangleRight /> Report
+                    </Link>
+                  )}
                 </>
               ) : null
             ) : (
@@ -463,6 +546,8 @@ const SingleCoursePage = () => {
           </Form.Item>
         </Form>
       </Modal>
+
+      {/* Modal set Review */}
       <Modal
         title="Give me your feel about the course"
         open={isModalOpen}
@@ -481,7 +566,6 @@ const SingleCoursePage = () => {
               },
             ]}
           >
-            {/* <header>How was your experience of this course?</header> */}
             <div className="stars">
               <FontAwesomeIcon
                 icon={faStar}
@@ -509,7 +593,6 @@ const SingleCoursePage = () => {
                 onClick={() => handleStarClick(5)}
               />
             </div>
-            {/* <Input /> */}
           </Form.Item>
           <Form.Item
             label="Write your comment"
@@ -577,6 +660,54 @@ const SingleCoursePage = () => {
             name={"reportDetails"}
             rules={[
               {
+                //   pattern: REGEX,
+                //   whitespace: true,
+                required: true,
+                message:
+                  "This description do not include space and special characters",
+              },
+            ]}
+          >
+            <TextArea rows={3} />
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Modal view Report */}
+      <Modal
+        title="View your report about this course"
+        onOk={() => setModalReport(false)}
+        open={modalReport}
+        onCancel={() => setModalReport(false)}
+      >
+        <Form form={form} labelCol={{ span: 24 }} onFinish={handleReport}>
+          <Form.Item
+            label="Select issue you'd like to report"
+            name="reportTitle"
+            rules={[
+              {
+                required: true,
+                message: "Select issue to know what type issue you want report",
+              },
+            ]}
+          >
+            <Radio.Group value={accountEnrollment?.typeOfReport} disabled>
+              <Space direction="vertical">
+                <Radio value="Content Improvement"> Content improvement</Radio>
+                <Radio value="Video Issues"> Video issues</Radio>
+                <Radio value="Audio Issues"> Audio issues</Radio>
+                <Radio value="Offensive Content"> Offensive content</Radio>
+                <Radio value="Spammy Content"> Spammy content</Radio>
+                <Radio value="Other"> Other</Radio>
+              </Space>
+            </Radio.Group>
+          </Form.Item>
+
+          <Form.Item
+            label="Describe the issue"
+            name={"reportDetails"}
+            rules={[
+              {
                 pattern: REGEX,
                 whitespace: true,
                 message:
@@ -584,7 +715,7 @@ const SingleCoursePage = () => {
               },
             ]}
           >
-            <TextArea rows={3} />
+            <TextArea rows={3} disabled />
           </Form.Item>
         </Form>
       </Modal>
@@ -606,16 +737,31 @@ const SingleCoursePage = () => {
 
         <div className="course-content mx-auto">
           <div className="course-sc-title">Course content</div>
-          <ul className="course-content-list">
-            {chapter &&
-              chapter.map((chapter) => {
-                return (
-                  <li key={chapter.chapterID}>
-                    <span>{chapter.chapterName}</span>
-                  </li>
-                );
-              })}
-          </ul>
+
+          <Collapse
+            items={chapterTrial.map((chapter) => {
+              return {
+                key: chapter.chapterID,
+                label: <strong>{chapter.chapterName}</strong>,
+                children: (
+                  <ul className="course-content-list">
+                    {chapter.itemsList.map((item) => {
+                      return (
+                        <CourseItem
+                          key={item.itemID}
+                          freeTrial={chapter.seevideo}
+                          item={item}
+                          enrolled={accountEnrollment}
+                          account={account?.learnerID}
+                        />
+                      );
+                    })}
+                  </ul>
+                ),
+              };
+            })}
+            defaultActiveKey={["1"]}
+          />
         </div>
         <div className="Table">
           <h3>Reviews</h3>
@@ -629,8 +775,8 @@ const SingleCoursePage = () => {
               },
               {
                 title: "Rating",
-                dataIndex: "rate",
-                key: "rate",
+                dataIndex: "rateCourse",
+                key: "rateCourse",
                 render: (rate) => <Rate disabled defaultValue={rate} />,
               },
               {
@@ -659,13 +805,124 @@ const SingleCoursePage = () => {
                 },
               },
             ]}
-            dataSource={review.filter((item) => item.rate >= 1)}
+            dataSource={review.filter((item) => item.rateCourse >= 1)}
             size="small"
             style={{ tableLayout: "fixed" }}
           />
         </div>
       </div>
     </SingleCourseWrapper>
+  );
+};
+
+const CourseItem = ({ item, freeTrial, enrolled, account }) => {
+  const [url, setURL] = useState(null);
+  const [title, setTitle] = useState(null);
+
+  const navigate = useNavigate();
+  const scriptOptions = {
+    clientId:
+      "AS_kGKyi8kMb-m3z7SZocpoPihQLS9MGjq7QaYTG3N9b64CRE6mgcFs7HzH16qwPTblmix3ivoSPf0ly",
+  };
+
+  const generateContent = (content) => {
+    if (!content) return;
+    if (content.startsWith("https")) {
+      if (content.includes("youtu")) {
+        return (
+          <ReactPlayer
+            url={content}
+            width={"100%"}
+            height={535}
+            style={{
+              height: 1000,
+            }}
+          />
+        );
+      } else {
+        return (
+          <video width={"100%"} autoPlay muted src={content.content} controls />
+        );
+      }
+    } else {
+      return <Typography.Text>{content}</Typography.Text>;
+    }
+  };
+
+  const onCancle = () => {
+    setURL(null);
+    setTitle(null);
+  };
+
+  return (
+    <li key={item.itemID}>
+      <span>{item.itemName}</span>
+      {freeTrial || enrolled ? (
+        <PlayCircleOutlined
+          style={{
+            fontSize: 18,
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            setURL(item.content);
+            setTitle(item.itemName);
+          }}
+        />
+      ) : (
+        <LockOutlined
+          style={{
+            fontSize: 18,
+          }}
+          onClick={() => {
+            setURL(item.content);
+            setTitle(item.itemName);
+          }}
+        />
+      )}
+
+      <Modal
+        onCancel={onCancle}
+        title={title}
+        centered
+        open={url}
+        footer={() => {
+          return (
+            <>
+              {freeTrial || enrolled ? null : (
+                <>
+                  <Button onClick={() => onCancle()}>Cancel</Button>
+
+                  {account ? (
+                    <Button
+                      onClick={() => {
+                        setTitle(null);
+                        setURL(null);
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      Payment
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        navigate(`/login/v2`);
+                      }}
+                    >
+                      Login
+                    </Button>
+                  )}
+                </>
+              )}
+            </>
+          );
+        }}
+        width={1000}
+      >
+        {freeTrial || enrolled
+          ? generateContent(url)
+          : "Enroll to continue study"}
+      </Modal>
+    </li>
   );
 };
 
@@ -791,12 +1048,11 @@ const SingleCourseWrapper = styled.div`
 
       .course-content-list {
         li {
-          background-color: #f7f9fa;
-          padding: 12px 18px;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          margin-bottom: 10px;
-          font-weight: 800;
-          font-size: 15px;
+          font-weight: 500;
+          font-size: 14px;
+          display: flex;
+          justify-content: space-between;
+          padding: 10px 30px;
         }
       }
     }

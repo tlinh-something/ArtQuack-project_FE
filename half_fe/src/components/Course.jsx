@@ -62,7 +62,9 @@ const Course = ({ course, type }) => {
         </h5>
         <span className="item-creator">{course.instructorName}</span>
         <div className="item-rating flex">
-          <span className="rating-star-val">{count ? count.toFixed(1) : 0}</span>
+          <span className="rating-star-val">
+            {count ? count.toFixed(1) : 0}
+          </span>
           <StarRating rating_star={averageRate} />
           <span className="rating-count">({rates.length})</span>
         </div>
@@ -137,11 +139,13 @@ const CourseCard = styled.div`
       font-size: 18px;
       line-height: 1.4;
       font-weight: 800;
+      height: 100px;
     }
     .item-creator {
       font-size: 17px;
       font-weight: 500;
       color: rgba(0, 0, 0, 0.6);
+      margin-top: 15px;
     }
     .rating-star-val {
       margin-bottom: 5px;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router";
 import "../Test.css";
-import { Col, Row } from "antd";
+import { Col, List, Row } from "antd";
 import { Icon } from "@iconify/react";
 import { Menu } from "antd";
 import {
@@ -20,7 +20,7 @@ const SearchPage = () => {
   const [courses, setCourses] = useState([]);
   const fetchCourse = async () => {
     const response = await api.get(`/api/courses/${id}`);
-    setCourses(response.data.filter((c) => c.status));
+    setCourses(response.data.filter((c) => c.courseStatus === 'ACTIVE'));
   };
   const fetchLevels = async () => {
     try {
@@ -78,29 +78,14 @@ const SearchPage = () => {
       <h2 style={{margin:"30px"}}>
       We have {courses.length} results with "{id}"
       </h2>
-      <Row style={{
-        alignItems: 'normal'
-      }}>
-        <Col span={2}>
-          {/* <Menu
-            onClick={onClick}
-            style={{
-              width: 256,
-            }}
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
-            mode="inline"
-            items={items}
-          /> */}
-        </Col>
-        <Col span={22}>
-          <div>
-            {courses.map((course) => (
-              <SearchCourse course={course} key={course.courseID} />
-            ))}
-          </div>
-        </Col>
-      </Row>
+      <List pagination={{
+        position: 'bottom', 
+        pageSize: 3
+      }} 
+      dataSource={courses}
+      renderItem={(item, index) => {
+        return <SearchCourse course={item} key={item.courseID} />
+      }}/>
     </div>
   );
 };

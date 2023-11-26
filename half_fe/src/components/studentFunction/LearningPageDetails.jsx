@@ -4,9 +4,6 @@ import {
   Form,
   Image,
   Modal,
-  Radio,
-  Space,
-  Table,
   Typography,
   Upload,
   message,
@@ -16,9 +13,6 @@ import api from "../../config/axios";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import uploadImage from "../../hooks/useUploadImage";
-import { LuFlagTriangleRight } from "react-icons/lu";
-import { useForm } from "antd/es/form/Form";
-import TextArea from "antd/es/input/TextArea";
 
 function LearningPageDetail() {
   const params = useParams();
@@ -149,12 +143,6 @@ function LearningPageDetail() {
               </Form>
             </Card>
           )}
-
-        {/* <hr className="mt-5" />
-        <Button className="link-report" onClick={() => setModal(true)}>
-          <LuFlagTriangleRight />
-          <span style={{ fontSize: "16px" }}>{""}Report an issue</span>
-        </Button> */}
       </Card>
 
       <Modal

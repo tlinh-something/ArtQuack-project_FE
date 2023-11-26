@@ -8,7 +8,7 @@ const SearchCourse = ({course,type}) => {
   const navigate = useNavigate();
   const [review, setReview] = useState([]);
   const rates = review.map((review) => review.rate);
-
+  const account = JSON.parse(localStorage.getItem('accessToken'))
   // Step 2: Calculate the sum of all rate values
   const sumOfRates = rates.reduce((accumulator, rate) => accumulator + rate, 0);
 
@@ -56,7 +56,7 @@ const SearchCourse = ({course,type}) => {
         />
       </div>
       <div className="item-body" style={{marginLeft:"10px"}}>
-        <h5 className="item-name">
+        <h5 className="item-name fs-3" >
           {course.name} - {course.cateName}
         </h5>
         <div className="item-description" style={{fontStyle:"italic"}}>{course.description}</div>
@@ -69,7 +69,7 @@ const SearchCourse = ({course,type}) => {
           </div>
           <span className="rating-count">( {rates.length} rated )</span>
         </div>
-        <div className="item-price">
+        <div className="item-price fs-5">
           <span className="item-price-new">${course.price}</span>
         </div>
       </div>

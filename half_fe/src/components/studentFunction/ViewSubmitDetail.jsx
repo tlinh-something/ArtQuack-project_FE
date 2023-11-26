@@ -15,6 +15,7 @@ const ViewSubmitDetail = () => {
   const [image, setImage] = useState("");
   const [current, setCurrent] = useState(null);
   const [render, setRender] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [form] = useForm();
 
   const fetchSubmit = () => {
@@ -57,15 +58,15 @@ const ViewSubmitDetail = () => {
       date: new Date().toISOString(),
       completeID: current,
       homework: image,
-      status: true
+      status: true,
     };
-
     console.log(data);
     console.log(current);
     api.put(`/api/complete/${current}/updatecomplete`, data);
     form.resetFields();
     setRender(render + 1);
     swal("Success!", "Re-submit artwork success!", "success");
+    setLoading(false);
     handleCancel();
   };
 
@@ -78,19 +79,20 @@ const ViewSubmitDetail = () => {
   };
 
   const handleFileUpload = async (file) => {
+    setLoading(true);
     console.log(file);
     setImage(await uploadImage(file.originFileObj));
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchSubmit();
   }, [params.id, render]);
 
-
   return (
     <div>
       <Table
-      pagination={{ pageSize: 3 }}
+        pagination={{ pageSize: 3 }}
         columns={[
           {
             title: "Instructor Name",
@@ -156,6 +158,7 @@ const ViewSubmitDetail = () => {
         open={current !== null}
         onOk={handleOk}
         onCancel={handleCancel}
+        confirmLoading={loading}
       >
         <Form
           title="Re-submit peer grade"

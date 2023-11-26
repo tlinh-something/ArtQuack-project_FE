@@ -51,12 +51,26 @@ function UserDropdown() {
             )}
           </div>
           <div style={{ fontSize: "18px" }} className="mb-2">
-            Wallet:{" "}
-            <span style={{ color: "orange", fontWeight: "600" }}>
-              {wallet === null
-                ? 0
-                : convertToCurrencyFormat(wallet.balance.toFixed(1))}
-            </span>
+          {account.learnerID ? (
+              <Link to={`/learner/transaction`}>
+              Wallet:{" "}
+              <span style={{ color: "orange", fontWeight: "600" }}>
+                {wallet === null
+                  ? 0
+                  : convertToCurrencyFormat(wallet.balance.toFixed(1))}
+              </span>
+            </Link>
+            ) : (
+              <Link to={`/instructor/transaction`}>
+              Wallet:{" "}
+              <span style={{ color: "orange", fontWeight: "600" }}>
+                {wallet === null
+                  ? 0
+                  : convertToCurrencyFormat(wallet.balance.toFixed(1))}
+              </span>
+            </Link>
+            )}
+            
           </div>
           <div>
             <Button

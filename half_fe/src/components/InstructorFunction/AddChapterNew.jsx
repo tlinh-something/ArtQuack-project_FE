@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import api from "../../config/axios";
 import { useEffect, useState } from "react";
 import {
+  Alert,
   Button,
   Form,
   Input,
@@ -11,11 +12,17 @@ import {
   Space,
   Switch,
   Table,
+  Tag,
   Typography,
   Upload,
   message,
 } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  ExclamationOutlined,
+} from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import swal from "sweetalert";
 import Dragger from "antd/es/upload/Dragger";
@@ -157,19 +164,67 @@ const AddChapterNew = () => {
 
   return (
     <div style={{ padding: 30 }}>
-      <h1>
+      <h1 style={{ display: "flex", alignItems: "center" }}>
         {course?.name} - {course?.cateName}
+        <Tag
+          style={{ marginLeft: 20, padding: "2px 4px", borderRadius: 5 }}
+          color={
+            course?.courseStatus === "ACTIVE"
+              ? "green"
+              : course?.courseStatus === "DEACTIVE"
+              ? "volcano"
+              : course?.courseStatus === "UPDATING"
+              ? "blue"
+              : course?.courseStatus === "VERIFY"
+              ? "warning"
+              : "red"
+          }
+        >
+          {course?.courseStatus}
+        </Tag>
       </h1>
       <h3>Level: {course?.levelName}</h3>
       <p>{course?.description}</p>
-      <Button
-        type="primary"
-        onClick={() => {
-          setCurrentChapterID(0);
-        }}
-      >
-        Add Chapter
-      </Button>
+      {course?.courseStatus === "REJECT" ? (
+        <Alert
+          message="Reject reason"
+          description={course?.reason}
+          type="error"
+          showIcon
+          style={{ marginBottom: 20, whiteSpace: "pre-line" }}
+        />
+      ) : null}
+
+      {/* <p style={{ color: "red", fontSize: 15 }}><ExclamationOutlined />{course?.reason}</p> */}
+      <Space style={{ display: "flex", justifyContent: "space-between" }}>
+        <Button
+          type="primary"
+          onClick={() => {
+            setCurrentChapterID(0);
+          }}
+        >
+          Add Chapter
+        </Button>
+
+        {course?.courseStatus === "UPDATING" ? (
+          <Button
+            onClick={async () => {
+              await api.put(`/api/${course.courseID}/verify`);
+            }}
+          >
+            Done
+          </Button>
+        ) : course?.courseStatus === "REJECT" ? (
+          <Button
+            onClick={async () => {
+              await api.put(`/api/${course.courseID}/verify`);
+              fetchCourse();
+            }}
+          >
+            Re-submit
+          </Button>
+        ) : null}
+      </Space>
       <Table
         pagination={false}
         columns={[
@@ -177,6 +232,47 @@ const AddChapterNew = () => {
             title: "Chapter name",
             dataIndex: "chapterName",
             key: "chapterName",
+          },
+          {
+            title: "Free Trial",
+            dataIndex: "chapterID",
+            key: "chapterID",
+            align: "center",
+            render: (chapterID) => {
+              return (
+                <Switch
+                  // checked={active}
+                  checkedChildren={<CheckOutlined />}
+                  unCheckedChildren={<CloseOutlined />}
+                  onChange={async (value) => {
+                    // setActive(value);
+                    console.log(value);
+                    if (value === false) {
+                      await api.put(
+                        `/api/chapter/${chapterID}/update-freetrial`,
+                        {
+                          chapterID: chapterID,
+                          seevideo: value,
+                        }
+                      );
+                    } else {
+                      console.log(value);
+                      await api.put(
+                        `/api/chapter/${chapterID}/update-freetrial`,
+                        {
+                          chapterID: chapterID,
+                          seevideo: value,
+                        }
+                      );
+                    }
+                    // fetch();
+                  }}
+                  // checkedChildren="Active"
+                  // unCheckedChildren="Deactive"
+                  defaultChecked
+                />
+              );
+            },
           },
           {
             title: "Action",
@@ -258,9 +354,10 @@ const AddChapterNew = () => {
                 required: true,
                 pattern: WORD_REGEX,
                 message: "Enter new chapter name",
-              },{
-                whitespace: true
-              }
+              },
+              {
+                whitespace: true,
+              },
             ]}
           >
             <Input />
@@ -282,7 +379,7 @@ const TableItem = ({ chapterID }) => {
   const [itemType, setItemType] = useState("normal");
 
   const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
-  
+
   const handleOk = () => {
     form.submit();
   };

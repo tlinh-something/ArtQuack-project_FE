@@ -42,7 +42,7 @@ function AllCourse() {
       // `/api/courses-learner/${userID ? userID : 0}`
       `/api/courses`
     );
-    setCourses(response.data.filter(c => c.status));
+    setCourses(response.data.filter(c => c.courseStatus === 'ACTIVE'));
   };
   useEffect(() => {
     fetchCourse();
