@@ -43,7 +43,6 @@ const CourseList = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
-
   const cardsPerPage = 4;
   const renderCourses = () => {
     const startIndex = (currentPage - 1) * cardsPerPage;
@@ -53,27 +52,29 @@ const CourseList = () => {
     return (
       <div className="row-wrapper">
         {visibleCourses.map((item) => (
-          <div className="card-wrapper" key={item.courseID}>
-            <Card
-              onMouseEnter={() => handleCardMouseEnter(item.courseID)}
-              onMouseLeave={handleCardMouseLeave}
-              style={{
-                transition: "all .3s",
-                transform:
-                  hoveredCard === item.courseID ? "scale(1.1)" : "scale(1)",
-              }}
-            >
-              <div className="card-content">
-                <Course course={item} key={item.courseID} />
-              </div>
-            </Card>
-          </div>
+          <Col span={6} key={item.courseID}>
+            <div className="card-wrapper">
+              <Card
+                onMouseEnter={() => handleCardMouseEnter(item.courseID)}
+                onMouseLeave={handleCardMouseLeave}
+                style={{
+                  transition: "all .3s",
+                  transform:
+                    hoveredCard === item.courseID ? "scale(1.1)" : "scale(1)",
+                }}
+              >
+                <div className="card-content">
+                  <Course course={item} key={item.courseID} />
+                </div>
+              </Card>
+            </div>
+          </Col>
         ))}
       </div>
     );
   };
 
-  let count = cardsPerPage
+  let count = cardsPerPage;
 
   const totalPages = Math.ceil(courses.length / count);
 
@@ -89,7 +90,7 @@ const CourseList = () => {
           <h2>All Courses</h2>
         </div>
 
-        <Row gutter={[24,24]}>{renderCourses()}</Row>
+        <Row >{renderCourses()}</Row>
 
         <div className="carousel-buttons pt-4">
           <Button
@@ -144,6 +145,5 @@ const CoursesListWrapper = styled.div`
     align-items: center;
   }
 `;
-
 
 export default CourseList;

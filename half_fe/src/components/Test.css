@@ -177,10 +177,10 @@ p {
 .search-course-container{
   display: flex;
 }
-.item-img {
+/* .item-img {
   width: 300px;
   height: 200px;
-}
+} */
 .item-img img{
   width: 100%;
 }

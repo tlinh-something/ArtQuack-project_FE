@@ -80,7 +80,7 @@ function ReportPage() {
         style={{
           background: colorBgContainer,
         }}
-        width={200}
+        width={300}
       >
         <Menu
           mode="inline"
