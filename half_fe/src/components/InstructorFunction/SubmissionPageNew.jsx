@@ -65,7 +65,7 @@ const SubmissionPageNew = () => {
 
       setItems(
         courseList
-          // .filter((course) => course.status)
+          .filter((course) => course.status)
           .map((course, index) => {
             if (index === 0) {
               setOpenKey([`course-${course.courseID}`]);
@@ -76,14 +76,14 @@ const SubmissionPageNew = () => {
               `course-${course.courseID}`,
               <PlusOutlined />,
               course.chapters
-                // .filter((chapter) => chapter.status)
+                .filter((chapter) => chapter.status)
                 .map((chapter) => {
                   return getItem(
                     chapter.chapterName,
                     `chapter-${chapter.chapterID}`,
                     <MinusOutlined />,
                     chapter.items
-                      // .filter((item) => item.status)
+                      .filter((item) => item.status)
                       .map((item) => {
                         console.log(chapter.items[0]);
                         return getItem(

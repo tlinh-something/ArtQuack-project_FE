@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import api from "../../config/axios";
 import { useEffect, useState } from "react";
 import {
@@ -185,6 +185,8 @@ const SubmitPageDetail = () => {
         ]}
         dataSource={submit}
       />
+
+      <Link to={`/instructor`} className="navigate-link">Back to Home</Link>
 
       <Modal
         title="Grade the artwork"

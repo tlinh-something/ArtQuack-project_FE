@@ -66,9 +66,9 @@ const SingleCoursePage = () => {
 
   // Step 1: Create an array to store the rates
   const rates = review
-    .filter((item) => item.rateCourse >= 1)
+    .filter((item) => item.rate >= 1)
     .map((item) => {
-      return item.rateCourse;
+      return item.rate;
     });
   count = rates.length;
 
@@ -170,12 +170,13 @@ const SingleCoursePage = () => {
       .enrollmentID;
     await api.put(`/api/enrollment/${id}/update`, {
       enrollmentID: id,
-      rateCourse: values.star,
+      rate: values.star,
       comment: values.comment,
       date: new Date().toISOString(),
     });
     console.log(rateEdit);
-    message.success("You reated successfully");
+    message.success("You rated successfully");
+    fetchEnroll();
     setRender(render + 1);
     setIsModalOpen(false);
   };
@@ -197,7 +198,7 @@ const SingleCoursePage = () => {
     if (accountEnrollment) {
       console.log(accountEnrollment);
       form.setFieldsValue({
-        stars: accountEnrollment.rateCourse,
+        stars: accountEnrollment.rate,
         comment: accountEnrollment.comment,
         reportDetails: accountEnrollment.report,
         reportTitle: accountEnrollment.typeOfReport,
@@ -443,7 +444,7 @@ const SingleCoursePage = () => {
                   <Link
                     onClick={() => {
                       if (account.learnerID) {
-                        handleStarClick(accountEnrollment.rateCourse);
+                        handleStarClick(accountEnrollment.rate);
                         showModal();
                       }
                       // else {
@@ -723,7 +724,7 @@ const SingleCoursePage = () => {
       <div className="course-full bg-white text-dark">
         <div className="course-learn mx-auto">
           <div className="course-sc-title">What you will learn</div>
-          <ul className="course-learn-list grid">
+          <ul className="course-learn-list">
             <li>
               <span>
                 <CheckOutlined />
@@ -775,8 +776,8 @@ const SingleCoursePage = () => {
               },
               {
                 title: "Rating",
-                dataIndex: "rateCourse",
-                key: "rateCourse",
+                dataIndex: "rate",
+                key: "rate",
                 render: (rate) => <Rate disabled defaultValue={rate} />,
               },
               {
@@ -805,7 +806,7 @@ const SingleCoursePage = () => {
                 },
               },
             ]}
-            dataSource={review.filter((item) => item.rateCourse >= 1)}
+            dataSource={review.filter((item) => item.rate >= 1)}
             size="small"
             style={{ tableLayout: "fixed" }}
           />

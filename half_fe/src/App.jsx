@@ -48,6 +48,8 @@ import ReportDetails from "./components/InstructorFunction/ReportPageDetails";
 import ViewStatusCourse from "./components/InstructorFunction/ViewStatusCourse";
 import TransactionPage from "./components/InstructorFunction/TransactionPage";
 import TransactionLearner from "./components/studentFunction/TransactionLearner";
+import InstructorRoute from "./components/InstructorRoute";
+import LearnerRoute from "./components/LearnerRoute";
 function App() {
   return (
     <ConfigProvider
@@ -69,50 +71,64 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/courses/:id" element={<SingleCourse />} />
           <Route path="/guest/courses/:id" element={<SingleCourse />} />
-          {/* <Route path="/guest/courses/:id" element={<GuestCoursePage/>}/> */}
-          {/* <Route path="/category/:category" element={<Courses />} /> */}
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/:postID" element={<BlogDetails />} />
-          <Route path="/login" element={<LoginSignup />} />
+
           <Route path="/login/v2" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/courses/category/:id" element={<CoursesPage />} />
           <Route path="/search/:id" element={<SearchPage />} />
+          <Route path="/guest/courses/:id" element={<GuestCoursePage/>}/>
+
+          {/* <Route path="/category/:category" element={<Courses />} /> */}
           {/* <Route path = "/registerIns" element = {<RegisterIns />} /> */}
-          <Route path="/user" element={<UserWrapper />} />
-          <Route path="/user/mycourse" element={<UserCourse />} />
-          <Route path="user/rate/:id" element={<UserRate />} />
-          <Route path="user/profile/:id" element={<UserProfile />} />
-          <Route path="/learner/transaction" element={<TransactionLearner />} />
-          <Route path="/instructor/mycourse" element={<MyCourse />}>
-            {/* <Route path="add" element={<Add />} /> */}
+          {/* <Route path="/blog" element={<BlogPage />} /> */}
+          {/* <Route path="/:postID" element={<BlogDetails />} /> */}
+          {/* <Route path="/login" element={<LoginSignup />} /> */}
+          <Route path="" element={<LearnerRoute />}>
+            <Route path="/user" element={<UserWrapper />} />
+            <Route path="/user/mycourse" element={<UserCourse />} />
+            <Route path="user/rate/:id" element={<UserRate />} />
+            <Route path="user/profile/:id" element={<UserProfile />} />
+            <Route
+              path="/learner/transaction"
+              element={<TransactionLearner />}
+            />
+            <Route path="/enroll" element={<EnrollCourse />} />
+            <Route path="/learning/:id" element={<LearningPageNew />}>
+              <Route path=":itemID" element={<LearningPageDetail />} />
+            </Route>
+            <Route path="/user/submission" element={<ViewSubmission />}>
+              <Route path=":id" element={<ViewSubmitDetail />} />
+            </Route>
           </Route>
+
           {/* <Route path="/instructor" element={<AllCourse />} /> */}
-          <Route path="/instructor" element={<InstructorWrapper />} />
-          <Route path="/instructor/profile/:id" element={<InsProfile />} />
-          <Route path="/instructor/addchapter/:id" element={<AddChapter />} />
-          <Route path="/instructor/update/:courseID" element={<Update />} />
-          <Route path="/instructor/chapter/:id" element={<AddChapterNew />} />
-          <Route path="/instructor/item/:id" element={<ViewItem />} />
-          <Route path="/instructor/additem/:id" element={<AddItem />} />
-          <Route
-            path="/instructor/coursestatus"
-            element={<ViewStatusCourse />}
-          />
-          <Route path="/instructor/transaction" element={<TransactionPage />} />
-          <Route path="/instructor/report" element={<ReportPage />}>
-            <Route path=":id" element={<ReportDetails />} />
-          </Route>
-          {/* <Route path="/learning/:id" element={<LearningPage />} /> */}
-          <Route path="/learning/:id" element={<LearningPageNew />}>
-            <Route path=":itemID" element={<LearningPageDetail />} />
-          </Route>
-          <Route path="/enroll" element={<EnrollCourse />} />
-          <Route path="/instructor/submission" element={<SubmissionPageNew />}>
-            <Route path=":id" element={<SubmitPageDetail />} />
-          </Route>
-          <Route path="/user/submission" element={<ViewSubmission />}>
-            <Route path=":id" element={<ViewSubmitDetail />} />
+          <Route path="" element={<InstructorRoute />}>
+            <Route path="/instructor/mycourse" element={<MyCourse />} />
+            <Route path="/instructor" element={<InstructorWrapper />} />
+            <Route path="/instructor/profile/:id" element={<InsProfile />} />
+            <Route path="/instructor/addchapter/:id" element={<AddChapter />} />
+            <Route path="/instructor/update/:courseID" element={<Update />} />
+            <Route path="/instructor/chapter/:id" element={<AddChapterNew />} />
+            <Route path="/instructor/item/:id" element={<ViewItem />} />
+            <Route path="/instructor/additem/:id" element={<AddItem />} />
+            <Route
+              path="/instructor/coursestatus"
+              element={<ViewStatusCourse />}
+            />
+            <Route
+              path="/instructor/transaction"
+              element={<TransactionPage />}
+            />
+            <Route path="/instructor/report" element={<ReportPage />}>
+              <Route path=":id" element={<ReportDetails />} />
+            </Route>
+            {/* <Route path="/learning/:id" element={<LearningPage />} /> */}
+            <Route
+              path="/instructor/submission"
+              element={<SubmissionPageNew />}
+            >
+              <Route path=":id" element={<SubmitPageDetail />} />
+            </Route>
           </Route>
         </Routes>
         <Footer />

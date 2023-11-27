@@ -43,7 +43,7 @@ const AddChapterNew = () => {
   const [render, setRender] = useState(0);
   const [course, setCourse] = useState();
 
-  const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
+  const WORD_REGEX = /^[a-zA-Z0-9]+(([a-z A-Z:/.,0-9])?[a-zA-Z]*)*$/;
 
   const handleOk = () => {
     form.submit();
@@ -184,7 +184,7 @@ const AddChapterNew = () => {
         </Tag>
       </h1>
       <h3>Level: {course?.levelName}</h3>
-      <p>{course?.description}</p>
+      <p className="fs-5">{course?.description}</p>
       {course?.courseStatus === "REJECT" ? (
         <Alert
           message="Reject reason"
@@ -210,6 +210,8 @@ const AddChapterNew = () => {
           <Button
             onClick={async () => {
               await api.put(`/api/${course.courseID}/verify`);
+              fetchCourse();
+              fetchChapter();
             }}
           >
             Done
@@ -352,7 +354,7 @@ const AddChapterNew = () => {
             rules={[
               {
                 required: true,
-                pattern: WORD_REGEX,
+                // pattern: WORD_REGEX,
                 message: "Enter new chapter name",
               },
               {
@@ -378,7 +380,7 @@ const TableItem = ({ chapterID }) => {
   const [contentType, setContentType] = useState("file");
   const [itemType, setItemType] = useState("normal");
 
-  const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
+  const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z:/.,0-9])?[a-zA-Z]*)*$/;
 
   const handleOk = () => {
     form.submit();
@@ -591,7 +593,7 @@ const TableItem = ({ chapterID }) => {
             rules={[
               {
                 required: true,
-                pattern: WORD_REGEX,
+                // pattern: WORD_REGEX,
                 message: "Enter item name",
               },
             ]}
@@ -679,7 +681,7 @@ const TableItem = ({ chapterID }) => {
               rules={[
                 {
                   required: true,
-                  pattern: WORD_REGEX,
+                  // pattern: WORD_REGEX,
                   message: "Enter link video (such as youtube) or content",
                 },
               ]}

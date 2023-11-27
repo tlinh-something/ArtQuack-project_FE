@@ -19,7 +19,7 @@ const InstructorWrapper = () => {
     },
     {
       key: "3",
-      label: "Submissions",
+      label: "Submission",
       children: <SubmissionPageNew />,
     },
     {

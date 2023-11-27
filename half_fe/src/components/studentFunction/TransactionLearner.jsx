@@ -51,24 +51,24 @@ function TransactionLearner() {
       align: "center",
       render: (num) => {
         return (
-          <span style={{ color: "green", fontWeight: 600 }}>
-            {convertToCurrencyFormat(num.toFixed(1))}
+          <span style={{ color: "red", fontWeight: 600 }}>
+             - {convertToCurrencyFormat(num.toFixed(1))}
           </span>
         );
       },
     },
-    {
-      title: "Total",
-      dataIndex: "",
-      key: "",
-      render: (_, __, index) => {
-        let total = 0;
-        for (let i = 0; i <= index; i++) {
-          total = total + transaction[i].money;
-        }
-        return convertToCurrencyFormat(total.toFixed(1));
-      },
-    },
+    // {
+    //   title: "Total",
+    //   dataIndex: "",
+    //   key: "",
+    //   render: (_, __, index) => {
+    //     let total = 0;
+    //     for (let i = 0; i <= index; i++) {
+    //       total = total + transaction[i].money;
+    //     }
+    //     return convertToCurrencyFormat(total.toFixed(1));
+    //   },
+    // },
   ];
 
   function formatDate(timestamp, format) {
@@ -110,6 +110,7 @@ function TransactionLearner() {
       >
         Learner's Transaction History
       </h1>
+      <p style={{fontFamily: 'monospace', marginLeft: 10}}>Total: {convertToCurrencyFormat(account.wallet.balance.toFixed(1))}</p>
       <Table pagination={{ pageSize: 10 }} columns={columns} dataSource={transaction} />
     </>
   );

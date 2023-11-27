@@ -45,7 +45,7 @@ function MyCourse() {
   const [loading, setLoading] = useState();
   const [active, setActive] = useState("ACTIVE");
 
-  const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
+  const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z,.&/:0-9])?[a-zA-Z]*)*$/;
   // const handleDelete = (courseID) => {
   //   api.delete(`/api/deletecourse/${courseID}`);
   //   message.success("Deleted course successfully");
@@ -97,6 +97,10 @@ function MyCourse() {
       key: "courseStatus",
       align: "center",
       filters: [
+        {
+          text: "Verify",
+          value: "VERIFY",
+        },
         {
           text: "Active",
           value: "ACTIVE",
@@ -152,7 +156,7 @@ function MyCourse() {
               Update
             </Button>
 
-            {/* <Popconfirm
+            <Popconfirm
               title="Delete the course"
               description="Are you sure to delete this course"
               onConfirm={() => {
@@ -164,14 +168,16 @@ function MyCourse() {
               icon={
                 <FaQuestionCircle
                   style={{
-                    color: 'red',
+                    color: "red",
                   }}
                 />
               }
-              onCancel={cancel}
+              onCancel={() => {
+                message.error("Can not delete this course");
+              }}
             >
               <Button danger>Delete</Button>
-            </Popconfirm> */}
+            </Popconfirm>
           </Space>
         );
       },
@@ -279,7 +285,8 @@ function MyCourse() {
   const fetchCourse = async () => {
     const account = JSON.parse(localStorage.getItem(`accessToken`));
     const response = await api.get(
-      `/api/instructor/${account.instructorID}/coursesOfInstructor`
+      // `/api/instructor/${account.instructorID}/coursesOfInstructor`
+      `/api/instructor/${account.instructorID}/courses-chapters-items`
     );
     setCourse(response.data.filter((item) => item.status));
   };
@@ -318,7 +325,7 @@ function MyCourse() {
       <Card className="w-50 add-form">
         <Row>
           <Col span={12} style={{ fontSize: "16px" }}>
-            Create more course?
+            Create more courses?
           </Col>
 
           <Col span={12} className="flex flex-end">
@@ -358,7 +365,7 @@ function MyCourse() {
             rules={[
               {
                 required: true,
-                pattern: WORD_REGEX,
+                // pattern: WORD_REGEX,
                 message: "Enter name!",
               },
             ]}

@@ -33,14 +33,13 @@ const UpdateCourse = () => {
 
     try {
       // Update course data
-      const updatedCourse = 
-      await axios.put(
+      const updatedCourse = await axios.put(
         `http://167.172.92.40:8080/api/course/${courseID}/updatecourse`,
         courseEdit
       );
 
       // Handle successful update
-      
+
       navigate("/instructor/mycourse");
       window.alert("Update successful!");
     } catch (error) {
@@ -51,43 +50,43 @@ const UpdateCourse = () => {
 
   return (
     <React.Fragment>
-    <div>
-      <h2>Update Course</h2>
-      <form onSubmit={handleSubmit}>  
-        <div>
-          <label htmlFor="name">Course Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={courseEdit.name}
-            onChange={(e) => handleEdit(e)}
-          />
-        </div>
-        <div>
-          <label htmlFor="description">Course Description:</label>
-          <input
-            type="text"
-            id="description"
-            name="description"
-            value={courseEdit.description}
-            onChange={(e) => handleEdit(e)}
-          />
-        </div>
-        <div>
-          <label htmlFor="upload_date">Course Upload_date:</label>
-          <input
-            type="text"
-            id="upload_date"
-            name="upload_date"
-            value={courseEdit.upload_date}
-            onChange={(e) => handleEdit(e)}
-          />
-        </div>
-        
-        <button type="submit">Update</button>
-      </form>
-    </div>
+      <div>
+        <h2>Update Course</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="name">Course Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={courseEdit.name}
+              onChange={(e) => handleEdit(e)}
+            />
+          </div>
+          <div>
+            <label htmlFor="description">Course Description:</label>
+            <input
+              type="text"
+              id="description"
+              name="description"
+              value={courseEdit.description}
+              onChange={(e) => handleEdit(e)}
+            />
+          </div>
+          <div>
+            <label htmlFor="upload_date">Course Upload_date:</label>
+            <input
+              type="text"
+              id="upload_date"
+              name="upload_date"
+              value={courseEdit.upload_date}
+              onChange={(e) => handleEdit(e)}
+            />
+          </div>
+
+          <button type="submit">Update</button>
+        </form>
+      </div>
     </React.Fragment>
   );
 };
