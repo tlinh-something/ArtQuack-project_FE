@@ -18,26 +18,18 @@ function Login() {
 
     try {
       const res = await api.get(
-        `/api/login/email/${email}/password/${password}/role/${role}`
+        // `/api/login/email/${email}/password/${password}/role/${role}`
+        `/api/login?email=${email}&password=${password}`
       );
-      console.log(res);
       const user = res.data;
+      console.log(user);
       localStorage.setItem("accessToken", JSON.stringify(user));
-      if (
-        localStorage.getItem("accessToken") &&
-        JSON.parse(localStorage.getItem("accessToken")).role === "learner"
-      ) {
+      if (user.role === "learner") {
         window.location = "/user";
-      } else if (
-        localStorage.getItem("accessToken") &&
-        JSON.parse(localStorage.getItem("accessToken")).role === "instructor"
-      ) {
+      } else if (user.role === "instructor") {
         window.location = "/instructor";
-      } else if (
-        localStorage.getItem("accessToken") &&
-        JSON.parse(localStorage.getItem("accessToken")).role === "admin"
-      ) {
-        window.location = "/admin";
+      } else if (user.role === "admin") {
+        window.location.href = "http://localhost:3030";
       }
     } catch (e) {
       console.log(e);
@@ -104,7 +96,7 @@ function Login() {
           <Input.Password className="flex flex-start stretch" />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           className="w-50 mx-auto"
           label="Role"
           name="role"
@@ -119,7 +111,7 @@ function Login() {
               Instructor
             </Radio>
           </Radio.Group>
-        </Form.Item>
+        </Form.Item> */}
 
         <Button htmlType="submit">Login</Button>
 
@@ -128,11 +120,11 @@ function Login() {
             Create account
           </Link>
         </div>
-        <div>
+        {/* <div>
           <a href={"http://localhost:3030/login"} style={{ color: "#fc8f1a" }}>
             Login as ADMIN
           </a>
-        </div>
+        </div> */}
       </Form>
     </div>
   );

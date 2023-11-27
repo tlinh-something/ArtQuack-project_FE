@@ -37,7 +37,7 @@ function UserDropdown() {
   useEffect(() => {
     fetchWallet();
     fetchWallet2();
-  });
+  }, []);
 
   return (
     <div
@@ -76,18 +76,21 @@ function UserDropdown() {
               <Link to={`/learner/transaction`}>
                 Wallet:{" "}
                 <span style={{ color: "orange", fontWeight: "600" }}>
-                  {wallet2 === null
+                  {convertToCurrencyFormat(wallet2.balance.toFixed(1))}
+                  {/* {wallet2 === null
                     ? 0
-                    : convertToCurrencyFormat(wallet2.balance.toFixed(1))}
+                    : 
+                    convertToCurrencyFormat(wallet2.balance.toFixed(1))} */}
                 </span>
               </Link>
             ) : (
               <Link to={`/instructor/transaction`}>
                 Wallet:{" "}
                 <span style={{ color: "orange", fontWeight: "600" }}>
-                  {wallet1 === null
+                  {/* {wallet1 === null
                     ? 0
-                    : convertToCurrencyFormat(wallet1.balance.toFixed(1))}
+                    : convertToCurrencyFormat(wallet1.balance.toFixed(1))} */}
+                    {convertToCurrencyFormat(wallet1.balance.toFixed(1))}
                 </span>
               </Link>
             )}
