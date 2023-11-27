@@ -246,8 +246,12 @@ function LearningPageDetail() {
             message: "Select issue to know what type issue you want report",
           },
         ]}
+        initialValues={{
+          reportTitle: content?.report || '',
+          reportDetails: content?.typeofreport || '',
+        }}
       >
-        <Radio.Group value={content?.typeofreport} disabled>
+        <Radio.Group value={content?.report} disabled>
           <Space direction="vertical">
             <Radio value="Content Improvement"> Content improvement</Radio>
             <Radio value="Video Issues"> Video issues</Radio>
@@ -270,6 +274,7 @@ function LearningPageDetail() {
               "This description do not include space and special characters",
           },
         ]}
+        
       >
         <TextArea rows={3} disabled />
       </Form.Item>
@@ -291,6 +296,7 @@ function LearningPageDetail() {
             message: "Select issue to know what type issue you want report",
           },
         ]}
+       
       >
         <Radio.Group>
           <Space direction="vertical">
