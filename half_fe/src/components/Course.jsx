@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 const Course = ({ course, type }) => {
   const account = JSON.parse(localStorage.getItem(`accessToken`));
   const [enroll, setEnroll] = useState(false);
+  let a = 0;
   const [review, setReview] = useState([]);
   let count = 0
   const fetchEnroll = async () => {

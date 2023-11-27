@@ -147,7 +147,7 @@ function ReportPage() {
       swal("Success!", "Successfully update item", "success");
       handleCancel();
       setRender(render + 1);
-    
+     
   };
   // setItemNameExist(report.find((item) => item.id === currentItemID));
   
@@ -237,11 +237,11 @@ function ReportPage() {
               key: "courseName",
             },
             {
-              title: "Solving",
+              title: " ",
               dataIndex: "date",
               key: "date",
               render: (text, record) => (
-                <Button onClick={() => setCurrentItemID(record.itemID)}>
+                <Button type="primary" onClick={() => setCurrentItemID(record.itemID)}>
                   Solve
                 </Button>
               ),
