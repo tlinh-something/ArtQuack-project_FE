@@ -10,7 +10,7 @@ const Course = ({ course, type }) => {
   const account = JSON.parse(localStorage.getItem(`accessToken`));
   const [enroll, setEnroll] = useState(false);
   const [review, setReview] = useState([]);
-
+  let count = 0
   const fetchEnroll = async () => {
     await api
       .get(
@@ -33,14 +33,23 @@ const Course = ({ course, type }) => {
     fetchReview();
   }, [course.courseID]);
 
-  const rates = review.filter((rw) => rw.rate > 0).map((review) => review.rate);
+  const rates = review
+    .filter((item) => item.rateCourse >= 1)
+    .map((item) => {
+      return item.rateCourse;
+    });
+  count = rates.length;
 
   // Step 2: Calculate the sum of all rate values
-  const sumOfRates = rates.reduce((accumulator, rate) => accumulator + rate, 0);
+  const sumOfRates = rates.reduce((accumulator, rate) => {
+    return accumulator + rate;
+  }, 0);
 
   // Step 3: Calculate the average rate
-  const averageRate = sumOfRates / rates.length;
-  let count = averageRate;
+  // const averageRate = sumOfRates / rates.length;
+  const averageRate = sumOfRates / count;
+  
+
   return (
     <CourseCard>
       <div className="item-img">
@@ -63,7 +72,7 @@ const Course = ({ course, type }) => {
         <span className="item-creator">{course.instructorName}</span>
         <div className="item-rating flex">
           <span className="rating-star-val">
-            {count ? count.toFixed(1) : 0}
+            {averageRate ? averageRate.toFixed(1) : 0}
           </span>
           <StarRating rating_star={averageRate} />
           <span className="rating-count">({rates.length})</span>

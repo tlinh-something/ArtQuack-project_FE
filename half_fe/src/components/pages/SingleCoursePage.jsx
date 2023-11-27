@@ -459,7 +459,7 @@ const SingleCoursePage = () => {
                     <EditOutlined /> Review
                   </Link>
 
-                  {accountEnrollment?.report !== null &&
+                  {/* {accountEnrollment?.report !== null &&
                   accountEnrollment?.typeOfReport !== null ? (
                     <Link
                       onClick={() => {
@@ -486,7 +486,7 @@ const SingleCoursePage = () => {
                     >
                       <LuFlagTriangleRight /> Report
                     </Link>
-                  )}
+                  )} */}
                 </>
               ) : null
             ) : (
@@ -599,7 +599,8 @@ const SingleCoursePage = () => {
             name={"comment"}
             rules={[
               {
-                required: true,
+                pattern: REGEX,
+                whitespace: true,
                 message:
                   "Give the feedback for this course to instructor then they can improve it",
               },

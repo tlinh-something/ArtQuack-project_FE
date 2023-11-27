@@ -7,13 +7,25 @@ import './Test.css'
 const SearchCourse = ({course,type}) => {
   const navigate = useNavigate();
   const [review, setReview] = useState([]);
-  const rates = review.map((review) => review.rate);
+  let count = 0;
   const account = JSON.parse(localStorage.getItem('accessToken'))
   // Step 2: Calculate the sum of all rate values
-  const sumOfRates = rates.reduce((accumulator, rate) => accumulator + rate, 0);
+  const rates = review
+    .filter((item) => item.rateCourse >= 1)
+    .map((item) => {
+      return item.rateCourse;
+    });
+  count = rates.length;
+
+  // Step 2: Calculate the sum of all rate values
+  const sumOfRates = rates.reduce((accumulator, rate) => {
+    return accumulator + rate;
+  }, 0);
 
   // Step 3: Calculate the average rate
-  const averageRate = sumOfRates / rates.length;
+  // const averageRate = sumOfRates / rates.length;
+  const averageRate = sumOfRates / count;
+  
   const fetchEnroll = async () => {
     await api
       .get(
