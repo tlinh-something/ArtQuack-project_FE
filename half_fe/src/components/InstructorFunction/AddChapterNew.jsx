@@ -381,6 +381,7 @@ const TableItem = ({ chapterID }) => {
   const WORD_REGEX = /^[a-zA-Z]+(([a-z A-Z])?[a-zA-Z]*)*$/;
 
   const handleOk = () => {
+
     form.submit();
   };
 

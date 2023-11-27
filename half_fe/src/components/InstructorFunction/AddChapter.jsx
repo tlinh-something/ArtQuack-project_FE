@@ -49,7 +49,7 @@ function AddChapter() {
 
   return (
     <Form.Group>
-      <h2>Add Chapter</h2>
+      <h2>Add/Modify Chapter</h2>
       <form onSubmit={handleSubmit}>
         {input.map((value, index) => {
           return (

@@ -141,7 +141,7 @@ function MyCourse() {
                 navigate(`/instructor/chapter/${record.courseID}`);
               }}
             >
-              Add chapter
+              Add/Modify chapter
             </Button>
             <Button
               onClick={() => {
