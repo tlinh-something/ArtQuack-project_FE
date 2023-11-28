@@ -31,6 +31,7 @@ function UserDropdown() {
   const fetchWallet2 = () => {
     api.get(`/api/wallet-of-learner/${account.learnerID}`).then((response) => {
       setWallet2(response.data);
+      console.log(response.data);
     });
   };
 
@@ -76,21 +77,18 @@ function UserDropdown() {
               <Link to={`/learner/transaction`}>
                 Wallet:{" "}
                 <span style={{ color: "orange", fontWeight: "600" }}>
-                  {convertToCurrencyFormat(wallet2.balance.toFixed(1))}
-                  {/* {wallet2 === null
+                  {wallet2 === 0
                     ? 0
-                    : 
-                    convertToCurrencyFormat(wallet2.balance.toFixed(1))} */}
+                    : convertToCurrencyFormat(wallet2?.balance?.toFixed(1))}
                 </span>
               </Link>
             ) : (
               <Link to={`/instructor/transaction`}>
                 Wallet:{" "}
                 <span style={{ color: "orange", fontWeight: "600" }}>
-                  {/* {wallet1 === null
+                  {wallet1 === 0
                     ? 0
-                    : convertToCurrencyFormat(wallet1.balance.toFixed(1))} */}
-                    {convertToCurrencyFormat(wallet1.balance.toFixed(1))}
+                    : convertToCurrencyFormat(wallet1?.balance?.toFixed(1))}
                 </span>
               </Link>
             )}

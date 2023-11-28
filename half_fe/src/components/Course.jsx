@@ -11,7 +11,7 @@ const Course = ({ course, type }) => {
   const [enroll, setEnroll] = useState(false);
   let a = 0;
   const [review, setReview] = useState([]);
-  let count = 0
+  let count = 0;
   const fetchEnroll = async () => {
     await api
       .get(
@@ -34,10 +34,11 @@ const Course = ({ course, type }) => {
     fetchReview();
   }, [course.courseID]);
 
+  // Step 1: Create an array to store the rates
   const rates = review
-    .filter((item) => item.rateCourse >= 1)
+    .filter((item) => item.rate >= 1)
     .map((item) => {
-      return item.rateCourse;
+      return item.rate;
     });
   count = rates.length;
 
@@ -49,7 +50,7 @@ const Course = ({ course, type }) => {
   // Step 3: Calculate the average rate
   // const averageRate = sumOfRates / rates.length;
   const averageRate = sumOfRates / count;
-  
+  let num = averageRate;
 
   return (
     <CourseCard>
@@ -76,7 +77,7 @@ const Course = ({ course, type }) => {
             {averageRate ? averageRate.toFixed(1) : 0}
           </span>
           <StarRating rating_star={averageRate} />
-          <span className="rating-count">({rates.length})</span>
+          <span className="rating-count">({count} ratings )</span>
         </div>
         <div className="item-price">
           <span className="item-price-new">${course.price}</span>

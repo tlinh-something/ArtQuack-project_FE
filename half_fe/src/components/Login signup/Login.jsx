@@ -29,7 +29,8 @@ function Login() {
       } else if (user.role === "instructor") {
         window.location = "/instructor";
       } else if (user.role === "admin") {
-        window.location.href = "http://localhost:3030";
+        // window.location.href = "http://localhost:3030";
+        window.location.href = "http://206.189.145.38/";
       }
     } catch (e) {
       console.log(e);

@@ -104,7 +104,7 @@ const CartWrapper = styled.div`
     }
 
     @media screen and (min-width: 992px){
-      grid-template-columns: 70% 30%;;
+      grid-template-columns: 70% 30%;
       column-gap: 32px;
     }
   }

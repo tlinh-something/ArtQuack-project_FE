@@ -15,7 +15,10 @@ const CourseList = () => {
 
   const fetchCourses = () => {
     api.get("/api/courses").then((res) => {
-      setCourses(res.data);
+      const activeCourses = res.data.filter(
+        (course) => course.courseStatus === "ACTIVE"
+      );
+      setCourses(activeCourses);
     });
   };
 
@@ -43,7 +46,7 @@ const CourseList = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
-  const cardsPerPage = 4;
+  const cardsPerPage = 3;
   const renderCourses = () => {
     const startIndex = (currentPage - 1) * cardsPerPage;
     const endIndex = startIndex + cardsPerPage;
@@ -52,7 +55,7 @@ const CourseList = () => {
     return (
       <div className="row-wrapper">
         {visibleCourses.map((item) => (
-          <Col span={6} key={item.courseID}>
+          <Col span={8} key={item.courseID}>
             <div className="card-wrapper">
               <Card
                 onMouseEnter={() => handleCardMouseEnter(item.courseID)}
@@ -90,7 +93,7 @@ const CourseList = () => {
           <h2>All Courses</h2>
         </div>
 
-        <Row >{renderCourses()}</Row>
+        <Row>{renderCourses()}</Row>
 
         <div className="carousel-buttons pt-4">
           <Button

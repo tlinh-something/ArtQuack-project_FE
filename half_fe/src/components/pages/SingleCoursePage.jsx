@@ -176,7 +176,7 @@ const SingleCoursePage = () => {
     });
     console.log(rateEdit);
     message.success("You rated successfully");
-    fetchEnroll();
+    fetchReview();
     setRender(render + 1);
     setIsModalOpen(false);
   };
